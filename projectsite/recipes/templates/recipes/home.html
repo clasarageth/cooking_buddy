@@ -1,0 +1,11 @@
+<h1>Recipe Book</h1>
+
+{% for recipe in recipes %}
+
+    <h2>{{ recipe.title }}</h2>
+
+    <img src="{{ recipe.image.url }}" width="300">
+
+    <p>{{ recipe.description }}</p>
+
+{% endfor %}
