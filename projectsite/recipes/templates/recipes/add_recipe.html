@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Recipe — RecipeBook</title>
+  <title>Add Recipe — Cooking Buddy </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
         <a href="index.html" class="nav-link">Home</a>
         <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
         <a href="favorites.html" class="nav-link">Favorites</a>
-        <a href="my-recipes.html" class="nav-link">My Recipes</a>
+        <a href="my_recipes.html" class="nav-link">My Recipes</a>
       </nav>
       <div class="navbar-actions">
         <div id="nav-auth-buttons" class="flex gap-sm">
@@ -33,7 +33,7 @@
           <button class="user-avatar-btn" id="user-drop-btn"><div class="avatar"></div><span class="user-name"></span><i class="fas fa-chevron-down" style="font-size:.7rem;color:var(--text-light)"></i></button>
           <div class="dropdown-menu" id="user-dropdown-menu">
             <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-            <a href="my-recipes.html" class="dropdown-item"><i class="fas fa-book-open"></i> My Recipes</a>
+            <a href="my_recipes.html" class="dropdown-item"><i class="fas fa-book-open"></i> My Recipes</a>
             <hr class="dropdown-divider">
             <div class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
           </div>
@@ -44,7 +44,7 @@
   </div>
   <div class="mobile-nav" id="mobile-nav">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="my-recipes.html" class="nav-link">My Recipes</a>
+    <a href="my_recipes.html" class="nav-link">My Recipes</a>
     <div style="display:flex;gap:8px;padding:8px 0">
       <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
       <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
@@ -58,7 +58,7 @@
     <nav class="breadcrumb" style="margin-bottom:12px">
       <a href="index.html">Home</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
-      <a href="my-recipes.html">My Recipes</a>
+      <a href="my_recipes.html">My Recipes</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
       <span class="current" id="page-title">Add New Recipe</span>
     </nav>
@@ -302,7 +302,7 @@
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div><div class="footer-brand">Recipe<span>Book</span></div><p class="footer-desc">Share your recipes with the world.</p></div>
+      <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Share your recipes with the world.</p></div>
       <div><div class="footer-col-title">Recipes</div><ul class="footer-links"><li><a href="my-recipes.html">My Recipes</a></li><li><a href="search-results.html">Explore</a></li></ul></div>
       <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">Profile</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
       <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
@@ -313,7 +313,7 @@
 
 <button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
 <div id="toast-container"></div>
-<script src="js/cript.js"></script>
+<script src="script.js"></script>
 <script>
 function saveDraft() {
   showToast('Draft saved! ✓', 'info');
