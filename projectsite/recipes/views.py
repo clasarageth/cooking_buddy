@@ -4,7 +4,7 @@ from .models import Recipe, Review
 from django.contrib.auth.decorators import login_required
 from .forms import ReviewForm
 
-
+@login_required
 def home(request):
 
     query = request.GET.get('q')
