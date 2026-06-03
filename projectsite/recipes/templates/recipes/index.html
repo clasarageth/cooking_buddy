@@ -3,19 +3,610 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Cooking Buddy — Discover Delicious Recipes</title>
+  <title>Cooking Buddy — Discover Delicious Recipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 18px;
+      --brown: #8a0012;
+      --brown-dark: #5e0010;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--red-primary);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--red-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline-white {
+      border: 1px solid rgba(255,255,255,.5);
+      color: #fff;
+      background: transparent;
+    }
+
+    .btn-lg {
+      padding: 1rem 1.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.75rem 1rem;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 1.2rem;
+    }
+
+    .navbar-brand span {
+      color: var(--red-primary);
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--red-primary);
+      background: var(--red-bg, #fff5f5);
+    }
+
+    .navbar-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      max-width: 380px;
+      width: 100%;
+    }
+
+    .navbar-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+    }
+
+    .navbar-search button {
+      border: none;
+      background: var(--red-primary);
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      color: var(--red-primary);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .gap-sm {
+      gap: 8px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--red-dark);
+    }
+
+    .mobile-nav {
+      display: none;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .mobile-nav .nav-link {
+      display: block;
+      padding: 8px 0;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 100px 0 60px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(230,57,70,.92), rgba(138,0,18,.82)),
+        url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+      transform: scale(1.03);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 38%);
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 760px;
+      color: #fff;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(8px);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin: 0 0 16px;
+    }
+
+    .hero .highlight {
+      color: #ffd6d6;
+    }
+
+    .hero p {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.88);
+      margin: 0 auto 26px;
+    }
+
+    .hero-search-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+      justify-content: center;
+    }
+
+    .hero-search-bar input {
+      flex: 1;
+      min-width: 240px;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 18px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-search-bar button {
+      border: none;
+      border-radius: 999px;
+      padding: 16px 22px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+      justify-content: center;
+    }
+
+    .cat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      cursor: pointer;
+      transition: .2s ease;
+      user-select: none;
+    }
+
+    .cat-chip:hover {
+      background: rgba(255,255,255,.24);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .hero-stat-label {
+      color: rgba(255,255,255,.75);
+      font-size: .92rem;
+    }
+
+    .hero-center-image {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .hero-center-link {
+      display: block;
+      max-width: 460px;
+      width: min(90vw, 460px);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 5px solid rgba(255, 255, 255, 0.18);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-center-link:hover {
+      transform: scale(1.02);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .hero-center-link img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 20px;
+    }
+
+    .hero-gallery-section {
+      background: #fff;
+      padding-top: 24px;
+    }
+
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .gallery-item {
+      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, var(--brown-dark), var(--brown));
+      text-align: center;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: #2b2d42;
+      color: #fff;
+      padding: 40px 0 20px;
+    }
+
+    .footer-brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand span {
+      color: var(--red-primary);
+    }
+
+    .footer-desc {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-col-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-links a:hover {
+      color: #ffb3b3;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+    }
+
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--red-primary);
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      z-index: 1100;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3000;
+      display: grid;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #fff;
+      border-left: 4px solid var(--red-primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+      max-width: 320px;
+    }
+
+    @media (max-width: 900px) {
+      .navbar-search,
+      .navbar-nav,
+      .navbar-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+      }
+
+      .hero-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-item img {
+        height: 200px;
+      }
+
+      .hero-center-image {
+        margin-top: 28px;
+      }
+    }
+
+    .navbar.open .mobile-nav {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .hero-center-link {
+        width: 100%;
+      }
+
+      .hero-search-bar input {
+        min-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-
 
 <nav class="navbar">
   <div class="container">
     <div class="navbar-inner">
       <a href="index.html" class="navbar-brand">
         <div class="brand-icon"><i class="fas fa-utensils"></i></div>
-        Cooking <span> Buddy </span>
+        Cooking <span>Buddy</span>
       </a>
 
       <div class="navbar-search">
@@ -28,7 +619,7 @@
         <a href="index.html" class="nav-link active">Home</a>
         <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
         <a href="favorites.html" class="nav-link">Favorites</a>
-        <a href="my_recipes.html" class="nav-link">My Recipes</a>
+        <a href="profile.html" class="nav-link">Profile</a>
       </nav>
 
       <div class="navbar-actions">
@@ -37,19 +628,10 @@
           <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
         </div>
         <div class="user-dropdown" id="user-dropdown" style="display:none">
-          <button class="user-avatar-btn" id="user-drop-btn">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
             <div class="avatar" id="nav-user-avatar"></div>
             <span class="user-name"></span>
-            <i class="fas fa-chevron-down" style="font-size:.7rem;color:var(--text-light)"></i>
           </button>
-          <div class="dropdown-menu" id="user-dropdown-menu">
-            <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-            <a href="my_recipes.html" class="dropdown-item"><i class="fas fa-book-open"></i> My Recipes</a>
-            <a href="favorites.html" class="dropdown-item"><i class="fas fa-heart"></i> Favorites</a>
-            <a href="add_recipe.html" class="dropdown-item"><i class="fas fa-plus"></i> Add Recipe</a>
-            <hr class="dropdown-divider">
-            <div class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
-          </div>
         </div>
         <button class="hamburger" id="hamburger" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -57,6 +639,7 @@
       </div>
     </div>
   </div>
+
   <div class="mobile-nav" id="mobile-nav">
     <div class="navbar-search" style="max-width:100%;margin-bottom:8px">
       <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
@@ -74,11 +657,10 @@
   </div>
 </nav>
 
-<!-- ── HERO ───────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
-  <div class="container" style="position:relative;z-index:2;width:100%">
+  <div class="container">
     <div class="hero-content">
       <div class="hero-eyebrow"><i class="fas fa-fire"></i> Over 500+ Recipes</div>
       <h1>Discover <span class="highlight">Delicious</span><br>Recipes Today</h1>
@@ -111,49 +693,40 @@
           <div class="hero-stat-label">Happy Cooks</div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="hero-image-float">
-    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=80" alt="Food">
-  </div>
-</section>
 
-
-<section class="section">
-  <div class="container">
-    <div class="section-header reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px">
-      <div>
-        <div class="section-title">Featured Recipes</div>
-        <p class="section-subtitle">Hand-picked by our culinary team</p>
+      <div class="hero-center-image">
+        <a href="search_results.html" class="hero-center-link" aria-label="Explore recipes">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=700&auto=format&fit=crop&q=80" alt="Delicious food">
+        </a>
       </div>
-      <a href="search_results.html" class="btn btn-secondary btn-sm">View All <i class="fas fa-arrow-right"></i></a>
-    </div>
-    <div class="recipe-grid" id="featured-grid">
-      <!-- Injected by JS -->
-      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line short"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line short"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line short"></div></div></div>
     </div>
   </div>
 </section>
 
-<!-- ── CATEGORIES ─────────────────────────────────────────── -->
-<section class="section" style="background:var(--white);padding-top:0">
+<section class="section hero-gallery-section">
   <div class="container">
-    <div class="section-header text-center reveal">
-      <div class="section-title">Browse by Category</div>
-      <p class="section-subtitle">Find exactly what you're craving</p>
+    <div class="section-header" style="text-align:center;margin-bottom:24px">
+      <div class="section-title">Popular Picks</div>
+      <p class="section-subtitle">A few dishes people are loving right now</p>
     </div>
-    <div class="category-grid" id="categories-section">
-      <!-- Injected by JS -->
+
+    <div class="hero-gallery">
+      <a href="category.html?cat=Breakfast" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=700&auto=format&fit=crop&q=80" alt="Breakfast">
+      </a>
+      <a href="category.html?cat=Dinner" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700&auto=format&fit=crop&q=80" alt="Dinner">
+      </a>
+      <a href="category.html?cat=Dessert" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=700&auto=format&fit=crop&q=80" alt="Dessert">
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ── CTA BANNER ────────────────────────────────────────── -->
 <section class="section" style="background:linear-gradient(135deg,var(--brown-dark),var(--brown));text-align:center">
   <div class="container">
-    <div class="reveal">
+    <div>
       <div style="font-size:3rem;margin-bottom:16px">👨‍🍳</div>
       <h2 style="color:white;margin-bottom:12px">Share Your Culinary Creations</h2>
       <p style="color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 32px">Join thousands of home chefs sharing their favorite recipes with the world.</p>
@@ -165,24 +738,17 @@
   </div>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────────────── -->
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand">Recipe<span>Book</span></div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
         <p class="footer-desc">Your go-to destination for discovering, saving, and sharing amazing recipes from home cooks and chefs worldwide.</p>
-        <div class="footer-social">
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        </div>
       </div>
       <div>
         <div class="footer-col-title">Explore</div>
         <ul class="footer-links">
-          <li><a href="search-results.html">All Recipes</a></li>
+          <li><a href="search_results.html">All Recipes</a></li>
           <li><a href="category.html?cat=Breakfast">Breakfast</a></li>
           <li><a href="category.html?cat=Dinner">Dinner</a></li>
           <li><a href="category.html?cat=Dessert">Desserts</a></li>
@@ -213,13 +779,82 @@
   </div>
   <div class="footer-bottom">
     <div class="container">
-      &copy; 2026 <a href="index.html"> Cooking Buddy </a>. Made with ❤️ for food lovers everywhere.
+      &copy; 2026 <a href="index.html">Cooking Buddy</a>. Made with ❤️ for food lovers everywhere.
     </div>
   </div>
 </footer>
 
 <button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 <div id="toast-container"></div>
-<script src="js/script.js"></script>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function showToast(message, type = "info") {
+    const wrap = $("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    wrap.appendChild(toast);
+    setTimeout(() => toast.remove(), 2600);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = $("hamburger");
+    const navbar = document.querySelector(".navbar");
+    const mobileNav = $("mobile-nav");
+    const backToTop = $("back-to-top");
+
+    if (hamburger && navbar && mobileNav) {
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.style.display !== "block";
+        mobileNav.style.display = open ? "block" : "none";
+        navbar.classList.toggle("open", open);
+      });
+    }
+
+    const search = (value) => {
+      const q = value.trim();
+      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+    };
+
+    const heroSearchInput = $("hero-search-input");
+    const heroSearchBtn = $("hero-search-btn");
+    if (heroSearchInput && heroSearchBtn) {
+      heroSearchBtn.addEventListener("click", () => search(heroSearchInput.value));
+      heroSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(heroSearchInput.value);
+      });
+    }
+
+    const navSearchInput = $("navbar-search-input");
+    const navSearchBtn = $("navbar-search-btn");
+    if (navSearchInput && navSearchBtn) {
+      navSearchBtn.addEventListener("click", () => search(navSearchInput.value));
+      navSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(navSearchInput.value);
+      });
+    }
+
+    const mobileSearchInput = $("mobile-search-input");
+    if (mobileSearchInput) {
+      mobileSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(mobileSearchInput.value);
+      });
+    }
+
+    if (backToTop) {
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  }
+</script>
 </body>
 </html>

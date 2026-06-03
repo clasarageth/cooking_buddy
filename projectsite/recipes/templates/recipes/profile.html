@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Cooking Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --red-lighter: #ffb3b3;
+      --red-bg: #fff5f5;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: .9rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: var(--white); }
+    .btn-secondary { background: var(--white); color: var(--red-primary); border: 1px solid var(--border); }
+    .btn-sm { padding: .7rem 1rem; font-size: .92rem; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,.96); backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 16px 0;
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; color: var(--red-dark); font-size: 1.2rem;
+    }
+    .navbar-brand span { color: var(--red-primary); }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--red-bg); display: grid; place-items: center;
+      color: var(--red-primary);
+    }
+    .navbar-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-light); border-radius: var(--radius);
+      padding: 8px 14px; max-width: 380px; width: 100%;
+    }
+    .navbar-search input {
+      border: none; outline: none; background: transparent; flex: 1;
+    }
+    .navbar-search button {
+      border: none; background: var(--red-primary); color: var(--white);
+      border-radius: 10px; padding: 8px 12px; cursor: pointer;
+    }
+    .navbar-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-link { color: var(--text-light); font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--red-primary); }
+    .navbar-actions { display: flex; align-items: center; gap: 10px; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+    }
+    .hamburger span {
+      width: 24px; height: 3px; border-radius: 2px; background: var(--red-dark);
+    }
+    .mobile-nav {
+      display: none; padding: 16px 20px; border-top: 1px solid var(--border); background: #fff;
+    }
+    .mobile-nav .nav-link { display: block; padding: 8px 0; }
+
+    .profile-cover {
+      height: 220px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-cover::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: rgba(44,22,8,0.45);
+    }
+
+    .profile-header {
+      background: white;
+      margin-top: -40px;
+      position: relative;
+      z-index: 2;
+      border-radius: 24px 24px 0 0;
+      box-shadow: var(--shadow);
+    }
+    .profile-header-inner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      padding: 24px 0 10px;
+      align-items: start;
+    }
+
+    .profile-avatar-lg {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
+      border: 6px solid #fff;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-avatar-upload-hint {
+      position: absolute; inset: auto 0 0 0;
+      background: rgba(0,0,0,.45);
+      padding: 10px 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: .88rem;
+    }
+
+    .profile-info { padding-top: 12px; }
+    .profile-name { font-size: 2rem; font-weight: 800; margin-bottom: 2px; }
+    .profile-handle { color: var(--text-light); margin-bottom: 10px; }
+    .profile-bio { color: var(--text-dark); max-width: 760px; }
+    .profile-stats {
+      display: flex; gap: 24px; flex-wrap: wrap; margin-top: 18px;
+    }
+    .profile-stat-num { font-size: 1.35rem; font-weight: 800; color: var(--red-primary); }
+    .profile-stat-label { font-size: .9rem; color: var(--text-light); }
+
+    .profile-tabs {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      padding: 18px 0 22px;
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+    }
+    .profile-tab {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--gray-light);
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-light);
+      transition: .2s;
+    }
+    .profile-tab.active {
+      background: var(--red-bg);
+      color: var(--red-dark);
+      border: 1px solid #ffd2d2;
+    }
+
+    .section { padding: 40px 0 80px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .recipe-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: .25s ease;
+    }
+    .recipe-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .recipe-thumb { aspect-ratio: 16 / 11; overflow: hidden; }
+    .recipe-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .recipe-body { padding: 14px; }
+    .recipe-title { margin-bottom: 6px; font-size: 1.05rem; }
+    .recipe-meta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      color: var(--text-light); font-size: .92rem; margin-bottom: 12px;
+    }
+
+    .form-section {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .edit-modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+      padding: 20px;
+    }
+    .edit-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .edit-modal {
+      background: white; border-radius: 18px; padding: 28px;
+      width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);
+      transform: scale(.96); transition: transform .25s;
+    }
+    .edit-modal-backdrop.open .edit-modal { transform: scale(1); }
+
+    .form-group { display: grid; gap: 6px; margin-bottom: 16px; }
+    .form-label { font-weight: 600; }
+    .input-group { position: relative; }
+    .input-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-light);
+    }
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .95rem 1rem;
+      background: #fff;
+      font: inherit;
+      outline: none;
+      padding-left: 42px;
+    }
+    textarea.form-control { min-height: 110px; resize: vertical; padding-left: 1rem; }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    footer {
+      background: #2b2d42;
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 40px;
+    }
+    .footer-brand { font-size: 1.35rem; font-weight: 800; margin-bottom: 10px; }
+    .footer-brand span { color: var(--red-primary); }
+    .footer-desc { color: rgba(255,255,255,.7); }
+    .footer-col-title { font-weight: 700; margin-bottom: 12px; }
+    .footer-links { list-style: none; display: grid; gap: 8px; }
+    .footer-links a { color: rgba(255,255,255,.7); }
+    .footer-links a:hover { color: var(--red-light); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+    }
+
+    #back-to-top {
+      position: fixed; bottom: 28px; right: 28px;
+      width: 48px; height: 48px; border: none; border-radius: 50%;
+      background: var(--red-primary); color: white; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-lg); z-index: 1100;
+    }
+
+    #toast-container {
+      position: fixed; top: 20px; right: 20px; z-index: 3000;
+      display: grid; gap: 10px;
+    }
+    .toast {
+      background: #fff; border-left: 4px solid var(--red-primary);
+      color: var(--text-dark); box-shadow: var(--shadow-lg);
+      border-radius: 12px; padding: 12px 14px; min-width: 240px;
+      animation: slideIn .25s ease;
+    }
+    .toast.success { border-left-color: #16a34a; }
+    .toast.error { border-left-color: #dc2626; }
+
+    @keyframes slideIn {
+      from { transform: translateX(14px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .navbar-search, .navbar-nav, .navbar-actions { display: none; }
+      .hamburger { display: flex; }
+      .navbar-inner { flex-wrap: wrap; }
+      .profile-header-inner { grid-template-columns: 1fr; justify-items: start; }
+      .profile-avatar-lg { width: 120px; height: 120px; }
+    }
+
+    .navbar.open .mobile-nav { display: block; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>Cooking<span>Buddy</span>
+      </a>
+
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
+      </div>
+
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
+            <i class="fas fa-user"></i> <span class="user-name"></span>
+          </button>
+        </div>
+        <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <a href="my_recipes.html" class="nav-link">My Recipes</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="profile-cover" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&auto=format&fit=crop&q=80')">
+  <div style="position:absolute;inset:0;background:rgba(44,22,8,0.45);z-index:1"></div>
+</div>
+
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-header-inner">
+      <div class="profile-avatar-lg" id="profile-avatar" title="Change avatar">
+        <div class="profile-avatar-upload-hint"><i class="fas fa-camera"></i><span>Change</span></div>
+      </div>
+      <input type="file" id="avatar-upload" accept="image/*" style="display:none">
+
+      <div class="profile-info">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="profile-name" id="profile-name">Chef Marco</div>
+            <div class="profile-handle" id="profile-handle">@chef-marco</div>
+            <p class="profile-bio" id="profile-bio">Passionate home cook sharing family recipes from around the world.</p>
+
+            <div class="profile-stats">
+              <div><div class="profile-stat-num" id="recipes-stat">0</div><div class="profile-stat-label">Recipes</div></div>
+              <div><div class="profile-stat-num" id="fav-stat">0</div><div class="profile-stat-label">Favorites</div></div>
+              <div><div class="profile-stat-num" id="views-stat">248</div><div class="profile-stat-label">Views</div></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" id="edit-profile-btn" type="button">
+              <i class="fas fa-edit"></i> Edit Profile
+            </button>
+            <a href="add_recipe.html" class="btn btn-secondary btn-sm">
+              <i class="fas fa-plus"></i> Add Recipe
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-tabs">
+      <div class="profile-tab active" data-tab="tab-recipes"><i class="fas fa-book-open" style="margin-right:6px"></i> My Recipes</div>
+      <div class="profile-tab" data-tab="tab-favorites"><i class="fas fa-heart" style="margin-right:6px"></i> Favorites</div>
+      <div class="profile-tab" data-tab="tab-about"><i class="fas fa-info-circle" style="margin-right:6px"></i> About</div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="tab-panel active" id="tab-recipes">
+      <div class="recipe-grid" id="profile-my-recipes"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-favorites">
+      <div class="recipe-grid" id="profile-favorites"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-about">
+      <div style="max-width:600px">
+        <div class="form-section">
+          <h3 style="margin-bottom:20px">About Me</h3>
+          <p id="about-bio" style="color:var(--text-dark);line-height:1.7;margin-bottom:24px">
+            Passionate home cook sharing family recipes from around the world. I specialize in Italian and Mediterranean cuisine.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div><div style="font-size:.78rem;color:var(--text-light);margin-bottom:4px">MEMBER SINCE</div><div style="font-weight:600">January 2024</div></div>
+            <div><div style="font-size:.78rem;color:var(--text-light);margin-bottom:4px">LOCATION</div><div style="font-weight:600">Rome, Italy 🇮🇹</div></div>
+            <div><div style="font-size:.78rem;color:var(--text-light);margin-bottom:4px">SPECIALTY</div><div style="font-weight:600">Italian Cuisine</div></div>
+            <div><div style="font-size:.78rem;color:var(--text-light);margin-bottom:4px">EXPERIENCE</div><div style="font-weight:600">Home Cook — 10 years</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="edit-modal-backdrop" id="edit-modal">
+  <div class="edit-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <h3 style="font-size:1.3rem">Edit Profile</h3>
+      <button id="close-edit-modal" style="background:none;border:none;font-size:1.2rem;color:var(--text-light);cursor:pointer" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="edit-profile-form">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="input-group">
+          <i class="fas fa-user input-icon"></i>
+          <input type="text" class="form-control" id="edit-username" placeholder="Your username">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <div class="input-group">
+          <i class="fas fa-id-card input-icon"></i>
+          <input type="text" class="form-control" id="edit-fullname" placeholder="Your full name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea class="form-control" id="edit-bio" rows="3" placeholder="Tell us about yourself…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <div class="input-group">
+          <i class="fas fa-map-marker-alt input-icon"></i>
+          <input type="text" class="form-control" id="edit-location" placeholder="City, Country">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+        <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Your cooking community.</p></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search-results.html">All Recipes</a></li><li><a href="add_recipe.html">Add Recipe</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="my-recipes.html">My Recipes</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>.</div></div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function showToast(message, type = "info") {
+    const wrap = $("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    wrap.appendChild(toast);
+    setTimeout(() => toast.remove(), 2600);
+  }
+
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; }
+  }
+
+  function setUser(user) {
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  function getFavs() {
+    try { return JSON.parse(localStorage.getItem("favorites")) || []; } catch { return []; }
+  }
+
+  function getMyRecipes() {
+    try { return JSON.parse(localStorage.getItem("myRecipes")) || []; } catch { return []; }
+  }
+
+  function openEditModal() {
+    const user = getUser();
+    $("edit-username").value = user.username || "";
+    $("edit-fullname").value = user.fullName || user.name || "";
+    $("edit-bio").value = user.bio || "";
+    $("edit-location").value = user.location || "";
+    $("edit-modal").classList.add("open");
+  }
+
+  function closeEditModal() {
+    $("edit-modal").classList.remove("open");
+  }
+
+  function renderCards() {
+    const myRecipes = getMyRecipes();
+    const favs = getFavs();
+
+    $("recipes-stat").textContent = myRecipes.length;
+    $("fav-stat").textContent = favs.length;
+
+    const recipeGrid = $("profile-my-recipes");
+    const favGrid = $("profile-favorites");
+
+    recipeGrid.innerHTML = myRecipes.length ? myRecipes.map(r => `
+      <article class="recipe-card">
+        <div class="recipe-thumb"><img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Recipe'}"></div>
+        <div class="recipe-body">
+          <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
+          <div class="recipe-meta">
+            <span><i class="fa-regular fa-clock"></i> ${r.cookingTime || r.time || '30'} min</span>
+            <span><i class="fa-solid fa-utensils"></i> ${r.category || 'Recipe'}</span>
+          </div>
+          <a class="btn btn-primary btn-sm" href="recipe.html?id=${r.id || ''}">View</a>
+        </div>
+      </article>
+    `).join("") : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No recipes yet.</div>`;
+
+    favGrid.innerHTML = favs.length ? favs.map(r => `
+      <article class="recipe-card">
+        <div class="recipe-thumb"><img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Favorite'}"></div>
+        <div class="recipe-body">
+          <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
+          <div class="recipe-meta">
+            <span><i class="fa-regular fa-heart"></i> Favorite</span>
+          </div>
+          <a class="btn btn-primary btn-sm" href="recipe.html?id=${r.id || ''}">View</a>
+        </div>
+      </article>
+    `).join("") : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No favorites yet.</div>`;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = $("hamburger");
+    const navbar = document.querySelector(".navbar");
+    const mobileNav = $("mobile-nav");
+    const backToTop = $("back-to-top");
+    const avatar = $("profile-avatar");
+    const avatarUpload = $("avatar-upload");
+    const editBtn = $("edit-profile-btn");
+    const editModal = $("edit-modal");
+    const closeBtn = $("close-edit-modal");
+    const cancelBtn = $("cancel-edit-btn");
+    const form = $("edit-profile-form");
+    const userDropdown = $("user-dropdown");
+
+    const user = getUser();
+    $("profile-name").textContent = user.fullName || user.name || "Chef Hazel";
+    $("profile-handle").textContent = user.username ? `@${user.username}` : "@chef-hazel";
+    $("profile-bio").textContent = user.bio || "Passionate home cook sharing family recipes from around the world.";
+    $("about-bio").textContent = user.bio || "Passionate home cook sharing family recipes from around the world.";
+    if (user.avatar) avatar.style.backgroundImage = `url(${user.avatar})`;
+
+    if (hamburger && navbar && mobileNav) {
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.style.display !== "block";
+        mobileNav.style.display = open ? "block" : "none";
+        navbar.classList.toggle("open", open);
+      });
+    }
+
+    const search = (value) => {
+      const q = value.trim();
+      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+    };
+
+    const searchInput = $("navbar-search-input");
+    const searchBtn = $("navbar-search-btn");
+    if (searchInput && searchBtn) {
+      searchBtn.addEventListener("click", () => search(searchInput.value));
+      searchInput.addEventListener("keydown", e => { if (e.key === "Enter") search(searchInput.value); });
+    }
+
+    if (backToTop) {
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+
+    if (editBtn) editBtn.addEventListener("click", openEditModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeEditModal);
+    if (cancelBtn) cancelBtn.addEventListener("click", closeEditModal);
+    if (editModal) {
+      editModal.addEventListener("click", (e) => {
+        if (e.target === editModal) closeEditModal();
+      });
+    }
+
+    if (avatar && avatarUpload) {
+      avatar.addEventListener("click", () => avatarUpload.click());
+      avatarUpload.addEventListener("change", () => {
+        const file = avatarUpload.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          avatar.style.backgroundImage = `url(${reader.result})`;
+          const u = getUser();
+          u.avatar = reader.result;
+          setUser(u);
+          showToast("Avatar updated.", "success");
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const u = getUser();
+        u.username = $("edit-username").value.trim();
+        u.fullName = $("edit-fullname").value.trim();
+        u.bio = $("edit-bio").value.trim();
+        u.location = $("edit-location").value.trim();
+
+        if (!u.username && !u.fullName) {
+          showToast("Please enter a username or name.", "error");
+          return;
+        }
+
+        setUser(u);
+        $("profile-name").textContent = u.fullName || u.name || "Chef Marco";
+        $("profile-handle").textContent = u.username ? `@${u.username}` : "@chef-marco";
+        $("profile-bio").textContent = u.bio || "";
+        $("about-bio").textContent = u.bio || "";
+        closeEditModal();
+        showToast("Profile updated successfully.", "success");
+      });
+    }
+
+    document.querySelectorAll(".profile-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".profile-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        tab.classList.add("active");
+        const target = $(tab.dataset.tab);
+        if (target) target.classList.add("active");
+      });
+    });
+
+    renderCards();
+  });
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  }
+</script>
+</body>
+</html>
