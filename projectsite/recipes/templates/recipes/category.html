@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category — RecipeBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand"><div class="brand-icon"><i class="fas fa-utensils"></i></div>Recipe<span>Book</span></a>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn"><i class="fas fa-arrow-right"></i></button>
+      </div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link active">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="my-recipes.html" class="nav-link">My Recipes</a>
+      </nav>
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="user-avatar-btn" id="user-drop-btn"><div class="avatar"></div><span class="user-name"></span></button>
+          <div class="dropdown-menu" id="user-dropdown-menu">
+            <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+            <hr class="dropdown-divider">
+            <div class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+          </div>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Category Hero -->
+<div class="cat-hero">
+  <img id="cat-hero-img" src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1200&auto=format&fit=crop&q=80" alt="Category">
+  <div class="cat-hero-overlay"></div>
+  <div class="cat-hero-content">
+    <div class="container">
+      <h1 class="cat-title">Category</h1>
+      <p>Explore all recipes in this category — <span id="cat-count">0 recipes</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- Breadcrumb + Filter -->
+<section class="section" style="padding-top:32px">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:8px">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator"><i class="fas fa-chevron-right"></i></span>
+        <a href="category.html?cat=Dinner">Categories</a>
+        <span class="separator"><i class="fas fa-chevron-right"></i></span>
+        <span class="current cat-title" id="breadcrumb-cat">Category</span>
+      </nav>
+      <select class="filter-select" onchange="sortCategoryRecipes(this.value)">
+        <option value="default">Sort: Default</option>
+        <option value="rating">Highest Rated</option>
+        <option value="time">Quickest First</option>
+        <option value="name">A–Z</option>
+      </select>
+    </div>
+
+    <!-- Sub-category chips -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 32px">
+      <button class="btn btn-primary btn-sm cat-title-chip">All</button>
+      <button class="btn btn-secondary btn-sm" onclick="filterByTag('vegetarian')">Vegetarian</button>
+      <button class="btn btn-secondary btn-sm" onclick="filterByTag('quick')">Quick</button>
+      <button class="btn btn-secondary btn-sm" onclick="filterByTag('family')">Family</button>
+      <button class="btn btn-secondary btn-sm" onclick="filterByTag('healthy')">Healthy</button>
+    </div>
+
+    <div class="recipe-grid" id="category-grid"></div>
+
+    <div class="no-results" id="cat-no-results" style="display:none">
+      <div class="no-results-icon">🍽️</div>
+      <h3>No recipes in this category yet</h3>
+      <p>Be the first to add one!</p>
+      <a href="add-recipe.html" class="btn btn-primary" style="margin-top:16px">Add Recipe</a>
+    </div>
+  </div>
+</section>
+
+<!-- All Categories -->
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <div class="section-title">Browse Other Categories</div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href="category.html?cat=Breakfast" class="btn btn-secondary">🍳 Breakfast</a>
+      <a href="category.html?cat=Lunch" class="btn btn-secondary">🥗 Lunch</a>
+      <a href="category.html?cat=Dinner" class="btn btn-secondary">🍽️ Dinner</a>
+      <a href="category.html?cat=Dessert" class="btn btn-secondary">🍰 Dessert</a>
+      <a href="category.html?cat=Snacks" class="btn btn-secondary">🍿 Snacks</a>
+      <a href="category.html?cat=Drinks" class="btn btn-secondary">🥤 Drinks</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">Recipe<span>Book</span></div><p class="footer-desc">Discover amazing recipes from every category.</p></div>
+      <div><div class="footer-col-title">Categories</div><ul class="footer-links"><li><a href="category.html?cat=Breakfast">Breakfast</a></li><li><a href="category.html?cat=Lunch">Lunch</a></li><li><a href="category.html?cat=Dinner">Dinner</a></li><li><a href="category.html?cat=Dessert">Dessert</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li><li><a href="my-recipes.html">My Recipes</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">RecipeBook</a>. All rights reserved.</div></div>
+</footer>
+
+<button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+<script src="script.js"></script>
+<script>
+function sortCategoryRecipes(by) { initCategoryPage(); }
+function filterByTag(tag) {
+  const params = new URLSearchParams(window.location.search);
+  window.location.href = `search-results.html?q=${tag}&cat=${params.get('cat') || ''}`;
+}
+</script>
+</body>
+</html>

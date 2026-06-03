@@ -1,107 +1,256 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ recipe.title }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Detail — RecipeBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <a href="{% url 'home' %}">
-        ← Back to Home
-    </a>
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>
+        Recipe<span>Book</span>
+      </a>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn"><i class="fas fa-arrow-right"></i></button>
+      </div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="my-recipes.html" class="nav-link">My Recipes</a>
+      </nav>
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="user-avatar-btn" id="user-drop-btn">
+            <div class="avatar"></div>
+            <span class="user-name"></span>
+            <i class="fas fa-chevron-down" style="font-size:.7rem;color:var(--text-light)"></i>
+          </button>
+          <div class="dropdown-menu" id="user-dropdown-menu">
+            <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+            <a href="my-recipes.html" class="dropdown-item"><i class="fas fa-book-open"></i> My Recipes</a>
+            <a href="favorites.html" class="dropdown-item"><i class="fas fa-heart"></i> Favorites</a>
+            <hr class="dropdown-divider">
+            <div class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+          </div>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <a href="my-recipes.html" class="nav-link">My Recipes</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
 
-    <h1>{{ recipe.title }}</h1>
+<!-- Recipe Hero -->
+<div class="recipe-detail-hero">
+  <img id="recipe-hero-img" src="" alt="Recipe">
+  <div class="recipe-detail-hero-overlay"></div>
+  <div class="recipe-detail-hero-content">
+    <div class="container">
+      <nav class="breadcrumb" style="margin-bottom:12px">
+        <a href="index.html">Home</a>
+        <span class="separator"><i class="fas fa-chevron-right"></i></span>
+        <a href="search-results.html">Recipes</a>
+        <span class="separator"><i class="fas fa-chevron-right"></i></span>
+        <span class="current" id="recipe-title">Loading…</span>
+      </nav>
+      <h1 id="recipe-title" style="color:white;margin-bottom:16px">Recipe Title</h1>
+      <div id="recipe-meta-bar" class="recipe-meta-bar"></div>
+    </div>
+  </div>
+</div>
 
-    {% if recipe.image %}
-        <img src="{{ recipe.image.url }}" width="500">
-    {% endif %}
+<!-- Recipe Body -->
+<div class="container">
+  <div class="recipe-body">
+    <!-- Main Content -->
+    <div class="recipe-main">
+      <p class="recipe-description" id="recipe-description">Loading…</p>
 
-     <p>
-        <strong>Uploaded By:</strong>
-        {{ recipe.author.username }}
-    </p>
+      <!-- Ingredients -->
+      <div style="margin-bottom:48px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <h2 style="font-size:1.5rem">Ingredients</h2>
+          <span style="font-size:1.5rem">🧂</span>
+        </div>
+        <ul class="ingredient-list" id="ingredient-list"></ul>
+      </div>
 
-    <p>
-        <strong>Category:</strong>
-        {{ recipe.category }}
-    </p>
+      <!-- Instructions -->
+      <div style="margin-bottom:48px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <h2 style="font-size:1.5rem">Instructions</h2>
+          <span style="font-size:1.5rem">👨‍🍳</span>
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin-bottom:16px">Click any step to highlight it as you cook</p>
+        <ul class="instructions-list" id="instruction-list"></ul>
+      </div>
 
-    <p>
-        <strong>Cooking Time:</strong>
-        {{ recipe.cooking_time }} minutes
-    </p>
+      <!-- Tags -->
+      <div style="margin-bottom:48px">
+        <h4 style="margin-bottom:12px;font-family:var(--font-body)">Tags</h4>
+        <div class="tag-list" id="recipe-tags"></div>
+      </div>
 
-    <p>
-        <strong>Servings:</strong>
-        {{ recipe.servings }}
-    </p>
+      <!-- Author -->
+      <div class="recipe-sidebar-card" style="margin-bottom:40px">
+        <h4 style="margin-bottom:16px;font-family:var(--font-body)">Recipe Author</h4>
+        <div id="recipe-author-card"></div>
+      </div>
 
-    <h2>Description</h2>
-    <p>{{ recipe.description }}</p>
+      <!-- Reviews -->
+      <div>
+        <h2 style="margin-bottom:24px">Reviews & Ratings</h2>
+        <div id="reviews-list"></div>
 
-    <h2>Ingredients</h2>
-    <p>{{ recipe.ingredients|linebreaks }}</p>
+        <!-- Write Review -->
+        <div class="review-form-box">
+          <h4 style="margin-bottom:4px;font-family:var(--font-body)">Write a Review</h4>
+          <p style="font-size:.85rem;margin-bottom:20px">Share your experience with this recipe</p>
+          <form id="review-form">
+            <div class="form-group">
+              <label class="form-label">Your Rating</label>
+              <div class="star-rating-input">
+                <i class="far fa-star" data-star="1"></i>
+                <i class="far fa-star" data-star="2"></i>
+                <i class="far fa-star" data-star="3"></i>
+                <i class="far fa-star" data-star="4"></i>
+                <i class="far fa-star" data-star="5"></i>
+              </div>
+              <input type="hidden" id="rating-value" value="5">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="review-text">Your Review</label>
+              <textarea class="form-control" id="review-text" rows="4" placeholder="How did this recipe turn out for you?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Review <i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
 
-    <h2>Instructions</h2>
-    <p>{{ recipe.instructions|linebreaks }}</p>
+    <!-- Sidebar -->
+    <aside class="recipe-sidebar">
+      <div class="recipe-sidebar-card">
+        <button class="sidebar-action-btn" id="sidebar-fav-btn">
+          <i class="far fa-heart"></i>
+          <span>Save to Favorites</span>
+        </button>
+        <button class="sidebar-action-btn" onclick="window.print()">
+          <i class="fas fa-print"></i> Print Recipe
+        </button>
+        <button class="sidebar-action-btn" onclick="navigator.share ? navigator.share({title:document.title,url:window.location.href}) : showToast('Link copied!','info')">
+          <i class="fas fa-share-alt"></i> Share Recipe
+        </button>
+      </div>
 
-   <hr>
+      <div class="recipe-sidebar-card">
+        <h4 style="margin-bottom:16px;font-family:var(--font-body)">Quick Info</h4>
+        <div id="sidebar-quick-info"></div>
+      </div>
+    </aside>
+  </div>
+</div>
 
-<h2>Ratings & Reviews</h2>
+<!-- Related Recipes -->
+<section class="section" style="background:var(--cream-dark)">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">You Might Also Like</div>
+    </div>
+    <div class="recipe-grid" id="related-grid"></div>
+  </div>
+</section>
 
-{% if average_rating %}
-    <p>
-        <strong>Average Rating:</strong>
-        {{ average_rating|floatformat:1 }} ⭐
-    </p>
-{% else %}
-    <p>No ratings yet.</p>
-{% endif %}
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Recipe<span>Book</span></div>
+        <p class="footer-desc">Discover, save, and share amazing recipes.</p>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <ul class="footer-links">
+          <li><a href="search-results.html">All Recipes</a></li>
+          <li><a href="category.html?cat=Dinner">Dinner</a></li>
+          <li><a href="category.html?cat=Dessert">Desserts</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Account</div>
+        <ul class="footer-links">
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-recipes.html">My Recipes</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">&copy; 2026 <a href="index.html">RecipeBook</a>. All rights reserved.</div>
+  </div>
+</footer>
 
-{% if user.is_authenticated and user != recipe.author %}
-    <a href="{% url 'add_review' recipe.id %}">
-        Rate This Recipe
-    </a>
-{% endif %}
-
-{% for review in recipe.reviews.all %}
-
-    <hr>
-
-    <p>
-        <strong>{{ review.user.username }}</strong>
-    </p>
-
-    <p>
-        Rating:
-        {% for i in "12345" %}
-            {% if forloop.counter <= review.rating %}
-                ⭐
-            {% endif %}
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ review.comment }}
-    </p>
-
-{% empty %}
-
-    <p>No reviews yet.</p>
-
-{% endfor %}
-
-<hr>
-
-    {% if user == recipe.author %}
-
-    <a href="{% url 'update_recipe' recipe.id %}">
-        Edit Recipe
-    </a>
-
-    <a href="{% url 'delete_recipe' recipe.id %}">
-        Delete Recipe
-    </a>
-
-    {% endif %}
+<button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+<script src="script.js"></script>
+<script>
+  // Populate sidebar quick info after recipe loads
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id')) || 1;
+      const recipe = RECIPES.find(r => r.id === id) || RECIPES[0];
+      const qinfo = document.getElementById('sidebar-quick-info');
+      if (qinfo && recipe) {
+        qinfo.innerHTML = [
+          ['Clock', 'Prep + Cook', `${recipe.cooking_time} min`],
+          ['Users', 'Servings', recipe.servings],
+          ['signal', 'Difficulty', recipe.difficulty],
+          ['star', 'Rating', `${recipe.rating}/5`]
+        ].map(([icon, label, val]) => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray-200)">
+            <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-${icon}" style="color:var(--orange);margin-right:6px"></i>${label}</span>
+            <span style="font-size:.9rem;font-weight:600;color:var(--text-main)">${val}</span>
+          </div>`).join('');
+      }
+      initStarRating();
+    }, 50);
+  });
+</script>
 </body>
 </html>
