@@ -44,5 +44,16 @@
     <h2>Instructions</h2>
     <p>{{ recipe.instructions|linebreaks }}</p>
 
+    {% if user == recipe.author %}
+
+    <a href="{% url 'update_recipe' recipe.id %}">
+        Edit Recipe
+    </a>
+
+    <a href="{% url 'delete_recipe' recipe.id %}">
+        Delete Recipe
+    </a>
+
+    {% endif %}
 </body>
 </html>

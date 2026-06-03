@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from .models import Recipe
 from django.contrib.auth.decorators import login_required
@@ -59,7 +59,7 @@ def create_recipe(request):
 
 def recipe_detail(request, pk):
 
-    recipe = Recipe.objects.get(id=pk)
+    recipe =get_object_or_404(Recipe, id=pk)
 
     context = {
         'recipe': recipe
@@ -74,7 +74,11 @@ def recipe_detail(request, pk):
 @login_required
 def update_recipe(request, pk):
 
-    recipe = Recipe.objects.get(id=pk)
+    recipe =get_object_or_404(Recipe, id=pk)
+
+    # Only the uploader can edit
+    if recipe.author != request.user:
+        return redirect('home')
 
     form = RecipeForm(instance=recipe)
 
@@ -89,7 +93,7 @@ def update_recipe(request, pk):
         if form.is_valid():
             form.save()
 
-            return redirect('home')
+            return redirect('recipe_detail', pk=recipe.id)
 
     context = {
         'form': form
@@ -104,9 +108,14 @@ def update_recipe(request, pk):
 @login_required
 def delete_recipe(request, pk):
 
-    recipe = Recipe.objects.get(id=pk)
+    recipe =get_object_or_404(Recipe, id=pk)
+
+    # Only the uploader can delete
+    if recipe.author != request.user:
+        return redirect('home')
 
     if request.method == 'POST':
+
         recipe.delete()
 
         return redirect('home')
