@@ -26,6 +26,7 @@
       --radius-lg: 18px;
     }
 
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -35,8 +36,10 @@
       line-height: 1.6;
     }
 
+
     a { color: inherit; text-decoration: none; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
 
     .btn {
       display: inline-flex;
@@ -54,6 +57,7 @@
     .btn-primary { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: var(--white); }
     .btn-secondary { background: var(--white); color: var(--red-primary); border: 1px solid var(--border); }
     .btn-sm { padding: .7rem 1rem; font-size: .92rem; }
+
 
     .navbar {
       position: sticky; top: 0; z-index: 1000;
@@ -103,6 +107,7 @@
     }
     .mobile-nav .nav-link { display: block; padding: 8px 0; }
 
+
     .profile-cover {
       height: 220px;
       position: relative;
@@ -114,6 +119,7 @@
       position: absolute; inset: 0;
       background: rgba(44,22,8,0.45);
     }
+
 
     .profile-header {
       background: white;
@@ -130,6 +136,7 @@
       padding: 24px 0 10px;
       align-items: start;
     }
+
 
     .profile-avatar-lg {
       width: 140px; height: 140px;
@@ -156,6 +163,7 @@
       font-size: .88rem;
     }
 
+
     .profile-info { padding-top: 12px; }
     .profile-name { font-size: 2rem; font-weight: 800; margin-bottom: 2px; }
     .profile-handle { color: var(--text-light); margin-bottom: 10px; }
@@ -165,6 +173,7 @@
     }
     .profile-stat-num { font-size: 1.35rem; font-weight: 800; color: var(--red-primary); }
     .profile-stat-label { font-size: .9rem; color: var(--text-light); }
+
 
     .profile-tabs {
       display: flex; gap: 10px; flex-wrap: wrap;
@@ -187,9 +196,11 @@
       border: 1px solid #ffd2d2;
     }
 
+
     .section { padding: 40px 0 80px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
+
 
     .recipe-grid {
       display: grid;
@@ -213,6 +224,7 @@
       color: var(--text-light); font-size: .92rem; margin-bottom: 12px;
     }
 
+
     .form-section {
       background: white;
       border: 1px solid var(--border);
@@ -220,6 +232,7 @@
       padding: 28px;
       box-shadow: var(--shadow);
     }
+
 
     .edit-modal-backdrop,
     .recipe-modal-backdrop {
@@ -245,6 +258,7 @@
       transform: scale(1);
     }
 
+
     .recipe-detail-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -268,6 +282,7 @@
       padding-left: 18px;
     }
 
+
     .form-group { display: grid; gap: 6px; margin-bottom: 16px; }
     .form-label { font-weight: 600; }
     .input-group { position: relative; }
@@ -286,6 +301,7 @@
       padding-left: 42px;
     }
     textarea.form-control { min-height: 110px; resize: vertical; padding-left: 1rem; }
+
 
     .footer-grid {
       display: grid;
@@ -313,6 +329,7 @@
       color: rgba(255,255,255,.75);
     }
 
+
     #back-to-top {
       position: fixed; bottom: 28px; right: 28px;
       width: 48px; height: 48px; border: none; border-radius: 50%;
@@ -320,6 +337,7 @@
       display: none; align-items: center; justify-content: center;
       box-shadow: var(--shadow-lg); z-index: 1100;
     }
+
 
     #toast-container {
       position: fixed; top: 20px; right: 20px; z-index: 3000;
@@ -333,6 +351,7 @@
     .toast.success { border-left-color: #16a34a; }
     .toast.error { border-left-color: #dc2626; }
 
+
     @media (max-width: 900px) {
       .navbar-search, .navbar-nav, .navbar-actions { display: none; }
       .hamburger { display: flex; }
@@ -342,10 +361,12 @@
       .recipe-detail-grid { grid-template-columns: 1fr; }
     }
 
+
     .navbar.open .mobile-nav { display: block; }
   </style>
 </head>
 <body>
+
 
 <nav class="navbar">
   <div class="container">
@@ -369,8 +390,9 @@
 
       <div class="navbar-actions">
         <div style="display:flex;gap:8px">
-          <a href="login.html" class="btn btn-secondary btn-sm">Logout</a>
-         
+          <button type="button" class="btn btn-secondary btn-sm" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
         </div>
         <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
       </div>
@@ -382,15 +404,18 @@
     <a href="favorites.html" class="nav-link">Favorites</a>
     <a href="profile.html" class="nav-link active">Profile</a>
     <div style="display:flex;gap:8px;padding:8px 0">
-      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
-      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="logout()" style="flex:1">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
     </div>
   </div>
 </nav>
 
+
 <div class="profile-cover" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&auto=format&fit=crop&q=80')">
   <div style="position:absolute;inset:0;background:rgba(44,22,8,0.45);z-index:1"></div>
 </div>
+
 
 <div class="profile-header">
   <div class="container">
@@ -400,6 +425,7 @@
       </div>
       <input type="file" id="avatar-upload" accept="image/*" style="display:none">
 
+
       <div class="profile-info">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
           <div>
@@ -407,12 +433,14 @@
             <div class="profile-handle" id="profile-handle">@chef-marco</div>
             <p class="profile-bio" id="profile-bio">Passionate home cook sharing family recipes from around the world.</p>
 
+
             <div class="profile-stats">
               <div><div class="profile-stat-num" id="recipes-stat">0</div><div class="profile-stat-label">Recipes</div></div>
               <div><div class="profile-stat-num" id="fav-stat">0</div><div class="profile-stat-label">Favorites</div></div>
               <div><div class="profile-stat-num" id="views-stat">248</div><div class="profile-stat-label">Views</div></div>
             </div>
           </div>
+
 
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn btn-primary btn-sm" id="edit-profile-btn" type="button">
@@ -426,6 +454,7 @@
       </div>
     </div>
 
+
     <div class="profile-tabs">
       <div class="profile-tab active" data-tab="tab-recipes"><i class="fas fa-book-open" style="margin-right:6px"></i> My Recipes</div>
       <div class="profile-tab" data-tab="tab-favorites"><i class="fas fa-heart" style="margin-right:6px"></i> Favorites</div>
@@ -434,15 +463,18 @@
   </div>
 </div>
 
+
 <section class="section">
   <div class="container">
     <div class="tab-panel active" id="tab-recipes">
       <div class="recipe-grid" id="profile-my-recipes"></div>
     </div>
 
+
     <div class="tab-panel" id="tab-favorites">
       <div class="recipe-grid" id="profile-favorites"></div>
     </div>
+
 
     <div class="tab-panel" id="tab-about">
       <div style="max-width:600px">
@@ -462,6 +494,7 @@
     </div>
   </div>
 </section>
+
 
 <div class="edit-modal-backdrop" id="edit-modal">
   <div class="edit-modal">
@@ -503,6 +536,7 @@
   </div>
 </div>
 
+
 <div class="recipe-modal-backdrop" id="recipe-modal">
   <div class="recipe-modal">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px">
@@ -539,11 +573,12 @@
   </div>
 </div>
 
+
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Your cooking community.</p></div>
-      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search_results.html">All Recipes</a></li><li><a href="add_recipe.html">Add Recipe</a></li></ul></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search-results.html">All Recipes</a></li><li><a href="add_recipe.html">Add Recipe</a></li></ul></div>
       <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">My Recipes</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
       <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
     </div>
@@ -551,11 +586,14 @@
   <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>.</div></div>
 </footer>
 
+
 <button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 <div id="toast-container"></div>
 
+
 <script>
 const $ = (id) => document.getElementById(id);
+
 
 function showToast(message, type = 'info') {
   const wrap = $('toast-container');
@@ -565,6 +603,7 @@ function showToast(message, type = 'info') {
   wrap.appendChild(toast);
   setTimeout(() => toast.remove(), 2600);
 }
+
 
 function getUser() {
   try { return JSON.parse(localStorage.getItem('user')) || {}; } catch { return {}; }
@@ -585,11 +624,22 @@ function setMyRecipes(arr) {
   localStorage.setItem('myRecipes', JSON.stringify(arr));
 }
 
+
 function normalizeList(value) {
   if (Array.isArray(value)) return value;
   if (typeof value === 'string') return value.split('\n').map(s => s.trim()).filter(Boolean);
   return [];
 }
+
+
+function logout() {
+  localStorage.removeItem('user');
+  localStorage.removeItem('favorites');
+  localStorage.removeItem('myRecipes');
+  window.open('login.html', '_blank');
+  window.location.href = 'index.html';
+}
+
 
 function openEditModal() {
   const user = getUser();
@@ -600,9 +650,11 @@ function openEditModal() {
   $('edit-modal').classList.add('open');
 }
 
+
 function closeEditModal() {
   $('edit-modal').classList.remove('open');
 }
+
 
 function openRecipeModal(recipe) {
   $('modal-title').textContent = recipe.title || 'Untitled Recipe';
@@ -613,47 +665,59 @@ function openRecipeModal(recipe) {
   $('modal-servings').textContent = recipe.servings || '4';
   $('modal-description').textContent = recipe.description || 'No description available.';
 
+
   const ingredients = normalizeList(recipe.ingredients);
   const steps = normalizeList(recipe.steps);
+
 
   $('modal-ingredients').innerHTML = ingredients.length
     ? ingredients.map(i => `<li>${i}</li>`).join('')
     : '<li>No ingredients listed.</li>';
 
+
   $('modal-steps').innerHTML = steps.length
     ? steps.map(s => `<li>${s}</li>`).join('')
     : '<li>No steps listed.</li>';
+
 
   $('delete-recipe-btn').dataset.id = recipe.id;
   $('recipe-modal').classList.add('open');
 }
 
+
 function closeRecipeModal() {
   $('recipe-modal').classList.remove('open');
 }
+
 
 function deleteRecipe(id) {
   const recipeId = String(id);
   const myRecipes = getMyRecipes().filter(r => String(r.id) !== recipeId);
   const favs = getFavs().filter(r => String(r.id) !== recipeId);
 
+
   setMyRecipes(myRecipes);
   setFavs(favs);
+
 
   closeRecipeModal();
   renderCards();
   showToast('Recipe deleted successfully.', 'success');
 }
 
+
 function renderCards() {
   const myRecipes = getMyRecipes();
   const favs = getFavs();
 
+
   $('recipes-stat').textContent = myRecipes.length;
   $('fav-stat').textContent = favs.length;
 
+
   const recipeGrid = $('profile-my-recipes');
   const favGrid = $('profile-favorites');
+
 
   recipeGrid.innerHTML = myRecipes.length ? myRecipes.map(r => `
     <article class="recipe-card">
@@ -671,6 +735,7 @@ function renderCards() {
     </article>
   `).join('') : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No recipes yet.</div>`;
 
+
   favGrid.innerHTML = favs.length ? favs.map(r => `
     <article class="recipe-card">
       <div class="recipe-thumb">
@@ -686,6 +751,7 @@ function renderCards() {
     </article>
   `).join('') : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No favorites yet.</div>`;
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = $('hamburger');
@@ -704,12 +770,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteBtn = $('delete-recipe-btn');
   const user = getUser();
 
+
   $('profile-name').textContent = user.fullName || user.name || 'Chef Hazel';
   $('profile-handle').textContent = user.username ? `@${user.username}` : '@chef-hazel';
   $('profile-bio').textContent = user.bio || 'Passionate home cook sharing family recipes from around the world.';
   $('about-bio').textContent = user.bio || 'Passionate home cook sharing family recipes from around the world.';
 
+
   if (user.avatar) avatar.style.backgroundImage = `url(${user.avatar})`;
+
 
   if (hamburger && navbar && mobileNav) {
     hamburger.addEventListener('click', () => {
@@ -719,10 +788,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
   const search = (value) => {
     const q = value.trim();
     if (q) window.location.href = `search-results.html?q=${encodeURIComponent(q)}`;
   };
+
 
   const searchInput = $('navbar-search-input');
   const searchBtn = $('navbar-search-btn');
@@ -731,12 +802,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') search(searchInput.value); });
   }
 
+
   if (backToTop) {
     window.addEventListener('scroll', () => {
       backToTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
     backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
+
 
   if (editBtn) editBtn.addEventListener('click', openEditModal);
   if (closeBtn) closeBtn.addEventListener('click', closeEditModal);
@@ -747,12 +820,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
   if (recipeModal) {
     recipeModal.addEventListener('click', (e) => {
       if (e.target === recipeModal) closeRecipeModal();
     });
   }
   if (closeRecipeBtn) closeRecipeBtn.addEventListener('click', closeRecipeModal);
+
 
   if (deleteBtn) {
     deleteBtn.addEventListener('click', () => {
@@ -763,6 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
       deleteRecipe(id);
     });
   }
+
 
   if (avatar && avatarUpload) {
     avatar.addEventListener('click', () => avatarUpload.click());
@@ -781,6 +857,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -790,20 +867,23 @@ document.addEventListener('DOMContentLoaded', () => {
       u.bio = $('edit-bio').value.trim();
       u.location = $('edit-location').value.trim();
 
+
       if (!u.username && !u.fullName) {
         showToast('Please enter a username or name.', 'error');
         return;
       }
 
+
       setUser(u);
       $('profile-name').textContent = u.fullName || u.name || 'Chef Marco';
-      $('profile-handle').textContent = u.username ? `@${u.username}` : '@chef-marco';
+      $('profile-handle').textContent = u.username ? `@${user.username}` : '@chef-marco';
       $('profile-bio').textContent = u.bio || '';
       $('about-bio').textContent = u.bio || '';
       closeEditModal();
       showToast('Profile updated successfully.', 'success');
     });
   }
+
 
   document.querySelectorAll('.profile-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -814,6 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (target) target.classList.add('active');
     });
   });
+
 
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.view-recipe-btn');
@@ -827,13 +908,9 @@ document.addEventListener('DOMContentLoaded', () => {
     openRecipeModal(recipe);
   });
 
+
   renderCards();
 });
-
-function logout() {
-  localStorage.removeItem('user');
-  window.location.href = 'index.html';
-}
 </script>
 </body>
 </html>
