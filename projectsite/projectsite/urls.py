@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('recipes.urls')),
 
     path('accounts/', include('accounts.urls')),
+    path('accounts/',include('allauth.urls')),
 ]
 
 if settings.DEBUG:
