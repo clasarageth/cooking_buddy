@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Continue with Google</title>
+</head>
+<body>
+
+    <h1>🍳 Cooking Buddy</h1>
+
+    <p>
+        You are about to sign in using a Google account.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">
+            Continue with Google
+        </button>
+    </form>
+
+</body>
+</html>
