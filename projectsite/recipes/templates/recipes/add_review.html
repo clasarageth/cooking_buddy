@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rate Recipe</title>
+
+    <style>
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .stars input {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label {
+            color: gold;
+        }
+
+        .stars input:checked ~ label {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Rate {{ recipe.title }}</h1>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <div class="stars">
+
+        <input type="radio" id="star5" name="rating" value="5">
+        <label for="star5">★</label>
+
+        <input type="radio" id="star4" name="rating" value="4">
+        <label for="star4">★</label>
+
+        <input type="radio" id="star3" name="rating" value="3">
+        <label for="star3">★</label>
+
+        <input type="radio" id="star2" name="rating" value="2">
+        <label for="star2">★</label>
+
+        <input type="radio" id="star1" name="rating" value="1">
+        <label for="star1">★</label>
+
+    </div>
+
+    <br>
+
+    <textarea
+        name="comment"
+        rows="5"
+        cols="40"
+        placeholder="Write your review..."
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Submit Review
+    </button>
+
+</form>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from .models import Recipe
+from .models import Recipe, Review
+from django import forms
 
 
 class RecipeForm(ModelForm):
@@ -17,3 +18,20 @@ class RecipeForm(ModelForm):
             'servings',
             'category'
         ]
+
+class ReviewForm(ModelForm):
+    rating = forms.ChoiceField(
+        choices=[
+            (1, '⭐'),
+            (2, '⭐⭐'),
+            (3, '⭐⭐⭐'),
+            (4, '⭐⭐⭐⭐'),
+            (5, '⭐⭐⭐⭐⭐'),
+        ]
+    )
+
+    class Meta:
+        model = Review
+
+        
+        fields = ['rating', 'comment']

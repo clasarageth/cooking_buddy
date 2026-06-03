@@ -101,6 +101,16 @@
                         ⏱ {{ recipe.cooking_time }} mins
                     </p>
 
+                    {% if recipe.average_rating %}
+                        <p>
+                            ⭐ {{ recipe.average_rating|floatformat:1 }}/5
+                        </p>
+                    {% else %}
+                        <p>
+                            No ratings yet
+                        </p>
+                    {% endif %}
+
                     <a href="{% url 'recipe_detail' recipe.id %}">
                         View Recipe
                     </a>

@@ -36,3 +36,28 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+class Review(models.Model):
+
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    rating = models.IntegerField()
+
+    comment = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('recipe', 'user')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.recipe.title}"
