@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
       --red-primary: #e63946;
@@ -15,184 +15,124 @@
       --red-light: #ff6b6b;
       --red-lighter: #ffb3b3;
       --red-bg: #fff5f5;
-      --red-accent: #d90429;
       --white: #ffffff;
       --text-dark: #2b2d42;
       --text-light: #6c757d;
       --gray-light: #f8f9fa;
+      --border: #ece6d8;
       --shadow: 0 4px 6px rgba(0,0,0,0.1);
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
       --radius: 12px;
-      --radius-sm: 8px;
-      --border: #ece6d8;
-      --brown: #8a0012;
+      --radius-lg: 18px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-dark);
-      line-height: 1.6;
       background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+      line-height: 1.6;
     }
-    a { text-decoration: none; color: inherit; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    .section { padding: 80px 0; }
 
-    .navbar {
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .navbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 0;
-      gap: 16px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      color: var(--brown);
-      font-size: 1.2rem;
-    }
-    .brand .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
-      display: grid;
-      place-items: center;
-      color: var(--white);
-      box-shadow: var(--shadow);
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      font-weight: 600;
-      color: var(--text-light);
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--red-primary);
-    }
-    .menu-toggle {
-      display: none;
-      border: none;
-      background: transparent;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: .5rem;
       border: none;
       border-radius: 999px;
-      padding: 0.9rem 1.4rem;
+      padding: .9rem 1.2rem;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.25s ease;
-      background: transparent;
+      transition: .25s ease;
     }
     .btn:hover { transform: translateY(-2px); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
-      color: var(--white);
-    }
-    .btn-outline {
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--text-dark);
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: var(--white); }
+    .btn-secondary { background: var(--white); color: var(--red-primary); border: 1px solid var(--border); }
+    .btn-sm { padding: .7rem 1rem; font-size: .92rem; }
 
-    .page-hero { padding: 2rem 0 1.25rem; }
-    .page-title {
-      margin: 0;
-      font-size: clamp(1.8rem, 3vw, 3rem);
-      color: var(--brown);
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
     }
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-light);
-      font-size: 0.95rem;
-      margin-top: 0.4rem;
-      flex-wrap: wrap;
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 16px 0;
     }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; color: var(--red-dark); font-size: 1.2rem;
+    }
+    .navbar-brand span { color: var(--red-primary); }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--red-bg); display: grid; place-items: center;
+      color: var(--red-primary);
+    }
+    .navbar-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-light); border-radius: var(--radius);
+      padding: 8px 14px; max-width: 380px; width: 100%;
+    }
+    .navbar-search input {
+      border: none; outline: none; background: transparent; flex: 1;
+    }
+    .navbar-search button {
+      border: none; background: var(--red-primary); color: var(--white);
+      border-radius: 10px; padding: 8px 12px; cursor: pointer;
+    }
+    .navbar-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-link { color: var(--text-light); font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--red-primary); }
+    .navbar-actions { display: flex; align-items: center; gap: 10px; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+    }
+    .hamburger span {
+      width: 24px; height: 3px; border-radius: 2px; background: var(--red-dark);
+    }
+    .mobile-nav {
+      display: none; padding: 16px 20px; border-top: 1px solid var(--border); background: #fff;
+    }
+    .mobile-nav .nav-link { display: block; padding: 8px 0; }
 
-    .grid {
+    .section { padding: 40px 0 80px; }
+
+    .recipe-grid {
       display: grid;
-      gap: 1.4rem;
-    }
-    .grid-3 {
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
     }
-
     .recipe-card {
-      background: var(--white);
+      background: #fff;
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      border: 1px solid rgba(0, 0, 0, 0.03);
+      transition: .25s ease;
     }
-    .recipe-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-    }
-    .recipe-thumb {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 11;
-    }
-    .recipe-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.35s ease;
-    }
-    .recipe-card:hover .recipe-thumb img {
-      transform: scale(1.08);
-    }
-    .recipe-body {
-      padding: 1rem 1rem 1.15rem;
-    }
-    .recipe-title {
-      margin: 0 0 0.35rem;
-      font-size: 1.1rem;
-      color: var(--text-dark);
-    }
+    .recipe-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .recipe-thumb { aspect-ratio: 16 / 11; overflow: hidden; }
+    .recipe-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .recipe-body { padding: 14px; }
+    .recipe-title { margin-bottom: 6px; font-size: 1.05rem; }
     .recipe-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      color: var(--text-light);
-      font-size: 0.92rem;
-      margin: 0.6rem 0 1rem;
+      display: flex; gap: 12px; flex-wrap: wrap;
+      color: var(--text-light); font-size: .92rem; margin-bottom: 12px;
     }
-    .card-actions {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .card-actions .btn {
-      padding: 0.75rem 1rem;
-      font-size: 0.92rem;
+
+    .form-section {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
     }
 
     .empty-state {
@@ -218,144 +158,348 @@
       margin-bottom: 1.25rem;
     }
 
-    .navbar.open .nav-links {
-      display: flex;
-      flex-direction: column;
+    .recipe-modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+      padding: 20px;
+    }
+    .recipe-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .recipe-modal {
+      background: white; border-radius: 18px; padding: 28px;
+      width: 100%; max-width: 760px; box-shadow: var(--shadow-lg);
+      transform: scale(.96); transition: transform .25s;
+      max-height: 90vh; overflow: auto;
+    }
+    .recipe-modal-backdrop.open .recipe-modal {
+      transform: scale(1);
+    }
+
+    .recipe-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .recipe-detail-img {
       width: 100%;
-      padding-top: 1rem;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+    .recipe-detail-box {
+      background: #fff7f7;
+      border: 1px solid #ffd8d8;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .recipe-list {
+      margin-top: 10px;
+      padding-left: 18px;
     }
 
     footer {
-      background: var(--text-dark);
-      color: var(--white);
-      padding: 40px 0;
+      background: #2b2d42;
+      color: white;
+      padding: 40px 0 20px;
       margin-top: 40px;
+    }
+    .footer-brand { font-size: 1.35rem; font-weight: 800; margin-bottom: 10px; }
+    .footer-brand span { color: var(--red-primary); }
+    .footer-desc { color: rgba(255,255,255,.7); }
+    .footer-col-title { font-weight: 700; margin-bottom: 12px; }
+    .footer-links { list-style: none; display: grid; gap: 8px; }
+    .footer-links a { color: rgba(255,255,255,.7); }
+    .footer-links a:hover { color: var(--red-light); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
       text-align: center;
+      color: rgba(255,255,255,.75);
     }
 
-    @media (max-width: 768px) {
-      .menu-toggle { display: inline-flex; }
-      .nav-links { display: none; }
-      .navbar-inner { flex-wrap: wrap; }
-      .grid-3 { grid-template-columns: 1fr; }
+    #back-to-top {
+      position: fixed; bottom: 28px; right: 28px;
+      width: 48px; height: 48px; border: none; border-radius: 50%;
+      background: var(--red-primary); color: white; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-lg); z-index: 1100;
     }
+
+    @media (max-width: 900px) {
+      .navbar-search, .navbar-nav, .navbar-actions { display: none; }
+      .hamburger { display: flex; }
+      .navbar-inner { flex-wrap: wrap; }
+      .recipe-grid { grid-template-columns: 1fr; }
+      .recipe-detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .navbar.open .mobile-nav { display: block; }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="container navbar-inner">
-      <a class="brand" href="index.html">
-        <span class="logo"><i class="fa-solid fa-utensils"></i></span>
-        Cooking Buddy
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>Cooking<span>Buddy</span>
       </a>
 
-      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
-      <nav class="nav-links" id="nav-links">
-        <a href="index.html">Home</a>
-        <a href="favorites.html" class="active">Favorites</a>
-        <a href="category.html">Category</a>
-        <a href="profile.html">Profile</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="section">
-    <div class="container">
-      <div class="page-hero">
-        <h1 class="page-title">My Favorites</h1>
-        <div class="breadcrumb">Home <span>/</span> Favorites</div>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
       </div>
 
-      <div id="favorites-grid" class="grid grid-3"></div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link active">Favorites</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div style="display:flex;gap:8px">
+          
+        </div>
+        <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
+      </div>
     </div>
-  </main>
-
-  <footer>
-    <div class="container">
-      <small>&copy; 2026 Cooking Buddy</small>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+    <a href="favorites.html" class="nav-link active">Favorites</a>
+    <a href="profile.html" class="nav-link">Profile</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      
     </div>
-  </footer>
+  </div>
+</nav>
 
-  <script>
-    function getFavorites() {
-      try {
-        const raw = localStorage.getItem("favorites");
-        return raw ? JSON.parse(raw) : [];
-      } catch {
-        return [];
-      }
-    }
+<section class="section">
+  <div class="container">
+    <div style="margin-bottom:24px">
+      <h1 style="font-size:2rem;font-weight:800;color:var(--red-dark)">My Favorites</h1>
+      <div style="color:var(--text-light);margin-top:6px">Home <span style="color:var(--red-primary)">/</span> Favorites</div>
+    </div>
 
-    function setFavorites(list) {
-      localStorage.setItem("favorites", JSON.stringify(list));
-    }
+    <div id="favorites-grid" class="recipe-grid"></div>
+  </div>
+</section>
 
-    function addToFavorites(recipe) {
-      let favorites = getFavorites();
-      const exists = favorites.some(item => String(item.id) === String(recipe.id));
-      if (!exists) {
-        favorites.unshift(recipe);
-        setFavorites(favorites);
-      }
-      window.location.href = "favorites.html";
-    }
+<div class="recipe-modal-backdrop" id="recipe-modal">
+  <div class="recipe-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px">
+      <h3 id="modal-title" style="font-size:1.3rem">Recipe Details</h3>
+      <button id="close-recipe-modal" style="background:none;border:none;font-size:1.2rem;color:var(--text-light);cursor:pointer" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="recipe-detail-grid">
+      <div>
+        <img id="modal-image" class="recipe-detail-img" alt="Recipe image">
+        <div class="recipe-detail-box" style="margin-top:16px">
+          <div><strong>Time:</strong> <span id="modal-time"></span></div>
+          <div><strong>Category:</strong> <span id="modal-category"></span></div>
+          <div><strong>Servings:</strong> <span id="modal-servings"></span></div>
+        </div>
+      </div>
+      <div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Description</h4>
+          <p id="modal-description"></p>
+        </div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Ingredients</h4>
+          <ul id="modal-ingredients" class="recipe-list"></ul>
+        </div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Steps</h4>
+          <ol id="modal-steps" class="recipe-list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    function removeFavorite(id) {
-      let favorites = getFavorites();
-      favorites = favorites.filter(recipe => String(recipe.id) !== String(id));
-      setFavorites(favorites);
-      location.reload();
-    }
+<footer>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:20px">
+      <div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
+        <p class="footer-desc">Your cooking community.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <ul class="footer-links">
+          <li><a href="search-results.html">All Recipes</a></li>
+          <li><a href="add_recipe.html">Add Recipe</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Account</div>
+        <ul class="footer-links">
+          <li><a href="profile.html">My Recipes</a></li>
+          <li><a href="favorites.html">Favorites</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>.</div>
+  </div>
+</footer>
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const menuToggle = document.getElementById("menu-toggle");
-      const navbar = document.querySelector(".navbar");
-      const favoritesGrid = document.getElementById("favorites-grid");
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 
-      if (menuToggle && navbar) {
-        menuToggle.addEventListener("click", () => {
-          navbar.classList.toggle("open");
-        });
-      }
+<script>
+const $ = (id) => document.getElementById(id);
 
-      const favorites = getFavorites();
+function getFavorites() {
+  try {
+    const raw = localStorage.getItem("favorites");
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
 
-      if (!Array.isArray(favorites) || favorites.length === 0) {
-        favoritesGrid.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-heart-crack"></i>
-            <h3>No favorites yet</h3>
-            <p>Save recipes you love so they appear here.</p>
-            <a href="index.html" class="btn btn-primary">
-              <i class="fa-solid fa-bowl-food"></i> Browse Recipes
-            </a>
-          </div>
-        `;
-        return;
-      }
+function removeFavorite(id) {
+  let favorites = getFavorites();
+  favorites = favorites.filter(recipe => String(recipe.id) !== String(id));
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  location.reload();
+}
 
-      favoritesGrid.innerHTML = favorites.map(recipe => `
-        <article class="recipe-card">
-          <div class="recipe-thumb">
-            <img src="${recipe.image || 'https://via.placeholder.com/600x400?text=Recipe'}" alt="${recipe.title || 'Favorite recipe'}">
-          </div>
-          <div class="recipe-body">
-            <h3 class="recipe-title">${recipe.title || 'Untitled Recipe'}</h3>
-            <div class="recipe-meta">
-              <span><i class="fa-regular fa-clock"></i> ${recipe.time || recipe.cookingTime || "30 min"}</span>
-              <span><i class="fa-solid fa-star"></i> Favorite</span>
-            </div>
-            <div class="card-actions">
-              <a href="recipe.html?id=${recipe.id}" class="btn btn-primary">View</a>
-              <button class="btn btn-outline" onclick="removeFavorite(${recipe.id})">Remove</button>
-            </div>
-          </div>
-        </article>
-      `).join("");
+function normalizeList(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') return value.split('\n').map(s => s.trim()).filter(Boolean);
+  return [];
+}
+
+function openRecipeModal(recipe) {
+  $('modal-title').textContent = recipe.title || 'Untitled Recipe';
+  $('modal-image').src = recipe.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80';
+  $('modal-image').alt = recipe.title || 'Recipe';
+  $('modal-time').textContent = `${recipe.cookingTime || recipe.time || '30'} min`;
+  $('modal-category').textContent = recipe.category || 'Recipe';
+  $('modal-servings').textContent = recipe.servings || '4';
+  $('modal-description').textContent = recipe.description || 'No description available.';
+
+  const ingredients = normalizeList(recipe.ingredients);
+  const steps = normalizeList(recipe.steps);
+
+  $('modal-ingredients').innerHTML = ingredients.length
+    ? ingredients.map(i => `<li>${i}</li>`).join('')
+    : '<li>No ingredients listed.</li>';
+
+  $('modal-steps').innerHTML = steps.length
+    ? steps.map(s => `<li>${s}</li>`).join('')
+    : '<li>No steps listed.</li>';
+
+  $('recipe-modal').classList.add('open');
+}
+
+function closeRecipeModal() {
+  $('recipe-modal').classList.remove('open');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = $('hamburger');
+  const navbar = $('.navbar');
+  const mobileNav = $('mobile-nav');
+  const backToTop = $('back-to-top');
+  const recipeModal = $('recipe-modal');
+  const closeRecipeBtn = $('close-recipe-modal');
+  const favoritesGrid = $('favorites-grid');
+
+  if (hamburger && navbar && mobileNav) {
+    hamburger.addEventListener("click", () => {
+      const open = mobileNav.style.display !== "block";
+      mobileNav.style.display = open ? "block" : "none";
+      navbar.classList.toggle("open", open);
     });
-  </script>
+  }
+
+  if (backToTop) {
+    window.addEventListener("scroll", () => {
+      backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+    });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
+
+  if (recipeModal) {
+    recipeModal.addEventListener('click', (e) => {
+      if (e.target === recipeModal) closeRecipeModal();
+    });
+  }
+  if (closeRecipeBtn) closeRecipeBtn.addEventListener('click', closeRecipeModal);
+
+  const search = (value) => {
+    const q = value.trim();
+    if (q) window.location.href = `search-results.html?q=${encodeURIComponent(q)}`;
+  };
+
+  const searchInput = $('navbar-search-input');
+  const searchBtn = $('navbar-search-btn');
+  if (searchInput && searchBtn) {
+    searchBtn.addEventListener("click", () => search(searchInput.value));
+    searchInput.addEventListener("keydown", e => { if (e.key === "Enter") search(searchInput.value); });
+  }
+
+  const favorites = getFavorites();
+
+  if (!Array.isArray(favorites) || favorites.length === 0) {
+    favoritesGrid.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-heart-crack"></i>
+        <h3>No favorites yet</h3>
+        <p>Save recipes you love so they appear here.</p>
+        <a href="index.html" class="btn btn-primary">
+          <i class="fa-solid fa-bowl-food"></i> Browse Recipes
+        </a>
+      </div>
+    `;
+    return;
+  }
+
+  favoritesGrid.innerHTML = favorites.map(recipe => `
+    <article class="recipe-card">
+      <div class="recipe-thumb">
+        <img src="${recipe.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${recipe.title || 'Favorite recipe'}">
+      </div>
+      <div class="recipe-body">
+        <h3 class="recipe-title">${recipe.title || 'Untitled Recipe'}</h3>
+        <div class="recipe-meta">
+          <span><i class="fa-regular fa-clock"></i> ${recipe.time || recipe.cookingTime || "30 min"}</span>
+          <span><i class="fa-solid fa-heart"></i> Favorite</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm view-btn" data-id="${recipe.id}" type="button">View</button>
+          <button class="btn btn-secondary btn-sm" onclick="removeFavorite(${recipe.id})">Remove</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.view-btn');
+    if (!btn) return;
+    const recipe = favorites.find(r => String(r.id) === String(btn.dataset.id));
+    if (!recipe) return;
+    openRecipeModal(recipe);
+  });
+});
+</script>
 </body>
 </html>
