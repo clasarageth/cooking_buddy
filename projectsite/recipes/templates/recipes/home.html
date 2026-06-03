@@ -1,19 +1,121 @@
-<h1>Recipe Book</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cooking Buddy</title>
 
-<form method="GET">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
 
-    <input type="text" name="q" placeholder="Search recipes...">
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    <button type="submit">Search</button>
+        .add-btn {
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-</form>
+        .recipes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
 
-{% for recipe in recipes %}
+        .card {
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-    <h2>{{ recipe.title }}</h2>
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
 
-    <img src="{{ recipe.image.url }}" width="300">
+        .content {
+            padding: 15px;
+        }
 
-    <p>{{ recipe.description }}</p>
+        .content h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
 
-{% endfor %}
+    <div class="header">
+        <h1>🍳 Cooking Buddy</h1>
+
+        <a href="{% url 'create_recipe' %}" class="add-btn">
+            +
+        </a>
+    </div>
+
+    <hr>
+
+    <form method="GET">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search recipes..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+    </form>
+
+    <div class="recipes">
+
+        {% for recipe in recipes %}
+
+            <div class="card">
+
+                {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}">
+                {% endif %}
+
+                <div class="content">
+
+                    <h3>{{ recipe.title }}</h3>
+
+                    <p>{{ recipe.description|truncatewords:15 }}</p>
+
+                    <p>
+                        ⏱ {{ recipe.cooking_time }} mins
+                    </p>
+
+                    <a href="{% url 'recipe_detail' recipe.id %}">
+                        View Recipe
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <p>No recipes found.</p>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

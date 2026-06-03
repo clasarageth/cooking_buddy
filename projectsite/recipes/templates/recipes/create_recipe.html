@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Recipe</title>
+</head>
+<body>
+
+    <h1>Add Recipe</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Upload Recipe
+        </button>
+
+    </form>
+
+</body>
+</html>

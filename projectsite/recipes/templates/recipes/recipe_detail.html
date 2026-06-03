@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ recipe.title }}</title>
+</head>
+<body>
+
+    <a href="{% url 'home' %}">
+        ← Back to Home
+    </a>
+
+    <h1>{{ recipe.title }}</h1>
+
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" width="500">
+    {% endif %}
+
+     <p>
+        <strong>Uploaded By:</strong>
+        {{ recipe.author.username }}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        {{ recipe.category }}
+    </p>
+
+    <p>
+        <strong>Cooking Time:</strong>
+        {{ recipe.cooking_time }} minutes
+    </p>
+
+    <p>
+        <strong>Servings:</strong>
+        {{ recipe.servings }}
+    </p>
+
+    <h2>Description</h2>
+    <p>{{ recipe.description }}</p>
+
+    <h2>Ingredients</h2>
+    <p>{{ recipe.ingredients|linebreaks }}</p>
+
+    <h2>Instructions</h2>
+    <p>{{ recipe.instructions|linebreaks }}</p>
+
+</body>
+</html>
