@@ -4,15 +4,312 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — RecipeBook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --red-bg: #fff5f5;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --text-sub: #8a8f98;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.12);
+      --radius-sm: 10px;
+      --radius: 14px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: .9rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: var(--white); }
+    .btn-secondary { background: var(--white); color: var(--red-dark); border: 1px solid var(--border); }
+    .btn-sm { padding: .7rem 1rem; font-size: .92rem; }
+    .btn-full { width: 100%; }
+    .btn-lg { padding: 1rem 1.2rem; font-size: 1rem; }
+
+    .navbar {
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--red-dark);
+      font-size: 1.2rem;
+    }
+    .navbar-brand span { color: var(--red-primary); }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--red-bg);
+      color: var(--red-primary);
+    }
+
+    .auth-page {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .auth-visual {
+      position: relative;
+      overflow: hidden;
+      min-height: 720px;
+      background: #111;
+    }
+    .auth-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05);
+    }
+    .auth-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.55));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 42px;
+      color: #fff;
+    }
+    .auth-visual-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .auth-visual-sub {
+      max-width: 420px;
+      color: rgba(255,255,255,.82);
+      font-size: 1rem;
+    }
+
+    .auth-form-panel {
+      display: grid;
+      place-items: center;
+      padding: 36px 20px;
+    }
+    .auth-form-box {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 34px;
+      backdrop-filter: blur(12px);
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--text-sub);
+      z-index: 2;
+    }
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 44px 14px 42px;
+      font: inherit;
+      background: #fff;
+      outline: none;
+      transition: .2s ease;
+    }
+    .form-control:focus {
+      border-color: var(--red-primary);
+      box-shadow: 0 0 0 4px rgba(230,57,70,.12);
+    }
+    .input-eye {
+      position: absolute;
+      right: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 999px;
+    }
+    .input-eye:hover { color: var(--red-primary); }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-dark);
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+    .checkbox-group input { accent-color: var(--red-primary); }
+
+    .form-error {
+      display: block;
+      min-height: 18px;
+      margin-top: 6px;
+      color: #dc2626;
+      font-size: .86rem;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: var(--text-sub);
+      font-size: .9rem;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .auth-divider span { white-space: nowrap; }
+
+    .social-btn {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-dark);
+      font-weight: 600;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      border-color: rgba(230,57,70,.35);
+    }
+
+    .auth-footer {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--text-light);
+    }
+    .auth-footer a {
+      color: var(--red-primary);
+      font-weight: 700;
+    }
+    .auth-footer a:hover { color: var(--red-dark); }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3000;
+      display: grid;
+      gap: 10px;
+    }
+    .toast {
+      background: #fff;
+      border-left: 4px solid var(--red-primary);
+      color: var(--text-dark);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+      max-width: 320px;
+    }
+    .toast.info { border-left-color: #2563eb; }
+    .toast.success { border-left-color: #16a34a; }
+    .toast.error { border-left-color: #dc2626; }
+
+    @media (max-width: 980px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-visual { min-height: 320px; }
+      .auth-visual-overlay { padding: 28px; }
+    }
+
+    @media (max-width: 560px) {
+      .auth-form-box { padding: 24px 18px; }
+      .navbar-inner { gap: 10px; }
+      .navbar .btn-sm { padding: .65rem .9rem; }
+      .auth-visual-title { font-size: 1.7rem; }
+      .social-btn { font-size: .95rem; }
+    }
+  </style>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="container">
     <div class="navbar-inner">
-      <a href="index.html" class="navbar-brand"><div class="brand-icon"><i class="fas fa-utensils"></i></div>Recipe<span>Book</span></a>
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>Recipe<span>Book</span>
+      </a>
       <div style="margin-left:auto;display:flex;gap:10px">
         <a href="login.html" class="btn btn-primary btn-sm">Login</a>
         <a href="register.html" class="btn btn-secondary btn-sm">Sign Up</a>
@@ -22,7 +319,6 @@
 </nav>
 
 <div class="auth-page">
-  <!-- Visual Panel -->
   <div class="auth-visual">
     <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&auto=format&fit=crop&q=80" alt="Cooking">
     <div class="auth-visual-overlay">
@@ -31,7 +327,6 @@
     </div>
   </div>
 
-  <!-- Form Panel -->
   <div class="auth-form-panel">
     <div class="auth-form-box">
       <div style="text-align:center;margin-bottom:32px">
@@ -56,12 +351,12 @@
         <div class="form-group">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
             <label class="form-label" for="login-password" style="margin-bottom:0">Password</label>
-            <a href="#" style="font-size:.82rem;color:var(--orange);font-weight:600">Forgot password?</a>
+            <a href="#" style="font-size:.82rem;color:var(--red-primary);font-weight:600">Forgot password?</a>
           </div>
           <div class="input-group">
             <i class="fas fa-lock input-icon"></i>
             <input type="password" class="form-control" id="login-password" placeholder="Enter your password" autocomplete="current-password">
-            <button type="button" class="input-eye" aria-label="Toggle password">
+            <button type="button" class="input-eye" aria-label="Toggle password" id="toggle-password">
               <i class="fas fa-eye"></i>
             </button>
           </div>
@@ -83,27 +378,80 @@
       <div class="auth-divider"><span>or continue with</span></div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <button class="social-btn" onclick="showToast('Google login coming soon!','info')">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <button class="social-btn" type="button" onclick="showToast('Google login coming soon!','info')">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google
         </button>
-        <button class="social-btn" onclick="showToast('Facebook login coming soon!','info')">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <button class="social-btn" type="button" onclick="showToast('Facebook login coming soon!','info')">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           Facebook
         </button>
       </div>
 
       <p class="auth-footer">Don't have an account? <a href="register.html">Sign up free</a></p>
 
-      <!-- Demo hint -->
-      <div style="margin-top:20px;padding:14px;background:rgba(255,140,66,0.08);border-radius:var(--radius-sm);border:1px solid rgba(255,140,66,0.2)">
-        <p style="font-size:.8rem;color:var(--text-sub);margin:0"><i class="fas fa-info-circle" style="color:var(--orange);margin-right:6px"></i><strong>Demo:</strong> Enter any email and password to log in.</p>
+      <div style="margin-top:20px;padding:14px;background:rgba(230,57,70,0.08);border-radius:var(--radius-sm);border:1px solid rgba(230,57,70,0.2)">
+        <p style="font-size:.8rem;color:var(--text-sub);margin:0"><i class="fas fa-info-circle" style="color:var(--red-primary);margin-right:6px"></i><strong>Demo:</strong> Enter any email and password to log in.</p>
       </div>
     </div>
   </div>
 </div>
 
 <div id="toast-container"></div>
-<script src="script.js"></script>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+function showToast(message, type = 'info') {
+  const wrap = $('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  wrap.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
+
+$('toggle-password').addEventListener('click', () => {
+  const input = $('login-password');
+  const icon = $('toggle-password').querySelector('i');
+  const isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+  icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+$('login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = $('login-email').value.trim();
+  const password = $('login-password').value.trim();
+  let valid = true;
+
+  $('email-error').textContent = '';
+  $('password-error').textContent = '';
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    $('email-error').textContent = 'Please enter a valid email address.';
+    valid = false;
+  }
+
+  if (!password) {
+    $('password-error').textContent = 'Please enter your password.';
+    valid = false;
+  }
+
+  if (!valid) {
+    showToast('Please fix the errors and try again.', 'error');
+    return;
+  }
+
+  localStorage.setItem('user', JSON.stringify({
+    name: email.split('@')[0],
+    email
+  }));
+
+  showToast('Login successful!', 'success');
+  setTimeout(() => window.location.href = 'index.html', 700);
+});
+</script>
 </body>
 </html>

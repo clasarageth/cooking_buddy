@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile — Cooking Buddy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,7 +57,8 @@
 
     .navbar {
       position: sticky; top: 0; z-index: 1000;
-      background: rgba(255,255,255,.96); backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
     }
     .navbar-inner {
@@ -220,19 +221,52 @@
       box-shadow: var(--shadow);
     }
 
-    .edit-modal-backdrop {
+    .edit-modal-backdrop,
+    .recipe-modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none; transition: opacity .25s;
       padding: 20px;
     }
-    .edit-modal-backdrop.open { opacity: 1; pointer-events: auto; }
-    .edit-modal {
-      background: white; border-radius: 18px; padding: 28px;
-      width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);
-      transform: scale(.96); transition: transform .25s;
+    .edit-modal-backdrop.open,
+    .recipe-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .edit-modal-backdrop.open .edit-modal { transform: scale(1); }
+    .edit-modal,
+    .recipe-modal {
+      background: white; border-radius: 18px; padding: 28px;
+      width: 100%; max-width: 760px; box-shadow: var(--shadow-lg);
+      transform: scale(.96); transition: transform .25s;
+      max-height: 90vh; overflow: auto;
+    }
+    .edit-modal-backdrop.open .edit-modal,
+    .recipe-modal-backdrop.open .recipe-modal {
+      transform: scale(1);
+    }
+
+    .recipe-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .recipe-detail-img {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+    .recipe-detail-box {
+      background: #fff7f7;
+      border: 1px solid #ffd8d8;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .recipe-list {
+      margin-top: 10px;
+      padding-left: 18px;
+    }
 
     .form-group { display: grid; gap: 6px; margin-bottom: 16px; }
     .form-label { font-weight: 600; }
@@ -295,15 +329,9 @@
       background: #fff; border-left: 4px solid var(--red-primary);
       color: var(--text-dark); box-shadow: var(--shadow-lg);
       border-radius: 12px; padding: 12px 14px; min-width: 240px;
-      animation: slideIn .25s ease;
     }
     .toast.success { border-left-color: #16a34a; }
     .toast.error { border-left-color: #dc2626; }
-
-    @keyframes slideIn {
-      from { transform: translateX(14px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
 
     @media (max-width: 900px) {
       .navbar-search, .navbar-nav, .navbar-actions { display: none; }
@@ -311,6 +339,7 @@
       .navbar-inner { flex-wrap: wrap; }
       .profile-header-inner { grid-template-columns: 1fr; justify-items: start; }
       .profile-avatar-lg { width: 120px; height: 120px; }
+      .recipe-detail-grid { grid-template-columns: 1fr; }
     }
 
     .navbar.open .mobile-nav { display: block; }
@@ -335,28 +364,23 @@
         <a href="index.html" class="nav-link">Home</a>
         <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
         <a href="favorites.html" class="nav-link">Favorites</a>
-        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="profile.html" class="nav-link active">Profile</a>
       </nav>
 
       <div class="navbar-actions">
-        <div id="nav-auth-buttons" class="flex gap-sm">
+        <div style="display:flex;gap:8px">
           <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
           <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
-        </div>
-        <div class="user-dropdown" id="user-dropdown" style="display:none">
-          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
-            <i class="fas fa-user"></i> <span class="user-name"></span>
-          </button>
         </div>
         <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
       </div>
     </div>
   </div>
-
   <div class="mobile-nav" id="mobile-nav">
     <a href="index.html" class="nav-link">Home</a>
+    <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
     <a href="favorites.html" class="nav-link">Favorites</a>
-    <a href="my_recipes.html" class="nav-link">My Recipes</a>
+    <a href="profile.html" class="nav-link active">Profile</a>
     <div style="display:flex;gap:8px;padding:8px 0">
       <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
       <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
@@ -394,7 +418,7 @@
             <button class="btn btn-primary btn-sm" id="edit-profile-btn" type="button">
               <i class="fas fa-edit"></i> Edit Profile
             </button>
-            <a href="add_recipe.html" class="btn btn-secondary btn-sm">
+            <a href="add-recipe.html" class="btn btn-secondary btn-sm">
               <i class="fas fa-plus"></i> Add Recipe
             </a>
           </div>
@@ -425,7 +449,7 @@
         <div class="form-section">
           <h3 style="margin-bottom:20px">About Me</h3>
           <p id="about-bio" style="color:var(--text-dark);line-height:1.7;margin-bottom:24px">
-            Passionate home cook sharing family recipes from around the world. I specialize in Italian and Mediterranean cuisine.
+            Passionate home cook sharing family recipes from around the world.
           </p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div><div style="font-size:.78rem;color:var(--text-light);margin-bottom:4px">MEMBER SINCE</div><div style="font-weight:600">January 2024</div></div>
@@ -479,12 +503,48 @@
   </div>
 </div>
 
+<div class="recipe-modal-backdrop" id="recipe-modal">
+  <div class="recipe-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px">
+      <h3 id="modal-title" style="font-size:1.3rem">Recipe Details</h3>
+      <button id="close-recipe-modal" style="background:none;border:none;font-size:1.2rem;color:var(--text-light);cursor:pointer" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="recipe-detail-grid">
+      <div>
+        <img id="modal-image" class="recipe-detail-img" alt="Recipe image">
+        <div class="recipe-detail-box" style="margin-top:16px">
+          <div><strong>Time:</strong> <span id="modal-time"></span></div>
+          <div><strong>Category:</strong> <span id="modal-category"></span></div>
+          <div><strong>Servings:</strong> <span id="modal-servings"></span></div>
+        </div>
+      </div>
+      <div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Description</h4>
+          <p id="modal-description"></p>
+        </div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Ingredients</h4>
+          <ul id="modal-ingredients" class="recipe-list"></ul>
+        </div>
+        <div class="recipe-detail-box">
+          <h4 style="margin-bottom:10px">Steps</h4>
+          <ol id="modal-steps" class="recipe-list"></ol>
+        </div>
+        <button class="btn btn-secondary" id="delete-recipe-btn" type="button" style="margin-top:10px;">
+          <i class="fas fa-trash"></i> Delete Recipe
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Your cooking community.</p></div>
-      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search-results.html">All Recipes</a></li><li><a href="add_recipe.html">Add Recipe</a></li></ul></div>
-      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="my-recipes.html">My Recipes</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search-results.html">All Recipes</a></li><li><a href="add-recipe.html">Add Recipe</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">My Recipes</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
       <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
     </div>
   </div>
@@ -495,199 +555,285 @@
 <div id="toast-container"></div>
 
 <script>
-  const $ = (id) => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 
-  function showToast(message, type = "info") {
-    const wrap = $("toast-container");
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    wrap.appendChild(toast);
-    setTimeout(() => toast.remove(), 2600);
-  }
+function showToast(message, type = 'info') {
+  const wrap = $('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  wrap.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
 
-  function getUser() {
-    try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; }
-  }
+function getUser() {
+  try { return JSON.parse(localStorage.getItem('user')) || {}; } catch { return {}; }
+}
+function setUser(user) {
+  localStorage.setItem('user', JSON.stringify(user));
+}
+function getFavs() {
+  try { return JSON.parse(localStorage.getItem('favorites')) || []; } catch { return []; }
+}
+function setFavs(arr) {
+  localStorage.setItem('favorites', JSON.stringify(arr));
+}
+function getMyRecipes() {
+  try { return JSON.parse(localStorage.getItem('myRecipes')) || []; } catch { return []; }
+}
+function setMyRecipes(arr) {
+  localStorage.setItem('myRecipes', JSON.stringify(arr));
+}
 
-  function setUser(user) {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
+function normalizeList(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') return value.split('\n').map(s => s.trim()).filter(Boolean);
+  return [];
+}
 
-  function getFavs() {
-    try { return JSON.parse(localStorage.getItem("favorites")) || []; } catch { return []; }
-  }
+function openEditModal() {
+  const user = getUser();
+  $('edit-username').value = user.username || '';
+  $('edit-fullname').value = user.fullName || user.name || '';
+  $('edit-bio').value = user.bio || '';
+  $('edit-location').value = user.location || '';
+  $('edit-modal').classList.add('open');
+}
 
-  function getMyRecipes() {
-    try { return JSON.parse(localStorage.getItem("myRecipes")) || []; } catch { return []; }
-  }
+function closeEditModal() {
+  $('edit-modal').classList.remove('open');
+}
 
-  function openEditModal() {
-    const user = getUser();
-    $("edit-username").value = user.username || "";
-    $("edit-fullname").value = user.fullName || user.name || "";
-    $("edit-bio").value = user.bio || "";
-    $("edit-location").value = user.location || "";
-    $("edit-modal").classList.add("open");
-  }
+function openRecipeModal(recipe) {
+  $('modal-title').textContent = recipe.title || 'Untitled Recipe';
+  $('modal-image').src = recipe.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80';
+  $('modal-image').alt = recipe.title || 'Recipe';
+  $('modal-time').textContent = `${recipe.cookingTime || recipe.time || '30'} min`;
+  $('modal-category').textContent = recipe.category || 'Recipe';
+  $('modal-servings').textContent = recipe.servings || '4';
+  $('modal-description').textContent = recipe.description || 'No description available.';
 
-  function closeEditModal() {
-    $("edit-modal").classList.remove("open");
-  }
+  const ingredients = normalizeList(recipe.ingredients);
+  const steps = normalizeList(recipe.steps);
 
-  function renderCards() {
-    const myRecipes = getMyRecipes();
-    const favs = getFavs();
+  $('modal-ingredients').innerHTML = ingredients.length
+    ? ingredients.map(i => `<li>${i}</li>`).join('')
+    : '<li>No ingredients listed.</li>';
 
-    $("recipes-stat").textContent = myRecipes.length;
-    $("fav-stat").textContent = favs.length;
+  $('modal-steps').innerHTML = steps.length
+    ? steps.map(s => `<li>${s}</li>`).join('')
+    : '<li>No steps listed.</li>';
 
-    const recipeGrid = $("profile-my-recipes");
-    const favGrid = $("profile-favorites");
+  $('delete-recipe-btn').dataset.id = recipe.id;
+  $('recipe-modal').classList.add('open');
+}
 
-    recipeGrid.innerHTML = myRecipes.length ? myRecipes.map(r => `
-      <article class="recipe-card">
-        <div class="recipe-thumb"><img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Recipe'}"></div>
-        <div class="recipe-body">
-          <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
-          <div class="recipe-meta">
-            <span><i class="fa-regular fa-clock"></i> ${r.cookingTime || r.time || '30'} min</span>
-            <span><i class="fa-solid fa-utensils"></i> ${r.category || 'Recipe'}</span>
-          </div>
-          <a class="btn btn-primary btn-sm" href="recipe.html?id=${r.id || ''}">View</a>
+function closeRecipeModal() {
+  $('recipe-modal').classList.remove('open');
+}
+
+function deleteRecipe(id) {
+  const recipeId = String(id);
+  const myRecipes = getMyRecipes().filter(r => String(r.id) !== recipeId);
+  const favs = getFavs().filter(r => String(r.id) !== recipeId);
+
+  setMyRecipes(myRecipes);
+  setFavs(favs);
+
+  closeRecipeModal();
+  renderCards();
+  showToast('Recipe deleted successfully.', 'success');
+}
+
+function renderCards() {
+  const myRecipes = getMyRecipes();
+  const favs = getFavs();
+
+  $('recipes-stat').textContent = myRecipes.length;
+  $('fav-stat').textContent = favs.length;
+
+  const recipeGrid = $('profile-my-recipes');
+  const favGrid = $('profile-favorites');
+
+  recipeGrid.innerHTML = myRecipes.length ? myRecipes.map(r => `
+    <article class="recipe-card">
+      <div class="recipe-thumb">
+        <img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Recipe'}">
+      </div>
+      <div class="recipe-body">
+        <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
+        <div class="recipe-meta">
+          <span><i class="fa-regular fa-clock"></i> ${r.cookingTime || r.time || '30'} min</span>
+          <span><i class="fa-solid fa-utensils"></i> ${r.category || 'Recipe'}</span>
         </div>
-      </article>
-    `).join("") : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No recipes yet.</div>`;
+        <button class="btn btn-primary btn-sm view-recipe-btn" data-id="${r.id}" type="button">View</button>
+      </div>
+    </article>
+  `).join('') : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No recipes yet.</div>`;
 
-    favGrid.innerHTML = favs.length ? favs.map(r => `
-      <article class="recipe-card">
-        <div class="recipe-thumb"><img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Favorite'}"></div>
-        <div class="recipe-body">
-          <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
-          <div class="recipe-meta">
-            <span><i class="fa-regular fa-heart"></i> Favorite</span>
-          </div>
-          <a class="btn btn-primary btn-sm" href="recipe.html?id=${r.id || ''}">View</a>
+  favGrid.innerHTML = favs.length ? favs.map(r => `
+    <article class="recipe-card">
+      <div class="recipe-thumb">
+        <img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Favorite'}">
+      </div>
+      <div class="recipe-body">
+        <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
+        <div class="recipe-meta">
+          <span><i class="fa-regular fa-heart"></i> Favorite</span>
         </div>
-      </article>
-    `).join("") : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No favorites yet.</div>`;
-  }
+        <button class="btn btn-primary btn-sm view-recipe-btn" data-id="${r.id}" type="button">View</button>
+      </div>
+    </article>
+  `).join('') : `<div class="form-section" style="grid-column:1/-1;text-align:center;color:var(--text-light)">No favorites yet.</div>`;
+}
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = $("hamburger");
-    const navbar = document.querySelector(".navbar");
-    const mobileNav = $("mobile-nav");
-    const backToTop = $("back-to-top");
-    const avatar = $("profile-avatar");
-    const avatarUpload = $("avatar-upload");
-    const editBtn = $("edit-profile-btn");
-    const editModal = $("edit-modal");
-    const closeBtn = $("close-edit-modal");
-    const cancelBtn = $("cancel-edit-btn");
-    const form = $("edit-profile-form");
-    const userDropdown = $("user-dropdown");
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = $('hamburger');
+  const navbar = document.querySelector('.navbar');
+  const mobileNav = $('mobile-nav');
+  const backToTop = $('back-to-top');
+  const avatar = $('profile-avatar');
+  const avatarUpload = $('avatar-upload');
+  const editBtn = $('edit-profile-btn');
+  const editModal = $('edit-modal');
+  const closeBtn = $('close-edit-modal');
+  const cancelBtn = $('cancel-edit-btn');
+  const form = $('edit-profile-form');
+  const recipeModal = $('recipe-modal');
+  const closeRecipeBtn = $('close-recipe-modal');
+  const deleteBtn = $('delete-recipe-btn');
+  const user = getUser();
 
-    const user = getUser();
-    $("profile-name").textContent = user.fullName || user.name || "Chef Hazel";
-    $("profile-handle").textContent = user.username ? `@${user.username}` : "@chef-hazel";
-    $("profile-bio").textContent = user.bio || "Passionate home cook sharing family recipes from around the world.";
-    $("about-bio").textContent = user.bio || "Passionate home cook sharing family recipes from around the world.";
-    if (user.avatar) avatar.style.backgroundImage = `url(${user.avatar})`;
+  $('profile-name').textContent = user.fullName || user.name || 'Chef Hazel';
+  $('profile-handle').textContent = user.username ? `@${user.username}` : '@chef-hazel';
+  $('profile-bio').textContent = user.bio || 'Passionate home cook sharing family recipes from around the world.';
+  $('about-bio').textContent = user.bio || 'Passionate home cook sharing family recipes from around the world.';
 
-    if (hamburger && navbar && mobileNav) {
-      hamburger.addEventListener("click", () => {
-        const open = mobileNav.style.display !== "block";
-        mobileNav.style.display = open ? "block" : "none";
-        navbar.classList.toggle("open", open);
-      });
-    }
+  if (user.avatar) avatar.style.backgroundImage = `url(${user.avatar})`;
 
-    const search = (value) => {
-      const q = value.trim();
-      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
-    };
-
-    const searchInput = $("navbar-search-input");
-    const searchBtn = $("navbar-search-btn");
-    if (searchInput && searchBtn) {
-      searchBtn.addEventListener("click", () => search(searchInput.value));
-      searchInput.addEventListener("keydown", e => { if (e.key === "Enter") search(searchInput.value); });
-    }
-
-    if (backToTop) {
-      window.addEventListener("scroll", () => {
-        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
-      });
-      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-    }
-
-    if (editBtn) editBtn.addEventListener("click", openEditModal);
-    if (closeBtn) closeBtn.addEventListener("click", closeEditModal);
-    if (cancelBtn) cancelBtn.addEventListener("click", closeEditModal);
-    if (editModal) {
-      editModal.addEventListener("click", (e) => {
-        if (e.target === editModal) closeEditModal();
-      });
-    }
-
-    if (avatar && avatarUpload) {
-      avatar.addEventListener("click", () => avatarUpload.click());
-      avatarUpload.addEventListener("change", () => {
-        const file = avatarUpload.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          avatar.style.backgroundImage = `url(${reader.result})`;
-          const u = getUser();
-          u.avatar = reader.result;
-          setUser(u);
-          showToast("Avatar updated.", "success");
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const u = getUser();
-        u.username = $("edit-username").value.trim();
-        u.fullName = $("edit-fullname").value.trim();
-        u.bio = $("edit-bio").value.trim();
-        u.location = $("edit-location").value.trim();
-
-        if (!u.username && !u.fullName) {
-          showToast("Please enter a username or name.", "error");
-          return;
-        }
-
-        setUser(u);
-        $("profile-name").textContent = u.fullName || u.name || "Chef Marco";
-        $("profile-handle").textContent = u.username ? `@${u.username}` : "@chef-marco";
-        $("profile-bio").textContent = u.bio || "";
-        $("about-bio").textContent = u.bio || "";
-        closeEditModal();
-        showToast("Profile updated successfully.", "success");
-      });
-    }
-
-    document.querySelectorAll(".profile-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".profile-tab").forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-        tab.classList.add("active");
-        const target = $(tab.dataset.tab);
-        if (target) target.classList.add("active");
-      });
+  if (hamburger && navbar && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.style.display !== 'block';
+      mobileNav.style.display = open ? 'block' : 'none';
+      navbar.classList.toggle('open', open);
     });
+  }
 
-    renderCards();
+  const search = (value) => {
+    const q = value.trim();
+    if (q) window.location.href = `search-results.html?q=${encodeURIComponent(q)}`;
+  };
+
+  const searchInput = $('navbar-search-input');
+  const searchBtn = $('navbar-search-btn');
+  if (searchInput && searchBtn) {
+    searchBtn.addEventListener('click', () => search(searchInput.value));
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') search(searchInput.value); });
+  }
+
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      backToTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  if (editBtn) editBtn.addEventListener('click', openEditModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeEditModal);
+  if (cancelBtn) cancelBtn.addEventListener('click', closeEditModal);
+  if (editModal) {
+    editModal.addEventListener('click', (e) => {
+      if (e.target === editModal) closeEditModal();
+    });
+  }
+
+  if (recipeModal) {
+    recipeModal.addEventListener('click', (e) => {
+      if (e.target === recipeModal) closeRecipeModal();
+    });
+  }
+  if (closeRecipeBtn) closeRecipeBtn.addEventListener('click', closeRecipeModal);
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+      const id = deleteBtn.dataset.id;
+      if (!id) return;
+      const ok = confirm('Delete this recipe? This cannot be undone.');
+      if (!ok) return;
+      deleteRecipe(id);
+    });
+  }
+
+  if (avatar && avatarUpload) {
+    avatar.addEventListener('click', () => avatarUpload.click());
+    avatarUpload.addEventListener('change', () => {
+      const file = avatarUpload.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        avatar.style.backgroundImage = `url(${reader.result})`;
+        const u = getUser();
+        u.avatar = reader.result;
+        setUser(u);
+        showToast('Avatar updated.', 'success');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = getUser();
+      u.username = $('edit-username').value.trim();
+      u.fullName = $('edit-fullname').value.trim();
+      u.bio = $('edit-bio').value.trim();
+      u.location = $('edit-location').value.trim();
+
+      if (!u.username && !u.fullName) {
+        showToast('Please enter a username or name.', 'error');
+        return;
+      }
+
+      setUser(u);
+      $('profile-name').textContent = u.fullName || u.name || 'Chef Marco';
+      $('profile-handle').textContent = u.username ? `@${u.username}` : '@chef-marco';
+      $('profile-bio').textContent = u.bio || '';
+      $('about-bio').textContent = u.bio || '';
+      closeEditModal();
+      showToast('Profile updated successfully.', 'success');
+    });
+  }
+
+  document.querySelectorAll('.profile-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const target = $(tab.dataset.tab);
+      if (target) target.classList.add('active');
+    });
   });
 
-  function logout() {
-    localStorage.removeItem("user");
-    window.location.href = "index.html";
-  }
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.view-recipe-btn');
+    if (!btn) return;
+    const all = [...getMyRecipes(), ...getFavs()];
+    const recipe = all.find(r => String(r.id) === String(btn.dataset.id));
+    if (!recipe) {
+      showToast('Recipe not found.', 'error');
+      return;
+    }
+    openRecipeModal(recipe);
+  });
+
+  renderCards();
+});
+
+function logout() {
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
+}
 </script>
 </body>
 </html>
