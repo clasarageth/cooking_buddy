@@ -19,13 +19,21 @@
             background: #ff6b35;
             color: white;
             text-decoration: none;
-            font-size: 24px;
-            width: 50px;
-            height: 50px;
+
+            width: 35px;
+            height: 35px;
+
             border-radius: 50%;
-            display: flex;
+
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+
+            margin-left: 10px;
+            margin-right: 10px;
+
+            font-size: 22px;
+            font-weight: bold;
         }
 
         .recipes {
@@ -60,12 +68,34 @@
 <body>
 
     <div class="header">
+
         <h1>🍳 Cooking Buddy</h1>
 
-        <a href="{% url 'create_recipe' %}" class="add-btn">
-            +
-        </a>
-    </div>
+        {% if user.is_authenticated %}
+        <div>
+
+            
+            <a href="{% url 'create_recipe' %}" class="add-btn">
+                +
+            </a>
+            Welcome, <strong>{{ user.username }}</strong>
+
+            |
+
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+        {% endif %}
+
+    </div>  
 
     <hr>
 
