@@ -107,6 +107,11 @@
     }
     .mobile-nav .nav-link { display: block; padding: 8px 0; }
 
+    .hero-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    }
 
     .profile-cover {
       height: 220px;
@@ -120,6 +125,9 @@
       background: rgba(44,22,8,0.45);
     }
 
+    section {
+      padding: 72px 0;
+    }
 
     .profile-header {
       background: white;
@@ -201,7 +209,27 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
+    .recipe-card {
+    width: 100%;
+    max-width: 240px;
+    border-radius: 12px;
+    overflow: hidden;
+    }
 
+    .recipe-card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+    }
+
+    .recipe-title {
+        font-size: 14px;
+        margin: 6px 0;
+    }
+
+    .recipe-details {
+        font-size: 12px;
+    }
     .recipe-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -258,6 +286,11 @@
       transform: scale(1);
     }
 
+    
+    .hero-gallery-section {
+      background: #fff;
+      padding-top: 24px;
+    }
 
     .recipe-detail-grid {
       display: grid;
@@ -433,7 +466,7 @@
 
 
             <div class="profile-stats">
-              <div><div class="profile-stat-num" id="recipes-stat">0</div><div class="profile-stat-label">Recipes</div></div>
+              <div><div class="profile-stat-num" id="recipes-stat">{{ total_recipes }}</div><div class="profile-stat-label">Recipes</div></div>
               <div><div class="profile-stat-num" id="fav-stat">0</div><div class="profile-stat-label">Favorites</div></div>
             </div>
           </div>
@@ -457,19 +490,53 @@
 </div>
 
 
-<section class="section">
-  <div class="container">
-    <div class="tab-panel active" id="tab-recipes">
-      <div class="recipe-grid" id="profile-my-recipes"></div>
-    </div>
+<section class="section hero-gallery-section">
+  <div class="hero-gallery">
 
+    {% for recipe in user_recipes %}
 
-    <div class="tab-panel" id="tab-favorites">
-      <div class="recipe-grid" id="profile-favorites"></div>
-    </div>
+    <article class="recipe-card" style="margin-left: 30px;">
 
+        <a href="{% url 'recipe_detail' recipe.id %}" class="gallery-item">
 
-    
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/700x500?text=No+Image"
+                     alt="{{ recipe.title }}">
+            {% endif %}
+
+            <div class="recipe-body">
+                <h3 class="recipe-title">{{ recipe.title }}</h3>
+
+                <p class="recipe-details">{{ recipe.description }}</p>
+
+                <div class="recipe-meta">
+                    <span>
+                        <i class="fa-regular fa-clock"></i>
+                        {{ recipe.cooking_time }} min
+                    </span>
+                </div>
+
+                {% if recipe.average_rating %}
+                    <p class="recipe-details">
+                        ⭐ {{ recipe.average_rating|floatformat:1 }}/5
+                    </p>
+                {% else %}
+                    <p class="recipe-details">No ratings yet</p>
+                {% endif %}
+            </div>
+
+        </a>
+
+    </article>
+
+    {% empty %}
+        <p style="text-align:center;">
+            You haven't created any recipes yet.
+        </p>
+    {% endfor %}
+
   </div>
 </section>
 
