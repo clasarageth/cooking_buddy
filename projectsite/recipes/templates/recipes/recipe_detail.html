@@ -184,11 +184,69 @@
         <ul class="instructions-list recipe-description" id="instruction-list"> {{ recipe.instructions }}</ul>
       </div>
 
+      <div style="margin-bottom:48px">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <h2 style="font-size:1.5rem;margin:0;">Ratings & Reviews</h2>
+        <span style="font-size:1.5rem">⭐</span>
+    </div>
+
+    <!-- REVIEWS CONTAINER -->
+    <div class="recipe-description">
+
+        {% for review in recipe.reviews.all %}
+
+            <div style="padding:14px 0;">
+
+                <p style="margin:0;">
+                    <strong>{{ review.user.username }}</strong>
+                </p>
+
+                <p style="margin:4px 0;color:#f5a623;">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </p>
+
+                <p style="margin:6px 0;color:var(--text-dark);">
+                    {{ review.comment }}
+                </p>
+
+            </div>
+
+            {% if not forloop.last %}
+                <hr style="border:1px solid #eee;margin:10px 0;">
+            {% endif %}
+
+        {% empty %}
+
+            <p style="color:var(--text-light);">
+                No reviews yet.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+      
+
     </div>
 
     <aside class="recipe-sidebar">
         <div class="recipe-sidebar-card">
             <h4 style="margin-bottom:16px">Quick Info</h4>
+            <div id="sidebar-quick-info"> 
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+                    <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-tag" style="color:var(--orange);margin-right:6px"></i>Category</span>
+                    <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">{{ recipe.category }}</span>
+                </div>
+            </div>
             <div id="sidebar-quick-info"> 
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
                     <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-clock" style="color:var(--orange);margin-right:6px"></i>Prep + Cook</span>
@@ -234,18 +292,29 @@
         {% endif %}
 
       <div class="recipe-sidebar-card">
-          <button class="sidebar-action-btn" id="sidebar-fav-btn" type="button">
-              <i class="far fa-heart"></i>
-              <span>Save to Favorites</span>
-          </button>
-
           <button class="sidebar-action-btn" type="button" onclick="window.print()">
               <i class="fas fa-print"></i> Print Recipe
           </button>
 
-          <button class="sidebar-action-btn" type="button" id="share-btn">
+          <button class="sidebar-action-btn" type="button" onclick="shareRecipe()">
               <i class="fas fa-share-alt"></i> Share Recipe
           </button>
+
+          <script>
+          function shareRecipe() {
+              const url = window.location.href;
+
+              if (navigator.share) {
+                  navigator.share({
+                      title: document.title,
+                      url: url
+                  });
+              } else {
+                  navigator.clipboard.writeText(url);
+                  alert("Link copied to clipboard!");
+              }
+          }
+          </script>
       </div>
 
 
