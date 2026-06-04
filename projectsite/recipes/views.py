@@ -93,37 +93,32 @@ def recipe_detail(request, pk):
 
 @login_required
 def update_recipe(request, pk):
+    recipe = get_object_or_404(Recipe, id=pk)
 
-    recipe =get_object_or_404(Recipe, id=pk)
-
-    # Only the uploader can edit
     if recipe.author != request.user:
         return redirect('home')
 
-    form = RecipeForm(instance=recipe)
-
     if request.method == 'POST':
-
-        form = RecipeForm(
-            request.POST,
-            request.FILES,
-            instance=recipe
-        )
-
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
             form.save()
-
             return redirect('recipe_detail', pk=recipe.id)
+    else:
+        form = RecipeForm(
+            instance=recipe,
+            initial={
+                'title': recipe.title,
+                'description': recipe.description,
+                'category': recipe.category,
+                'cooking_time': recipe.cooking_time,
+                'servings': recipe.servings,
+                'ingredients': recipe.ingredients,
+                'instructions': recipe.instructions,
+            }
+        )
 
-    context = {
-        'form': form
-    }
+    return render(request, 'recipes/update_recipe.html', {'form': form})
 
-    return render(
-        request,
-        'recipes/update_recipe.html',
-        context
-    )
 
 @login_required
 def delete_recipe(request, pk):

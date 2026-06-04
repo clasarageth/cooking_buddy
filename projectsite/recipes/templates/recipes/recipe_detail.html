@@ -244,6 +244,12 @@
             <button class="sidebar-action-btn" type="button" id="share-btn">
             <i class="fas fa-share-alt"></i> Share Recipe
             </button>
+            {% if user.is_authenticated and user == recipe.author %}
+              <a href="{% url 'update_recipe' recipe.id %}" class="sidebar-action-btn">
+                  <i class="fas fa-edit"></i>
+                  <span>Edit Recipe</span>
+              </a>
+            {% endif %}
         </div>
     </aside>
   </div>

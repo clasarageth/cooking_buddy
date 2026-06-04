@@ -552,28 +552,38 @@
                 </div>
             </div>
 
-          <div class="form-section">
-                <div class="form-section-title">
-                    <i class="fas fa-image"></i> Cover Photo
-                </div>
+         <div class="form-section">
+    <div class="form-section-title">
+        <i class="fas fa-image"></i> Cover Photo
+    </div>
 
-                <div id="upload-zone" class="img-upload-zone">
-                    <i class="fas fa-cloud-upload-alt"></i>
+    <div id="upload-zone" class="img-upload-zone">
 
-                    <p><strong>Upload your photo</strong></p>
-                    <span>JPG, PNG, WebP up to 10MB</span>
-
-                    <br>
-
-                    {{ form.image }}
-
-                    <span class="form-error">
-                        {{ form.image.errors }}
-                    </span>
-                </div>
-
-                <div id="img-preview" class="img-preview" style="display:none"></div>
+        {% if form.instance.image %}
+            <div style="margin-bottom:12px;">
+                <img src="{{ form.instance.image.url }}"
+                     alt="Current Image"
+                     style="width:100%; max-height:250px; object-fit:cover; border-radius:12px;">
             </div>
+        {% else %}
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p><strong>No image uploaded yet</strong></p>
+        {% endif %}
+
+        <p><strong>Change your photo</strong></p>
+        <span>JPG, PNG, WebP up to 10MB</span>
+
+        <br>
+
+        {{ form.image }}
+
+        <span class="form-error">
+            {{ form.image.errors }}
+        </span>
+    </div>
+
+      <div id="img-preview" class="img-preview" style="display:none"></div>
+  </div>
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>

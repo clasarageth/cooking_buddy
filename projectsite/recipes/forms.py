@@ -3,11 +3,10 @@ from .models import Recipe, Review
 from django import forms
 
 
-class RecipeForm(ModelForm):
 
+class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-
         fields = [
             'title',
             'description',
@@ -22,20 +21,20 @@ class RecipeForm(ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
-                'id': 'recipe-title',
-                'placeholder': 'e.g.Adobo'
+                'id': 'title',
+                'placeholder': 'e.g. Adobo'
             }),
 
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
-                'id': 'recipe-desc',
+                'id': 'description',
                 'rows': 3,
                 'placeholder': 'A short, enticing description of your recipe…'
             }),
 
             'category': forms.Select(attrs={
                 'class': 'form-control',
-                'id': 'recipe-category'
+                'id': 'category'
             }),
 
             'cooking_time': forms.NumberInput(attrs={
@@ -53,10 +52,25 @@ class RecipeForm(ModelForm):
                 'min': 1,
                 'max': 100
             }),
+
             'image': forms.ClearableFileInput(attrs={
                 'class': 'form-control',
-                'id': 'recipe-image',
+                'id': 'img',
                 'accept': 'image/*'
+            }),
+
+            'ingredients': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'ingredients',
+                'rows': 4,
+                'placeholder': 'type the ingredients here '
+            }),
+
+            'instructions': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'instructions',
+                'rows': 6,
+                'placeholder': 'Describe steps'
             }),
         }
 
