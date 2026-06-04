@@ -59,6 +59,8 @@ def create_recipe(request):
             recipe.save()
 
             return redirect('home')
+        else:
+                print("FORM ERRORS:", form.errors) 
 
     context = {
         'form': form

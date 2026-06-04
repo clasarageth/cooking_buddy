@@ -482,77 +482,105 @@
 
 <section style="padding:48px 0 80px">
   <div class="container">
-    <form id="add-recipe-form" novalidate>
+    <form id="add-recipe-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
       <div class="add-recipe-layout">
         <div>
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-info-circle"></i> Basic Information</div>
 
             <div class="form-group">
-              <label class="form-label" for="recipe-title">Recipe Title <span style="color:var(--red-primary)">*</span></label>
-              <input type="text" class="form-control" id="recipe-title" placeholder="e.g. Creamy Tuscan Garlic Pasta">
-              <span class="form-error" data-error-for="recipe-title"></span>
+                <label class="form-label" for="{{ form.title.id_for_label }}">
+                    Recipe Title <span style="color:var(--red-primary)">*</span>
+                </label>
+
+                {{ form.title }}
+
+                <span class="form-error">
+                    {{ form.title.errors }}
+                </span>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="recipe-desc">Description <span style="color:var(--red-primary)">*</span></label>
-              <textarea class="form-control" id="recipe-desc" rows="3" placeholder="A short, enticing description of your recipe…"></textarea>
-              <span class="form-error" data-error-for="recipe-desc"></span>
+                <label class="form-label" for="{{ form.description.id_for_label }}">
+                    Description <span style="color:var(--red-primary)">*</span>
+                </label>
+
+                {{ form.description }}
+
+                <span class="form-error">
+                    {{ form.description.errors }}
+                </span>
             </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="recipe-category">Category <span style="color:var(--red-primary)">*</span></label>
-                <select class="form-control" id="recipe-category">
-                  <option value="">Select category…</option>
-                  <option value="Breakfast">🍳 Breakfast</option>
-                  <option value="Lunch">🥗 Lunch</option>
-                  <option value="Dinner">🍽️ Dinner</option>
-                  <option value="Dessert">🍰 Dessert</option>
-                  <option value="Snacks">🍿 Snacks</option>
-                  <option value="Drinks">🥤 Drinks</option>
-                </select>
-                <span class="form-error" data-error-for="recipe-category"></span>
-              </div>
-              
+            <div class="form-group">
+                <label class="form-label" for="{{ form.category.id_for_label }}">
+                    Category <span style="color:var(--red-primary)">*</span>
+                </label>
+
+                {{ form.category }}
+
+                <span class="form-error">
+                    {{ form.category.errors }}
+                </span>
             </div>
 
             <div class="form-row form-row-3">
-              <div class="form-group">
-                <label class="form-label" for="cooking-time">Cook Time (min) <span style="color:var(--red-primary)">*</span></label>
-                <input type="number" class="form-control" id="cooking-time" placeholder="30" min="1" max="1440">
-                <span class="form-error" data-error-for="cooking-time"></span>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="servings">Servings <span style="color:var(--red-primary)">*</span></label>
-                <input type="number" class="form-control" id="servings" placeholder="4" min="1" max="100">
-                <span class="form-error" data-error-for="servings"></span>
-              </div>
-              
-              </div>
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.cooking_time.id_for_label }}">
+                        Cook Time (min) <span style="color:var(--red-primary)">*</span>
+                    </label>
+
+                    {{ form.cooking_time }}
+
+                    <span class="form-error">
+                        {{ form.cooking_time.errors }}
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.servings.id_for_label }}">
+                        Servings <span style="color:var(--red-primary)">*</span>
+                    </label>
+
+                    {{ form.servings }}
+
+                    <span class="form-error">
+                        {{ form.servings.errors }}
+                    </span>
+                </div>
             </div>
 
           <div class="form-section">
-            <div class="form-section-title"><i class="fas fa-image"></i> Cover Photo</div>
-            <div id="upload-zone" class="img-upload-zone">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <p><strong>Drag & drop</strong> your photo here</p>
-              <span>or click to browse — JPG, PNG, WebP up to 10MB</span>
-              <br>
-              <button type="button" class="btn btn-secondary btn-sm" style="margin-top:12px" id="browse-btn">
-                <i class="fas fa-folder-open"></i> Browse Files
-              </button>
-              <input type="file" id="recipe-image" accept="image/*" style="display:none">
+                <div class="form-section-title">
+                    <i class="fas fa-image"></i> Cover Photo
+                </div>
+
+                <div id="upload-zone" class="img-upload-zone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+
+                    <p><strong>Upload your photo</strong></p>
+                    <span>JPG, PNG, WebP up to 10MB</span>
+
+                    <br>
+
+                    {{ form.image }}
+
+                    <span class="form-error">
+                        {{ form.image.errors }}
+                    </span>
+                </div>
+
+                <div id="img-preview" class="img-preview" style="display:none"></div>
             </div>
-            <div id="img-preview" class="img-preview" style="display:none"></div>
-          </div>
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
 
             <div id="ingredients-list">
               <div class="ingredient-input-row">
-                <input type="text" class="form-control ingredient-name" placeholder="Ingredient name" style="width: 700px;">
+                <input type="text" name="ingredients" class="form-control ingredient-name" style="width: 670px;">
               </div>
             </div>
 
@@ -563,7 +591,7 @@
 
             <div id="instructions-list">
               <div class="instruction-step-row">
-                <textarea class="form-control instruction-text" rows="2" placeholder="Describe steps" style="width: 700px;"></textarea>
+                <textarea  name="instructions" class="form-control instruction-text" rows="2" placeholder="Describe steps" style="width: 670px;"></textarea>
               </div>
             </div>
 
@@ -572,7 +600,9 @@
           
         </div>
 
-        
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-full" style="margin-bottom:10px">
+              <i class="fas fa-paper-plane"></i> Publish Recipe
+        </button>
       </div>
     </form>
   </div>
