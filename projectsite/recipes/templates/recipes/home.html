@@ -687,40 +687,47 @@
         <div class="hero-gallery">
 
             {% for recipe in top_recipes %}
+
             <article class="recipe-card">
-            <div class="recipe-thumb">
+
                 <a href="{% url 'recipe_detail' recipe.id %}" class="gallery-item">
 
                     {% if recipe.image %}
                         <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
                     {% else %}
                         <img src="https://via.placeholder.com/700x500?text=No+Image"
-                            alt="{{ recipe.title }}">
+                             alt="{{ recipe.title }}">
                     {% endif %}
 
                     <div class="recipe-body">
                         <h3 class="recipe-title">{{ recipe.title }}</h3>
+
                         <p class="recipe-details">{{ recipe.description }}</p>
+
                         <div class="recipe-meta">
-                            <span><i class="fa-regular fa-clock"></i> {{ recipe.cooking_time }} min</span>
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                {{ recipe.cooking_time }} min
+                            </span>
                         </div>
+
                         {% if recipe.average_rating %}
                             <p class="recipe-details">
                                 ⭐ {{ recipe.average_rating|floatformat:1 }}/5
                             </p>
                         {% else %}
-                            <p>No ratings yet</p>
+                            <p class="recipe-details">No ratings yet</p>
                         {% endif %}
                     </div>
 
                 </a>
 
+            </article>
+
             {% empty %}
-
-            <p style="text-align:center;">
-                No highly rated recipes yet.
-            </p>
-
+                <p style="text-align:center;">
+                    No highly rated recipes yet.
+                </p>
             {% endfor %}
 
         </div>
