@@ -514,10 +514,7 @@
                 </select>
                 <span class="form-error" data-error-for="recipe-category"></span>
               </div>
-              <div class="form-group">
-                <label class="form-label" for="cuisine">Cuisine Type</label>
-                <input type="text" class="form-control" id="cuisine" placeholder="e.g. Italian, Thai, Mexican">
-              </div>
+              
             </div>
 
             <div class="form-row form-row-3">
@@ -531,31 +528,9 @@
                 <input type="number" class="form-control" id="servings" placeholder="4" min="1" max="100">
                 <span class="form-error" data-error-for="servings"></span>
               </div>
-              <div class="form-group">
-                <label class="form-label">Difficulty</label>
-                <div class="difficulty-selector">
-                  <label class="diff-option">
-                    <input type="radio" name="difficulty" value="Easy" checked>
-                    <span class="diff-label"><i class="fas fa-smile" style="color:#22c55e"></i> Easy</span>
-                  </label>
-                  <label class="diff-option">
-                    <input type="radio" name="difficulty" value="Medium">
-                    <span class="diff-label"><i class="fas fa-meh" style="color:#f97316"></i> Med</span>
-                  </label>
-                  <label class="diff-option">
-                    <input type="radio" name="difficulty" value="Hard">
-                    <span class="diff-label"><i class="fas fa-fire" style="color:#dc2626"></i> Hard</span>
-                  </label>
-                </div>
+              
               </div>
             </div>
-
-            <div class="form-group">
-              <label class="form-label" for="recipe-tags">Tags</label>
-              <input type="text" class="form-control" id="recipe-tags" placeholder="e.g. vegetarian, quick, italian (comma-separated)">
-              <span class="form-hint">Separate tags with commas to help people discover your recipe</span>
-            </div>
-          </div>
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-image"></i> Cover Photo</div>
@@ -574,108 +549,30 @@
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
-            <p style="font-size:.88rem;color:var(--text-light);margin-bottom:20px">Add each ingredient with its amount. At least 1 required.</p>
 
             <div id="ingredients-list">
               <div class="ingredient-input-row">
-                <input type="text" class="form-control ingredient-amount" placeholder="Amount (e.g. 2 cups)" style="max-width:140px">
-                <input type="text" class="form-control ingredient-name" placeholder="Ingredient name">
-                <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                <input type="text" class="form-control ingredient-name" placeholder="Ingredient name" style="width: 700px;">
               </div>
             </div>
 
-            <button type="button" id="add-ingredient-btn" class="add-row-btn" style="margin-top:10px">
-              <i class="fas fa-plus"></i> Add Ingredient
-            </button>
           </div>
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-list-ol"></i> Instructions</div>
-            <p style="font-size:.88rem;color:var(--text-light);margin-bottom:20px">Write each step clearly. At least 1 step required.</p>
 
             <div id="instructions-list">
               <div class="instruction-step-row">
-                <div class="step-number-label">1</div>
-                <textarea class="form-control instruction-text" rows="2" placeholder="Describe step 1…"></textarea>
-                <button type="button" class="remove-row-btn" style="margin-top:8px" onclick="removeInstructionRow(this)"><i class="fas fa-times"></i></button>
+                <textarea class="form-control instruction-text" rows="2" placeholder="Describe steps" style="width: 700px;"></textarea>
               </div>
             </div>
 
-            <button type="button" id="add-instruction-btn" class="add-row-btn" style="margin-top:10px">
-              <i class="fas fa-plus"></i> Add Step
-            </button>
           </div>
 
-          <div class="form-section">
-            <div class="form-section-title" style="cursor:pointer;user-select:none" onclick="toggleNutrition()">
-              <i class="fas fa-heartbeat"></i> Nutritional Info
-              <span style="margin-left:auto;font-size:.8rem;color:var(--text-light);font-weight:400">(Optional)</span>
-              <i class="fas fa-chevron-down" id="nutrition-chevron" style="margin-left:8px;font-size:.8rem;color:var(--text-light);transition:transform .2s"></i>
-            </div>
-            <div id="nutrition-fields" style="display:none">
-              <div class="form-row form-row-3" style="margin-top:16px">
-                <div class="form-group"><label class="form-label">Calories</label><input type="number" class="form-control" placeholder="kcal"></div>
-                <div class="form-group"><label class="form-label">Protein (g)</label><input type="number" class="form-control" placeholder="g"></div>
-                <div class="form-group"><label class="form-label">Carbs (g)</label><input type="number" class="form-control" placeholder="g"></div>
-                <div class="form-group"><label class="form-label">Fat (g)</label><input type="number" class="form-control" placeholder="g"></div>
-                <div class="form-group"><label class="form-label">Fiber (g)</label><input type="number" class="form-control" placeholder="g"></div>
-                <div class="form-group"><label class="form-label">Sugar (g)</label><input type="number" class="form-control" placeholder="g"></div>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
-        <div>
-          <div class="add-recipe-sidebar-card" style="position:sticky;top:90px">
-            <h4>Publish Recipe</h4>
-            <p>Ready to share with the world?</p>
-            <button type="submit" id="submit-btn" class="btn btn-primary btn-full" style="margin-bottom:10px">
-              <i class="fas fa-paper-plane"></i> Publish Recipe
-            </button>
-            <button type="button" class="btn btn-secondary btn-full" id="save-draft-btn">
-              <i class="fas fa-save"></i> Save as Draft
-            </button>
-            <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
-            <div style="font-size:.82rem;color:var(--text-light)">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <i class="fas fa-check-circle" style="color:var(--green)"></i>
-                <span>Auto-saved every 30 seconds</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <i class="fas fa-check-circle" style="color:var(--green)"></i>
-                <span>Visible to all users</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <i class="fas fa-check-circle" style="color:var(--green)"></i>
-                <span>Edit or delete anytime</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="add-recipe-sidebar-card">
-            <h4>Dietary Info</h4>
-            <p>Check all that apply</p>
-            <div style="display:flex;flex-direction:column;gap:10px">
-              <label class="checkbox-group"><input type="checkbox"> <span>🌱 Vegetarian</span></label>
-              <label class="checkbox-group"><input type="checkbox"> <span>🌿 Vegan</span></label>
-              <label class="checkbox-group"><input type="checkbox"> <span>🌾 Gluten-Free</span></label>
-              <label class="checkbox-group"><input type="checkbox"> <span>🥛 Dairy-Free</span></label>
-              <label class="checkbox-group"><input type="checkbox"> <span>🥜 Nut-Free</span></label>
-              <label class="checkbox-group"><input type="checkbox"> <span>🐟 Pescatarian</span></label>
-            </div>
-          </div>
-
-          <div class="add-recipe-sidebar-card" style="background:rgba(255,140,66,0.06);border-color:rgba(255,140,66,0.25)">
-            <h4><i class="fas fa-lightbulb" style="color:var(--orange)"></i> Writing Tips</h4>
-            <p style="font-size:.85rem;line-height:1.6;margin-bottom:0">
-              ✅ Use exact measurements<br>
-              ✅ Number each step clearly<br>
-              ✅ Add cooking temperatures<br>
-              ✅ Mention allergy info<br>
-              ✅ Include serving suggestions
-            </p>
-          </div>
-        </div>
+        
       </div>
     </form>
   </div>

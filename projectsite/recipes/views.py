@@ -185,3 +185,32 @@ def add_review(request, pk):
         'recipes/add_review.html',
         {'form': form, 'recipe': recipe}
     )
+
+@login_required
+def profile(request):
+    """Display user's profile page"""
+    user = request.user
+    
+    # Get user's recipes
+    user_recipes = Recipe.objects.filter(author=user).order_by('-created_at')
+    
+    # Get user's reviews
+    user_reviews = Review.objects.filter(user=user).order_by('-created_at')
+    
+    # Calculate stats
+    total_recipes = user_recipes.count()
+    total_reviews = user_reviews.count()
+    
+    # Calculate average rating across user's recipes (from reviews)
+    avg_rating = Review.objects.filter(recipe__in=user_recipes).aggregate(Avg('rating'))['rating__avg']
+    
+    context = {
+        'user_recipes': user_recipes,
+        'user_reviews': user_reviews,
+        'total_recipes': total_recipes,
+        'total_reviews': total_reviews,
+        'avg_rating': avg_rating,
+    }
+    
+    return render(request, 'recipes/profile.html', context)
+
