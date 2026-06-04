@@ -1,493 +1,823 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Buddy — Discover Delicious Recipes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --red-primary: #e63946;
-            --red-dark: #c1121f;
-            --red-light: #ff6b6b;
-            --white: #ffffff;
-            --text-dark: #2b2d42;
-            --text-light: #6c757d;
-            --gray-light: #f8f9fa;
-            --border: #ece6d8;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
-            --radius: 12px;
-            --radius-lg: 18px;
-            --brown: #8a0012;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooking Buddy — Discover Delicious Recipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 18px;
+      --brown: #8a0012;
+      --brown-dark: #5e0010;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
-            color: var(--text-dark);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #91160b 50%,);
+      line-height: 1.6;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        /* Navbar */
-        .navbar {
-            background: rgba(255,255,255,.98);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
-        .navbar-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            gap: 16px;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.3rem;
-            color: var(--brown);
-        }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s ease;
+    }
 
-        .navbar-brand span {
-            color: var(--red-primary);
-        }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
 
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            background: #fff5f5;
-            color: var(--red-primary);
-            font-size: 1.2rem;
-        }
+    .btn-primary {
+      background: var(--red-primary);
+      color: var(--white);
+    }
 
-        /* Search Bar */
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--gray-light);
-            border-radius: 999px;
-            padding: 10px 16px;
-            max-width: 400px;
-            width: 100%;
-        }
+    .btn-primary:hover {
+      background: var(--red-dark);
+    }
 
-        .search-bar i {
-            color: var(--text-light);
-        }
+    .btn-secondary {
+      background: #fff;
+      color: var(--red-primary);
+      border: 1px solid var(--border);
+    }
 
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            font-size: 0.95rem;
-        }
+    .btn-outline-white {
+      border: 1px solid rgba(255,255,255,.5);
+      color: #fff;
+      background: transparent;
+    }
 
-        .search-bar button {
-            border: none;
-            background: var(--red-primary);
-            color: white;
-            border-radius: 999px;
-            padding: 10px 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .25s ease;
-        }
+    .btn-lg {
+      padding: 1rem 1.5rem;
+    }
 
-        .search-bar button:hover {
-            background: var(--red-dark);
-        }
+    .btn-sm {
+      padding: 0.75rem 1rem;
+    }
 
-        /* Auth Section */
-        .auth-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
 
-        .add-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--red-primary);
-            color: white;
-            font-weight: 700;
-            font-size: 1.4rem;
-            transition: .25s ease;
-            box-shadow: var(--shadow);
-        }
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+    }
 
-        .add-btn:hover {
-            background: var(--red-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 1.2rem;
+    }
 
-        .welcome-text {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
+    .navbar-brand span {
+      color: var(--red-primary);
+    }
 
-        .logout-btn {
-            background: var(--red-primary);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 999px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .25s ease;
-        }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--red-primary);
+      background: var(--red-bg, #fff5f5);
+    }
 
-        .logout-btn:hover {
-            background: var(--red-dark);
-            transform: translateY(-2px);
-        }
+    .navbar-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      max-width: 380px;
+      width: 100%;
+    }
 
-        .login-btn, .signup-btn {
-            padding: 10px 20px;
-            border-radius: 999px;
-            font-weight: 600;
-            transition: .25s ease;
-        }
+    .navbar-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+    }
 
-        .login-btn {
-            background: white;
-            color: var(--red-primary);
-            border: 1px solid var(--border);
-        }
+    .navbar-search button {
+      border: none;
+      background: var(--red-primary);
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
 
-        .login-btn:hover {
-            border-color: var(--red-primary);
-        }
+    .navbar-nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
 
-        .signup-btn {
-            background: var(--red-primary);
-            color: white;
-            border: none;
-        }
+    .nav-link {
+      color: var(--text-light);
+      font-weight: 600;
+    }
 
-        .signup-btn:hover {
-            background: var(--red-dark);
-        }
+    .nav-link.active,
+    .nav-link:hover {
+      color: var(--red-primary);
+    }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(230,57,70,.9), rgba(138,0,18,.85)),
-                        url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&auto=format&fit=crop&q=80') center/cover;
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .hero h1 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
+    .flex {
+      display: flex;
+    }
 
-        .hero h1 .highlight {
-            color: #ffd6d6;
-        }
+    .gap-sm {
+      gap: 8px;
+    }
 
-        .hero p {
-            font-size: 1.05rem;
-            opacity: 0.9;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
 
-        /* Recipes Section */
-        .recipes-section {
-            padding: 20px 0 60px;
-        }
+    .hamburger span {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--red-dark);
+    }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+    .mobile-nav {
+      display: none;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
 
-        .section-title {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
+    .mobile-nav .nav-link {
+      display: block;
+      padding: 8px 0;
+    }
 
-        .section-subtitle {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 100px 0 60px;
+    }
 
-        .recipes {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(230,57,70,.92), rgba(138,0,18,.82)),
+        url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+      transform: scale(1.03);
+    }
 
-        .card {
-            background: white;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform .25s ease, box-shadow .25s ease;
-            border: 1px solid var(--border);
-        }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 38%);
+    }
 
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-        }
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+    .hero-content {
+      text-align: center;
+      max-width: 760px;
+      color: #fff;
+    }
 
-        .content {
-            padding: 20px;
-        }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(8px);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
 
-        .content h3 {
-            margin-top: 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin: 0 0 16px;
+    }
 
-        .content p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-        }
+    .hero .highlight {
+      color: #ffd6d6;
+    }
 
-        .content .cooking-time {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+    .hero p {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.88);
+      margin: 0 auto 26px;
+    }
 
-        .content .rating {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #ffc107;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+    .hero-search-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+      justify-content: center;
+    }
 
-        .content a {
-            display: inline-block;
-            margin-top: 12px;
-            color: var(--red-primary);
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: .2s ease;
-        }
+    .hero-search-bar input {
+      flex: 1;
+      min-width: 240px;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 18px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
 
-        .content a:hover {
-            color: var(--red-dark);
-            text-decoration: underline;
-        }
+    .hero-search-bar button {
+      border: none;
+      border-radius: 999px;
+      padding: 16px 22px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-        .no-recipes {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 1.1rem;
-            padding: 60px 20px;
-        }
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+      justify-content: center;
+    }
 
-        /* Footer */
-        footer {
-            background: var(--text-dark);
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
+    .cat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      cursor: pointer;
+      transition: .2s ease;
+      user-select: none;
+    }
 
-        footer a {
-            color: #ffb3b3;
-        }
+    .cat-chip:hover {
+      background: rgba(255,255,255,.24);
+      transform: translateY(-2px);
+    }
 
-        footer a:hover {
-            color: white;
-        }
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar-inner {
-                flex-direction: column;
-                align-items: stretch;
-            }
+    .hero-stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
 
-            .search-bar {
-                max-width: 100%;
-            }
+    .hero-stat-label {
+      color: rgba(255,255,255,.75);
+      font-size: .92rem;
+    }
 
-            .auth-section {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+    .hero-center-image {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
 
-            .recipes {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .hero-center-link {
+      display: block;
+      max-width: 460px;
+      width: min(90vw, 460px);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 5px solid rgba(255, 255, 255, 0.18);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-center-link:hover {
+      transform: scale(1.02);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .hero-center-link img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 20px;
+    }
+
+    .hero-gallery-section {
+      background: #fff;
+      padding-top: 24px;
+    }
+
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .gallery-item {
+      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, var(--brown-dark), var(--brown));
+      text-align: center;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: #2b2d42;
+      color: #fff;
+      padding: 40px 0 20px;
+    }
+
+    .footer-brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand span {
+      color: var(--red-primary);
+    }
+
+    .footer-desc {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-col-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-links a:hover {
+      color: #ffb3b3;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+    }
+
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--red-primary);
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      z-index: 1100;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3000;
+      display: grid;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #fff;
+      border-left: 4px solid var(--red-primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+      max-width: 320px;
+    }
+
+    @media (max-width: 900px) {
+      .navbar-search,
+      .navbar-nav,
+      .navbar-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+      }
+
+      .hero-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-item img {
+        height: 200px;
+      }
+
+      .hero-center-image {
+        margin-top: 28px;
+      }
+    }
+
+    .navbar.open .mobile-nav {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .hero-center-link {
+        width: 100%;
+      }
+
+      .hero-search-bar input {
+        min-width: 100%;
+      }
+    }
+
+    .recipe-body { padding: 16px; }
+
+    .recipe-title {
+      font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; color: var(--text-dark);
+    }
+    .recipe-details {
+      color: var(--text-light); font-size: .95rem; margin-bottom: 14px; line-height: 1.6;
+    }
+    .recipe-meta {
+      display: flex; gap: 12px; flex-wrap: wrap; color: var(--text-light); font-size: .88rem;
+      margin-bottom: 14px;
+    }
+    .recipe-actions {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-inner">
-                <a href="{% url 'home' %}" class="navbar-brand">
-                    <div class="brand-icon"><i class="fas fa-utensils"></i></div>
-                    Cooking <span>Buddy</span>
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="{% url 'home' %}" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>
+        Cooking <span>Buddy</span>
+      </a>
+
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" aria-label="Search"><i class="fas fa-arrow-right"></i></button>
+      </div>
+
+      <nav class="navbar-nav">
+        <a href="{% url 'home' %}" class="nav-link active">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+         
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
+            <div class="avatar" id="nav-user-avatar"></div>
+            <span class="user-name"></span>
+          </button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="navbar-search" style="max-width:100%;margin-bottom:8px">
+      <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+      <input type="text" placeholder="Search recipes…" id="mobile-search-input">
+    </div>
+    <a href="{% url 'home' %}" class="nav-link active">Home</a>
+    <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <a href="my_recipes.html" class="nav-link">My Recipes</a>
+    <a href="add_recipe.html" class="nav-link">Add Recipe</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+
+
+    <section class="section hero-gallery-section" style="margin-bottom: 100px;">
+    <div class="container">
+
+        <div class="section-header" style="text-align:center;margin-bottom:24px">
+            <div class="section-title">Top Rated Recipes</div>
+            <p class="section-subtitle">
+                Community favorites with the highest ratings
+            </p>
+        </div>
+
+        <div class="hero-gallery">
+
+            {% for recipe in top_recipes %}
+            <article class="recipe-card">
+            <div class="recipe-thumb">
+                <a href="{% url 'recipe_detail' recipe.id %}" class="gallery-item">
+
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/700x500?text=No+Image"
+                            alt="{{ recipe.title }}">
+                    {% endif %}
+
+                    <div class="recipe-body">
+                        <h3 class="recipe-title">{{ recipe.title }}</h3>
+                        <p class="recipe-details">{{ recipe.description }}</p>
+                        <div class="recipe-meta">
+                            <span><i class="fa-regular fa-clock"></i> {{ recipe.cooking_time }} min</span>
+                        </div>
+                        {% if recipe.average_rating %}
+                            <p class="recipe-details">
+                                ⭐ {{ recipe.average_rating|floatformat:1 }}/5
+                            </p>
+                        {% else %}
+                            <p>No ratings yet</p>
+                        {% endif %}
+                    </div>
+
                 </a>
 
-                <form method="GET" class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" name="q" placeholder="Search recipes..." value="{{ request.GET.q }}">
-                    <button type="submit">Search</button>
-                </form>
+            {% empty %}
 
-                <div class="auth-section">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'create_recipe' %}" class="add-btn" title="Add Recipe">+</a>
-                    <span class="welcome-text">Welcome, <strong>{{ user.username }}</strong></span>
-                    <form action="{% url 'logout' %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="logout-btn">Logout</button>
-                    </form>
-                    {% else %}
-                    <a href="{% url 'login' %}" class="login-btn">Login</a>
-                    <a href="{% url 'register' %}" class="signup-btn">Sign Up</a>
-                    {% endif %}
-                </div>
-            </div>
+            <p style="text-align:center;">
+                No highly rated recipes yet.
+            </p>
+
+            {% endfor %}
+
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>🍳 Cooking <span class="highlight">Buddy</span></h1>
-            <p>Discover, save, and share delicious recipes from home cooks worldwide</p>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Recipes Section -->
-    <section class="recipes-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">All Recipes</h2>
-                <p class="section-subtitle">Browse our collection of delicious recipes</p>
-            </div>
 
-            <div class="recipes">
-                {% for recipe in recipes %}
-                <div class="card">
-                    {% if recipe.image %}
-                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=700&auto=format&fit=crop&q=80" alt="{{ recipe.title }}">
-                    {% endif %}
-                    
-                    <div class="content">
-                        <h3>{{ recipe.title }}</h3>
-                        <p>{{ recipe.description|truncatewords:15 }}</p>
-                        <p class="cooking-time">
-                            <i class="fas fa-clock"></i>
-                            ⏱ {{ recipe.cooking_time }} mins
-                        </p>
-                        {% if recipe.average_rating %}
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            ⭐ {{ recipe.average_rating|floatformat:1 }}/5
-                        </p>
-                        {% else %}
-                        <p class="rating">
-                            <i class="fas fa-star"></i>
-                            No ratings yet
-                        </p>
-                        {% endif %}
-                        <a href="{% url 'recipe_detail' recipe.id %}">View Recipe →</a>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="no-recipes">
-                    <i class="fas fa-utensils" style="font-size: 3rem; color: var(--red-primary); margin-bottom: 16px;"></i>
-                    <p>No recipes found yet.</p>
-                    {% if user.is_authenticated %}
-                    <p style="margin-top: 12px;">
-                        <a href="{% url 'create_recipe' %}" style="color: var(--red-primary); font-weight: 700;">
-                            Be the first to add a recipe! →
-                        </a>
-                    </p>
-                    {% else %}
-                    <p style="margin-top: 12px;">
-                        <a href="{% url 'register' %}" style="color: var(--red-primary); font-weight: 700;">
-                            Sign up to start sharing recipes! →
-                        </a>
-                    </p>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
+        <p class="footer-desc">Your go-to destination for discovering, saving, and sharing amazing recipes from home cooks and chefs worldwide.</p>
+      </div>
+      
+      
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; 2026 <a href="{% url 'home' %}">Cooking Buddy</a>. Made with ❤️ for food lovers everywhere.
+    </div>
+  </div>
+</footer>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Cooking Buddy. Made with ❤️ for food lovers everywhere.</p>
-        </div>
-    </footer>
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
 
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function showToast(message, type = "info") {
+    const wrap = $("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    wrap.appendChild(toast);
+    setTimeout(() => toast.remove(), 2600);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = $("hamburger");
+    const navbar = document.querySelector(".navbar");
+    const mobileNav = $("mobile-nav");
+    const backToTop = $("back-to-top");
+
+    if (hamburger && navbar && mobileNav) {
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.style.display !== "block";
+        mobileNav.style.display = open ? "block" : "none";
+        navbar.classList.toggle("open", open);
+      });
+    }
+
+    const search = (value) => {
+      const q = value.trim();
+      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+    };
+
+    const heroSearchInput = $("hero-search-input");
+    const heroSearchBtn = $("hero-search-btn");
+    if (heroSearchInput && heroSearchBtn) {
+      heroSearchBtn.addEventListener("click", () => search(heroSearchInput.value));
+      heroSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(heroSearchInput.value);
+      });
+    }
+
+    const navSearchInput = $("navbar-search-input");
+    const navSearchBtn = $("navbar-search-btn");
+    if (navSearchInput && navSearchBtn) {
+      navSearchBtn.addEventListener("click", () => search(navSearchInput.value));
+      navSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(navSearchInput.value);
+      });
+    }
+
+    const mobileSearchInput = $("mobile-search-input");
+    if (mobileSearchInput) {
+      mobileSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(mobileSearchInput.value);
+      });
+    }
+
+    if (backToTop) {
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "{% url 'home' %}";
+  }
+</script>
 </body>
 </html>

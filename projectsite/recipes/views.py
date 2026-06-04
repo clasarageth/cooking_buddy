@@ -18,11 +18,19 @@ def home(request):
             Q(title__icontains=query) |
             Q(ingredients__icontains=query)
         ).annotate(
-            average_rating = Avg('reviews__rating')
+            average_rating=Avg('reviews__rating')
         )
 
+    top_recipes = (
+        Recipe.objects.annotate(
+            average_rating=Avg('reviews__rating')
+        )
+        .order_by('-average_rating')[:3]
+    )
+
     context = {
-        'recipes': recipes
+        'recipes': recipes,
+        'top_recipes': top_recipes,
     }
 
     return render(request, 'recipes/home.html', context)
