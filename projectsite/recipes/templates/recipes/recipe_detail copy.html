@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ recipe.title }}</title>
+</head>
+<body>
+
+    <a href="{% url 'home' %}">
+        ← Back to Home
+    </a>
+
+    <h1>{{ recipe.title }}</h1>
+
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" width="500">
+    {% endif %}
+
+     <p>
+        <strong>Uploaded By:</strong>
+        {{ recipe.author.username }}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        {{ recipe.category }}
+    </p>
+
+    <p>
+        <strong>Cooking Time:</strong>
+        {{ recipe.cooking_time }} minutes
+    </p>
+
+    <p>
+        <strong>Servings:</strong>
+        {{ recipe.servings }}
+    </p>
+
+    <h2>Description</h2>
+    <p>{{ recipe.description }}</p>
+
+    <h2>Ingredients</h2>
+    <p>{{ recipe.ingredients|linebreaks }}</p>
+
+    <h2>Instructions</h2>
+    <p>{{ recipe.instructions|linebreaks }}</p>
+
+   <hr>
+
+<h2>Ratings & Reviews</h2>
+
+{% if average_rating %}
+    <p>
+        <strong>Average Rating:</strong>
+        {{ average_rating|floatformat:1 }} ⭐
+    </p>
+{% else %}
+    <p>No ratings yet.</p>
+{% endif %}
+
+{% if user.is_authenticated and user != recipe.author %}
+    <a href="{% url 'add_review' recipe.id %}">
+        Rate This Recipe
+    </a>
+{% endif %}
+
+{% for review in recipe.reviews.all %}
+
+    <hr>
+
+    <p>
+        <strong>{{ review.user.username }}</strong>
+    </p>
+
+    <p>
+        Rating:
+        {% for i in "12345" %}
+            {% if forloop.counter <= review.rating %}
+                ⭐
+            {% endif %}
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ review.comment }}
+    </p>
+
+{% empty %}
+
+    <p>No reviews yet.</p>
+
+{% endfor %}
+
+<hr>
+
+    {% if user == recipe.author %}
+
+    <a href="{% url 'update_recipe' recipe.id %}">
+        Edit Recipe
+    </a>
+
+    <a href="{% url 'delete_recipe' recipe.id %}">
+        Delete Recipe
+    </a>
+
+    {% endif %}
+</body>
+</html>

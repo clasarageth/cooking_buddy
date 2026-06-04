@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Recipe — Cooking Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --red-lighter: #ffb3b3;
+      --red-bg: #fff5f5;
+      --red-accent: #d90429;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --border: #ece6d8;
+      --orange: #ff8c42;
+      --green: #22c55e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .section { padding: 80px 0; }
+
+    .navbar {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 16px;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--red-dark);
+      font-size: 1.25rem;
+    }
+    .navbar-brand span { color: var(--red-primary); }
+    .brand-icon {
+      width: 40px; height: 40px;
+      background: var(--red-bg);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--red-primary);
+    }
+    .navbar-search {
+      display: flex;
+      align-items: center;
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 8px 16px;
+      gap: 8px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .navbar-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      flex: 1;
+      font-size: 0.95rem;
+    }
+    .navbar-search button {
+      background: var(--red-primary);
+      color: var(--white);
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .navbar-search button:hover { background: var(--red-dark); }
+    .navbar-nav { display: flex; gap: 24px; flex-wrap: wrap; }
+    .nav-link { color: var(--text-light); font-weight: 500; }
+    .nav-link:hover, .nav-link.active { color: var(--red-primary); }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-sm { padding: 8px 16px; font-size: 0.9rem; }
+    .btn-primary { background: var(--red-primary); color: var(--white); }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--red-primary);
+      border: 2px solid var(--red-primary);
+    }
+    .btn-secondary:hover {
+      background: var(--red-primary);
+      color: var(--white);
+    }
+    .flex { display: flex; }
+    .gap-sm { gap: 8px; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--red-dark);
+      border-radius: 2px;
+    }
+
+    .page-header { padding: 36px 0 12px; }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--text-light);
+      font-size: 0.92rem;
+    }
+    .breadcrumb a { color: var(--text-light); }
+    .breadcrumb a:hover { color: var(--red-primary); }
+    .separator { font-size: 0.8rem; color: var(--red-primary); }
+    .page-header h1 {
+      margin-top: 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--text-dark);
+    }
+    .page-header p { color: var(--text-light); margin-top: 8px; }
+
+    .add-recipe-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.8fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .form-section,
+    .add-recipe-sidebar-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.03);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      color: var(--text-dark);
+    }
+
+    .form-group { display: grid; gap: 6px; margin-bottom: 16px; }
+    .form-label { font-weight: 600; color: var(--text-dark); }
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: 12px;
+      padding: 0.95rem 1rem;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--red-primary);
+      box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.08);
+    }
+    textarea.form-control { min-height: 120px; resize: vertical; }
+
+    .form-row {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .form-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .form-hint, .form-error { font-size: 0.85rem; color: var(--text-light); }
+    .form-error { color: #dc2626; min-height: 1em; }
+
+    .difficulty-selector {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .diff-option input { display: none; }
+    .diff-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 0.85rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .diff-option input:checked + .diff-label {
+      border-color: var(--red-primary);
+      background: var(--red-bg);
+      color: var(--red-dark);
+    }
+
+    .img-upload-zone {
+      border: 2px dashed var(--border);
+      background: linear-gradient(180deg, #fff 0%, #fff8f8 100%);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .img-upload-zone:hover {
+      border-color: var(--red-primary);
+      transform: translateY(-1px);
+    }
+    .img-upload-zone i {
+      font-size: 2rem;
+      color: var(--red-primary);
+      margin-bottom: 10px;
+    }
+    .img-preview {
+      margin-top: 14px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .img-preview img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+    }
+
+    .ingredient-input-row,
+    .instruction-step-row {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+    .instruction-step-row { grid-template-columns: 48px 1fr auto; }
+
+    .step-number-label {
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+      background: var(--red-bg);
+      color: var(--red-primary);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .remove-row-btn, .add-row-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+    .add-row-btn {
+      background: var(--red-bg);
+      color: var(--red-primary);
+      width: fit-content;
+    }
+    .remove-row-btn {
+      background: #ffe6e6;
+      color: #b91c1c;
+      min-width: 42px;
+      min-height: 42px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .checkbox-group input { accent-color: var(--red-primary); }
+
+    .add-recipe-sidebar-card h4 { margin-bottom: 8px; color: var(--text-dark); }
+    .add-recipe-sidebar-card p { color: var(--text-light); margin-bottom: 14px; }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    footer {
+      background: var(--text-dark);
+      color: var(--white);
+      padding: 40px 0 20px;
+      margin-top: 40px;
+    }
+    .footer-brand { font-size: 1.35rem; font-weight: 800; margin-bottom: 10px; }
+    .footer-brand span { color: var(--red-primary); }
+    .footer-desc { color: rgba(255,255,255,0.7); }
+    .footer-col-title { font-weight: 700; margin-bottom: 12px; }
+    .footer-links { list-style: none; display: grid; gap: 8px; }
+    .footer-links a { color: rgba(255,255,255,0.7); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--red-primary);
+      color: var(--white);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: grid;
+      gap: 10px;
+    }
+    .toast {
+      background: #fff;
+      color: var(--text-dark);
+      border-left: 4px solid var(--red-primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+      max-width: 320px;
+      animation: slideIn 0.25s ease;
+    }
+    .toast.info { border-left-color: #2563eb; }
+    .toast.success { border-left-color: #16a34a; }
+    .toast.error { border-left-color: #dc2626; }
+
+    @keyframes slideIn {
+      from { transform: translateX(12px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 1024px) {
+      .add-recipe-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar-search, .navbar-nav, .navbar-actions { display: none; }
+      .hamburger { display: flex; }
+      .navbar-inner { flex-wrap: wrap; }
+      .ingredient-input-row,
+      .instruction-step-row,
+      .form-row,
+      .form-row-3,
+      .difficulty-selector { grid-template-columns: 1fr; }
+      .img-upload-zone { padding: 22px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>
+        Cooking<span>Buddy</span>
+      </a>
+
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
+      </div>
+
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+        
+        </div>
+        <button class="hamburger" id="hamburger" type="button" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" style="display:none;padding:16px 20px;border-top:1px solid var(--border);background:#fff">
+    <a href="index.html" class="nav-link" style="padding:8px 0">Home</a>
+    <a href="category.html?cat=Dinner" class="nav-link" style="padding:8px 0">Categories</a>
+    <a href="favorites.html" class="nav-link" style="padding:8px 0">Favorites</a>
+    <a href="profile.html" class="nav-link" style="padding:8px 0">Profile</a>
+    <div style="display:flex;gap:8px;padding:12px 0 0">
+      
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" style="margin-bottom:12px">
+      <a href="index.html">Home</a>
+      <span class="separator"><i class="fas fa-chevron-right"></i></span>
+      <a href="profile.html">Profile</a>
+      <span class="separator"><i class="fas fa-chevron-right"></i></span>
+      <span class="current" id="page-title-breadcrumb">Add New Recipe</span>
+    </nav>
+    <h1 id="page-title">Add New Recipe</h1>
+    <p>Share your creation with the Cooking Buddy community</p>
+  </div>
+</div>
+
+<section style="padding:48px 0 80px">
+  <div class="container">
+    <form id="add-recipe-form" novalidate>
+      <div class="add-recipe-layout">
+        <div>
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-info-circle"></i> Basic Information</div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-title">Recipe Title <span style="color:var(--red-primary)">*</span></label>
+              <input type="text" class="form-control" id="recipe-title" placeholder="e.g. Creamy Tuscan Garlic Pasta">
+              <span class="form-error" data-error-for="recipe-title"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-desc">Description <span style="color:var(--red-primary)">*</span></label>
+              <textarea class="form-control" id="recipe-desc" rows="3" placeholder="A short, enticing description of your recipe…"></textarea>
+              <span class="form-error" data-error-for="recipe-desc"></span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="recipe-category">Category <span style="color:var(--red-primary)">*</span></label>
+                <select class="form-control" id="recipe-category">
+                  <option value="">Select category…</option>
+                  <option value="Breakfast">🍳 Breakfast</option>
+                  <option value="Lunch">🥗 Lunch</option>
+                  <option value="Dinner">🍽️ Dinner</option>
+                  <option value="Dessert">🍰 Dessert</option>
+                  <option value="Snacks">🍿 Snacks</option>
+                  <option value="Drinks">🥤 Drinks</option>
+                </select>
+                <span class="form-error" data-error-for="recipe-category"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cuisine">Cuisine Type</label>
+                <input type="text" class="form-control" id="cuisine" placeholder="e.g. Italian, Thai, Mexican">
+              </div>
+            </div>
+
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label" for="cooking-time">Cook Time (min) <span style="color:var(--red-primary)">*</span></label>
+                <input type="number" class="form-control" id="cooking-time" placeholder="30" min="1" max="1440">
+                <span class="form-error" data-error-for="cooking-time"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="servings">Servings <span style="color:var(--red-primary)">*</span></label>
+                <input type="number" class="form-control" id="servings" placeholder="4" min="1" max="100">
+                <span class="form-error" data-error-for="servings"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Difficulty</label>
+                <div class="difficulty-selector">
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Easy" checked>
+                    <span class="diff-label"><i class="fas fa-smile" style="color:#22c55e"></i> Easy</span>
+                  </label>
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Medium">
+                    <span class="diff-label"><i class="fas fa-meh" style="color:#f97316"></i> Med</span>
+                  </label>
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Hard">
+                    <span class="diff-label"><i class="fas fa-fire" style="color:#dc2626"></i> Hard</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-tags">Tags</label>
+              <input type="text" class="form-control" id="recipe-tags" placeholder="e.g. vegetarian, quick, italian (comma-separated)">
+              <span class="form-hint">Separate tags with commas to help people discover your recipe</span>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-image"></i> Cover Photo</div>
+            <div id="upload-zone" class="img-upload-zone">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p><strong>Drag & drop</strong> your photo here</p>
+              <span>or click to browse — JPG, PNG, WebP up to 10MB</span>
+              <br>
+              <button type="button" class="btn btn-secondary btn-sm" style="margin-top:12px" id="browse-btn">
+                <i class="fas fa-folder-open"></i> Browse Files
+              </button>
+              <input type="file" id="recipe-image" accept="image/*" style="display:none">
+            </div>
+            <div id="img-preview" class="img-preview" style="display:none"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
+            <p style="font-size:.88rem;color:var(--text-light);margin-bottom:20px">Add each ingredient with its amount. At least 1 required.</p>
+
+            <div id="ingredients-list">
+              <div class="ingredient-input-row">
+                <input type="text" class="form-control ingredient-amount" placeholder="Amount (e.g. 2 cups)" style="max-width:140px">
+                <input type="text" class="form-control ingredient-name" placeholder="Ingredient name">
+                <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+
+            <button type="button" id="add-ingredient-btn" class="add-row-btn" style="margin-top:10px">
+              <i class="fas fa-plus"></i> Add Ingredient
+            </button>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-list-ol"></i> Instructions</div>
+            <p style="font-size:.88rem;color:var(--text-light);margin-bottom:20px">Write each step clearly. At least 1 step required.</p>
+
+            <div id="instructions-list">
+              <div class="instruction-step-row">
+                <div class="step-number-label">1</div>
+                <textarea class="form-control instruction-text" rows="2" placeholder="Describe step 1…"></textarea>
+                <button type="button" class="remove-row-btn" style="margin-top:8px" onclick="removeInstructionRow(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+
+            <button type="button" id="add-instruction-btn" class="add-row-btn" style="margin-top:10px">
+              <i class="fas fa-plus"></i> Add Step
+            </button>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title" style="cursor:pointer;user-select:none" onclick="toggleNutrition()">
+              <i class="fas fa-heartbeat"></i> Nutritional Info
+              <span style="margin-left:auto;font-size:.8rem;color:var(--text-light);font-weight:400">(Optional)</span>
+              <i class="fas fa-chevron-down" id="nutrition-chevron" style="margin-left:8px;font-size:.8rem;color:var(--text-light);transition:transform .2s"></i>
+            </div>
+            <div id="nutrition-fields" style="display:none">
+              <div class="form-row form-row-3" style="margin-top:16px">
+                <div class="form-group"><label class="form-label">Calories</label><input type="number" class="form-control" placeholder="kcal"></div>
+                <div class="form-group"><label class="form-label">Protein (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Carbs (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Fat (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Fiber (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Sugar (g)</label><input type="number" class="form-control" placeholder="g"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="add-recipe-sidebar-card" style="position:sticky;top:90px">
+            <h4>Publish Recipe</h4>
+            <p>Ready to share with the world?</p>
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-full" style="margin-bottom:10px">
+              <i class="fas fa-paper-plane"></i> Publish Recipe
+            </button>
+            <button type="button" class="btn btn-secondary btn-full" id="save-draft-btn">
+              <i class="fas fa-save"></i> Save as Draft
+            </button>
+            <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+            <div style="font-size:.82rem;color:var(--text-light)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <i class="fas fa-check-circle" style="color:var(--green)"></i>
+                <span>Auto-saved every 30 seconds</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <i class="fas fa-check-circle" style="color:var(--green)"></i>
+                <span>Visible to all users</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <i class="fas fa-check-circle" style="color:var(--green)"></i>
+                <span>Edit or delete anytime</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-recipe-sidebar-card">
+            <h4>Dietary Info</h4>
+            <p>Check all that apply</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <label class="checkbox-group"><input type="checkbox"> <span>🌱 Vegetarian</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🌿 Vegan</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🌾 Gluten-Free</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🥛 Dairy-Free</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🥜 Nut-Free</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🐟 Pescatarian</span></label>
+            </div>
+          </div>
+
+          <div class="add-recipe-sidebar-card" style="background:rgba(255,140,66,0.06);border-color:rgba(255,140,66,0.25)">
+            <h4><i class="fas fa-lightbulb" style="color:var(--orange)"></i> Writing Tips</h4>
+            <p style="font-size:.85rem;line-height:1.6;margin-bottom:0">
+              ✅ Use exact measurements<br>
+              ✅ Number each step clearly<br>
+              ✅ Add cooking temperatures<br>
+              ✅ Mention allergy info<br>
+              ✅ Include serving suggestions
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Share your recipes with the world.</p></div>
+      <div><div class="footer-col-title">Recipes</div><ul class="footer-links"><li><a href="my_recipes.html">My Recipes</a></li><li><a href="search_results.html">Explore</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">Profile</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>. All rights reserved.</div></div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function showToast(message, type = "info") {
+    const container = $("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  function toggleNutrition() {
+    const fields = $("nutrition-fields");
+    const chevron = $("nutrition-chevron");
+    const open = fields.style.display === "none" || !fields.style.display;
+    fields.style.display = open ? "block" : "none";
+    chevron.style.transform = open ? "rotate(180deg)" : "";
+  }
+
+  function removeInstructionRow(btn) {
+    const list = $("instructions-list");
+    if (list.children.length <= 1) {
+      showToast("At least one instruction step is required.", "error");
+      return;
+    }
+    btn.parentElement.remove();
+    renumberSteps();
+  }
+
+  function renumberSteps() {
+    [...$("instructions-list").children].forEach((row, index) => {
+      const label = row.querySelector(".step-number-label");
+      if (label) label.textContent = index + 1;
+    });
+  }
+
+  function getRecipeImageUrl(file) {
+    return new Promise((resolve) => {
+      if (!file) return resolve("");
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function previewImage(file) {
+    const preview = $("img-preview");
+    if (!file) {
+      preview.style.display = "none";
+      preview.innerHTML = "";
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = `<img src="${url}" alt="Preview">`;
+    preview.style.display = "block";
+  }
+
+  function getMyRecipes() {
+    try { return JSON.parse(localStorage.getItem("myRecipes")) || []; } catch { return []; }
+  }
+
+  function setMyRecipes(list) {
+    localStorage.setItem("myRecipes", JSON.stringify(list));
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = $("hamburger");
+    const navbar = document.querySelector(".navbar");
+    const mobileNav = $("mobile-nav");
+    const backToTop = $("back-to-top");
+    const fileInput = $("recipe-image");
+    const browseBtn = $("browse-btn");
+    const uploadZone = $("upload-zone");
+    const addIngredientBtn = $("add-ingredient-btn");
+    const addInstructionBtn = $("add-instruction-btn");
+    const form = $("add-recipe-form");
+    const autosaveKey = "cookingBuddyAddRecipeDraft";
+
+    if (hamburger && navbar && mobileNav) {
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.style.display !== "block";
+        mobileNav.style.display = open ? "block" : "none";
+        navbar.classList.toggle("open", open);
+      });
+    }
+
+    const search = (value) => {
+      const q = value.trim();
+      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+    };
+
+    const navbarSearchInput = $("navbar-search-input");
+    const navbarSearchBtn = $("navbar-search-btn");
+    if (navbarSearchBtn && navbarSearchInput) {
+      navbarSearchBtn.addEventListener("click", () => search(navbarSearchInput.value));
+      navbarSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(navbarSearchInput.value);
+      });
+    }
+
+    if (browseBtn && fileInput) browseBtn.addEventListener("click", () => fileInput.click());
+    if (uploadZone && fileInput) uploadZone.addEventListener("click", (e) => {
+      if (e.target.tagName !== "BUTTON") fileInput.click();
+    });
+
+    if (fileInput) {
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        previewImage(file);
+      });
+    }
+
+    if (addIngredientBtn) {
+      addIngredientBtn.addEventListener("click", () => {
+        const row = document.createElement("div");
+        row.className = "ingredient-input-row";
+        row.innerHTML = `
+          <input type="text" class="form-control ingredient-amount" placeholder="Amount (e.g. 2 cups)" style="max-width:140px">
+          <input type="text" class="form-control ingredient-name" placeholder="Ingredient name">
+          <button type="button" class="remove-row-btn"><i class="fas fa-times"></i></button>
+        `;
+        row.querySelector(".remove-row-btn").addEventListener("click", () => row.remove());
+        $("ingredients-list").appendChild(row);
+      });
+    }
+
+    if (addInstructionBtn) {
+      addInstructionBtn.addEventListener("click", () => {
+        const count = $("instructions-list").children.length + 1;
+        const row = document.createElement("div");
+        row.className = "instruction-step-row";
+        row.innerHTML = `
+          <div class="step-number-label">${count}</div>
+          <textarea class="form-control instruction-text" rows="2" placeholder="Describe step ${count}…"></textarea>
+          <button type="button" class="remove-row-btn" style="margin-top:8px"><i class="fas fa-times"></i></button>
+        `;
+        row.querySelector(".remove-row-btn").addEventListener("click", () => {
+          removeInstructionRow(row.querySelector(".remove-row-btn"));
+        });
+        $("instructions-list").appendChild(row);
+      });
+    }
+
+    if (backToTop) {
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+
+    const saveDraft = () => {
+      const draft = {
+        title: $("recipe-title").value,
+        desc: $("recipe-desc").value,
+        category: $("recipe-category").value,
+        cuisine: $("cuisine").value,
+        cookingTime: $("cooking-time").value,
+        servings: $("servings").value,
+        tags: $("recipe-tags").value
+      };
+      localStorage.setItem(autosaveKey, JSON.stringify(draft));
+      showToast("Draft saved! ✓", "success");
+    };
+
+    const draft = JSON.parse(localStorage.getItem(autosaveKey) || "{}");
+    if (draft && typeof draft === "object") {
+      $("recipe-title").value = draft.title || "";
+      $("recipe-desc").value = draft.desc || "";
+      $("recipe-category").value = draft.category || "";
+      $("cuisine").value = draft.cuisine || "";
+      $("cooking-time").value = draft.cookingTime || "";
+      $("servings").value = draft.servings || "";
+      $("recipe-tags").value = draft.tags || "";
+    }
+
+    $("save-draft-btn").addEventListener("click", saveDraft);
+    setInterval(saveDraft, 30000);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      document.querySelectorAll(".form-error").forEach(el => el.textContent = "");
+      let valid = true;
+
+      const title = $("recipe-title").value.trim();
+      const desc = $("recipe-desc").value.trim();
+      const category = $("recipe-category").value.trim();
+      const cookingTime = $("cooking-time").value.trim();
+      const servings = $("servings").value.trim();
+
+      if (!title) { $("recipe-title").nextElementSibling.textContent = "Recipe title is required."; valid = false; }
+      if (!desc) { $("recipe-desc").nextElementSibling.textContent = "Description is required."; valid = false; }
+      if (!category) { $("recipe-category").nextElementSibling.textContent = "Category is required."; valid = false; }
+      if (!cookingTime || Number(cookingTime) < 1) { $("cooking-time").nextElementSibling.textContent = "Enter a valid cook time."; valid = false; }
+      if (!servings || Number(servings) < 1) { $("servings").nextElementSibling.textContent = "Enter servings."; valid = false; }
+
+      const ingredientRows = [...$("ingredients-list").querySelectorAll(".ingredient-input-row")];
+      const ingredients = ingredientRows.map(row => {
+        const amount = row.querySelector(".ingredient-amount")?.value.trim();
+        const name = row.querySelector(".ingredient-name")?.value.trim();
+        return amount || name ? `${amount} ${name}`.trim() : "";
+      }).filter(Boolean);
+
+      const steps = [...$("instructions-list").querySelectorAll(".instruction-text")]
+        .map(t => t.value.trim())
+        .filter(Boolean);
+
+      if (ingredients.length === 0) {
+        showToast("Please add at least one ingredient.", "error");
+        valid = false;
+      }
+      if (steps.length === 0) {
+        showToast("Please add at least one instruction step.", "error");
+        valid = false;
+      }
+      if (!valid) {
+        showToast("Please fix the form errors.", "error");
+        return;
+      }
+
+      const file = $("recipe-image").files[0];
+      const imageUrl = await getRecipeImageUrl(file);
+
+      const recipe = {
+        id: Date.now(),
+        title,
+        desc,
+        category,
+        cuisine: $("cuisine").value.trim(),
+        cookingTime: Number(cookingTime),
+        servings: Number(servings),
+        difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || "Easy",
+        tags: $("recipe-tags").value.split(",").map(t => t.trim()).filter(Boolean),
+        ingredients,
+        steps,
+        image: imageUrl || "https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80",
+        createdAt: new Date().toISOString()
+      };
+
+      const myRecipes = getMyRecipes();
+      myRecipes.unshift(recipe);
+      setMyRecipes(myRecipes);
+      localStorage.removeItem(autosaveKey);
+
+      showToast("Recipe published successfully! ✓", "success");
+      setTimeout(() => {
+        window.location.href = "my_recipes.html";
+      }, 900);
+    });
+  });
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  }
+</script>
+</body>
+</html>

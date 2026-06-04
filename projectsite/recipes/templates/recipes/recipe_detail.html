@@ -1,107 +1,499 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ recipe.title }}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Detail — Cooking Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{
+      --red-primary:#e63946;
+      --red-dark:#c1121f;
+      --red-bg:#fff5f5;
+      --white:#fff;
+      --text-dark:#2b2d42;
+      --text-light:#6c757d;
+      --gray-light:#f8f9fa;
+      --border:#ece6d8;
+      --shadow:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 25px rgba(0,0,0,.15);
+      --radius:12px;
+      --radius-sm:8px;
+      --cream-dark:#fff7f3;
+      --orange:#ff8c42;
+      --font-body:'Inter',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);color:var(--text-dark);line-height:1.6;background:linear-gradient(180deg,#fffaf8 0%,#fff1f2 100%)}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .section{padding:80px 0}
+
+    .navbar{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);box-shadow:var(--shadow);position:sticky;top:0;z-index:1000}
+    .navbar-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+    .navbar-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--red-dark);font-size:1.2rem}
+    .navbar-brand span{color:var(--red-primary)}
+    .brand-icon{width:40px;height:40px;border-radius:10px;background:var(--red-bg);display:grid;place-items:center;color:var(--red-primary)}
+    .navbar-search{display:flex;align-items:center;gap:8px;background:var(--gray-light);border-radius:12px;padding:8px 14px;max-width:380px;width:100%}
+    .navbar-search input{border:none;outline:none;background:transparent;flex:1}
+    .navbar-search button{border:none;background:var(--red-primary);color:var(--white);border-radius:10px;padding:8px 12px;cursor:pointer}
+    .navbar-nav{display:flex;gap:20px;flex-wrap:wrap}
+    .nav-link{color:var(--text-light);font-weight:600}
+    .nav-link:hover,.nav-link.active{color:var(--red-primary)}
+    .navbar-actions{display:flex;align-items:center;gap:10px}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+    .hamburger span{width:24px;height:3px;border-radius:2px;background:var(--red-dark)}
+    .mobile-nav{display:none;padding:16px 20px;border-top:1px solid var(--border);background:#fff}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;border-radius:999px;padding:.9rem 1.2rem;font-weight:600;cursor:pointer;transition:.25s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,var(--red-primary),var(--red-dark));color:var(--white)}
+    .btn-secondary{background:var(--white);color:var(--red-primary);border:1px solid var(--border)}
+    .btn-sm{padding:.7rem 1rem;font-size:.92rem}
+
+    .recipe-detail-hero{position:relative;height:420px;overflow:hidden}
+    .recipe-detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .recipe-detail-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.6))}
+    .recipe-detail-hero-content{position:absolute;inset:0;display:flex;align-items:flex-end;padding:30px 0}
+    .breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-size:.95rem;margin-bottom:12px}
+    .breadcrumb a{color:#fff;opacity:.9}
+    .recipe-meta-bar{display:flex;gap:10px;flex-wrap:wrap}
+    .meta-pill{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.18);padding:8px 12px;border-radius:999px;font-size:.9rem}
+
+    .recipe-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,.8fr);gap:24px;align-items:start;padding:40px 0}
+    .recipe-main{min-width:0}
+    .recipe-description{font-size:1.05rem;color:var(--text-dark);margin-bottom:28px;background:#fff;padding:18px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .ingredient-list,.instructions-list{list-style:none;display:grid;gap:12px}
+    .ingredient-item,.instruction-item{background:#fff;border:1px solid rgba(0,0,0,.04);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+    .instruction-item{cursor:pointer}
+    .instruction-item.active{outline:2px solid var(--red-primary);background:var(--red-bg)}
+    .tag-list{display:flex;flex-wrap:wrap;gap:10px}
+    .tag{background:var(--red-bg);color:var(--red-dark);padding:8px 12px;border-radius:999px;font-weight:600;border:1px solid #ffd1d1}
+    .recipe-sidebar-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;border:1px solid rgba(0,0,0,.03);margin-bottom:18px}
+    .sidebar-action-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:none;background:var(--red-bg);color:var(--red-dark);padding:12px 14px;border-radius:12px;font-weight:700;cursor:pointer;margin-bottom:10px}
+    .sidebar-action-btn:last-child{margin-bottom:0}
+    .recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+    .recipe-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.25s ease}
+    .recipe-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .recipe-thumb{aspect-ratio:16/11;overflow:hidden}
+    .recipe-thumb img{width:100%;height:100%;object-fit:cover}
+    .recipe-body-card{padding:14px}
+    .recipe-title-card{font-size:1.05rem;margin-bottom:6px}
+    .recipe-meta-card{display:flex;gap:12px;flex-wrap:wrap;color:var(--text-light);font-size:.92rem;margin-bottom:12px}
+
+    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:20px}
+    footer{background:#2b2d42;color:#fff;padding:40px 0 20px;margin-top:40px}
+    .footer-brand{font-size:1.35rem;font-weight:800;margin-bottom:10px}
+    .footer-brand span{color:var(--red-primary)}
+    .footer-desc{color:rgba(255,255,255,.7)}
+    .footer-col-title{font-weight:700;margin-bottom:12px}
+    .footer-links{list-style:none;display:grid;gap:8px}
+    .footer-links a{color:rgba(255,255,255,.7)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:18px;text-align:center;color:rgba(255,255,255,.75)}
+    #back-to-top{position:fixed;bottom:28px;right:28px;width:48px;height:48px;border:none;border-radius:50%;background:var(--red-primary);color:#fff;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);z-index:1100}
+    #toast-container{position:fixed;top:20px;right:20px;z-index:3000;display:grid;gap:10px}
+    .toast{background:#fff;border-left:4px solid var(--red-primary);color:var(--text-dark);box-shadow:var(--shadow-lg);border-radius:12px;padding:12px 14px;min-width:240px}
+    .toast.success{border-left-color:#16a34a}
+    .toast.error{border-left-color:#dc2626}
+    .toast.info{border-left-color:#2563eb}
+
+    @media (max-width:900px){
+      .recipe-body{grid-template-columns:1fr}
+      .navbar-search,.navbar-nav,.navbar-actions{display:none}
+      .hamburger{display:flex}
+      .navbar-inner{flex-wrap:wrap}
+    }
+  </style>
 </head>
 <body>
 
-    <a href="{% url 'home' %}">
-        ← Back to Home
-    </a>
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="{% url 'home' %}" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>
+        Cooking<span>Buddy</span>
+      </a>
 
-    <h1>{{ recipe.title }}</h1>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
+      </div>
 
-    {% if recipe.image %}
+      <nav class="navbar-nav">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </nav>
+
+      
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link" style="display:block;padding:8px 0">Home</a>
+    <a href="category.html?cat=Dinner" class="nav-link" style="display:block;padding:8px 0">Categories</a>
+    <a href="favorites.html" class="nav-link" style="display:block;padding:8px 0">Favorites</a>
+    <a href="profile.html" class="nav-link" style="display:block;padding:8px 0">Profile</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="recipe-detail-hero">
+  {% if recipe.image %}
         <img src="{{ recipe.image.url }}" width="500">
     {% endif %}
+  <div class="recipe-detail-hero-overlay"></div>
+  <div class="recipe-detail-hero-content">
+    <div class="container">
+      <h1 style="color:#fff;margin-bottom:16px;font-size:clamp(2rem,4vw,3.6rem)">{{ recipe.title }} </h1>
+      <p style="color:#fff;margin-top: -30px; font-size:12px">by {{ recipe.author.username }}</p>
+      <div id="recipe-meta-bar" class="recipe-meta-bar"></div>
+    </div>
+  </div>
+</div>
 
-     <p>
-        <strong>Uploaded By:</strong>
-        {{ recipe.author.username }}
-    </p>
+<div class="container">
+  <div class="recipe-body">
+    <div class="recipe-main">
+      <p class="recipe-description" >{{ recipe.description }}</p>
 
-    <p>
-        <strong>Category:</strong>
-        {{ recipe.category }}
-    </p>
+      <div style="margin-bottom:48px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <h2 style="font-size:1.5rem">Ingredients</h2>
+          <span style="font-size:1.5rem">🧂</span>
+        </div>
+        <ul class="ingredient-list recipe-description" > {{ recipe.ingredients }}</ul>
+      </div>
 
-    <p>
-        <strong>Cooking Time:</strong>
-        {{ recipe.cooking_time }} minutes
-    </p>
+      <div style="margin-bottom:48px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <h2 style="font-size:1.5rem">Instructions</h2>
+          <span style="font-size:1.5rem">👨‍🍳</span>
+        </div>
+        <ul class="instructions-list recipe-description" id="instruction-list"> {{ recipe.instructions }}</ul>
+      </div>
 
-    <p>
-        <strong>Servings:</strong>
-        {{ recipe.servings }}
-    </p>
+    </div>
 
-    <h2>Description</h2>
-    <p>{{ recipe.description }}</p>
+    <aside class="recipe-sidebar">
+        <div class="recipe-sidebar-card">
+            <h4 style="margin-bottom:16px">Quick Info</h4>
+            <div id="sidebar-quick-info"> 
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+                    <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-clock" style="color:var(--orange);margin-right:6px"></i>Prep + Cook</span>
+                    <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">{{ recipe.cooking_time }} min</span>
+                </div>
+            </div>
+            <div id="sidebar-quick-info">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+                    <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-users" style="color:var(--orange);margin-right:6px"></i>Servings</span>
+                    <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">{{ recipe.servings }}</span>
+                </div>
+            </div>
+            
+            <div id="sidebar-quick-info">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+                    <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-star" style="color:var(--orange);margin-right:6px"></i>Rating</span>
+                    <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)"> 
+                        {% if average_rating %}
+                            <p>
+                                {{ average_rating|floatformat:1 }}
+                            </p>
+                        {% else %}
+                            <p>No ratings yet.</p>
+                        {% endif %} 
+                    </span>
+                </div>
+            </div>
+        </div>
 
-    <h2>Ingredients</h2>
-    <p>{{ recipe.ingredients|linebreaks }}</p>
+        {% if user.is_authenticated and user != recipe.author %}
+            <div class="recipe-sidebar">
+                <div class="recipe-sidebar-card">
+                    
+                        <div id="sidebar-quick-info">
+                            <a href="{% url 'add_review' recipe.id %}">
+                            Rate This Recipe
+                        </a>
+                        </div>
+                        
+                
+                </div>
+            </div>
+        {% endif %}
 
-    <h2>Instructions</h2>
-    <p>{{ recipe.instructions|linebreaks }}</p>
+       <div class="recipe-sidebar-card">
+            <button class="sidebar-action-btn" id="sidebar-fav-btn" type="button">
+            <i class="far fa-heart"></i>
+            <span>Save to Favorites</span>
+            </button>
+            <button class="sidebar-action-btn" type="button" onclick="window.print()">
+            <i class="fas fa-print"></i> Print Recipe
+            </button>
+            <button class="sidebar-action-btn" type="button" id="share-btn">
+            <i class="fas fa-share-alt"></i> Share Recipe
+            </button>
+        </div>
+    </aside>
+  </div>
+</div>
 
-   <hr>
 
-<h2>Ratings & Reviews</h2>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
+        <p class="footer-desc">Discover, save, and share amazing recipes.</p>
+      </div>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>. All rights reserved.</div>
+  </div>
+</footer>
 
-{% if average_rating %}
-    <p>
-        <strong>Average Rating:</strong>
-        {{ average_rating|floatformat:1 }} ⭐
-    </p>
-{% else %}
-    <p>No ratings yet.</p>
-{% endif %}
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
 
-{% if user.is_authenticated and user != recipe.author %}
-    <a href="{% url 'add_review' recipe.id %}">
-        Rate This Recipe
-    </a>
-{% endif %}
+<script>
+const $ = id => document.getElementById(id);
 
-{% for review in recipe.reviews.all %}
+const RECIPES = [
+  {
+    id: 1,
+    title: "Creamy Tuscan Pasta",
+    category: "Dinner",
+    time: 30,
+    servings: 4,
+    difficulty: "Easy",
+    rating: 4.8,
+    desc: "Creamy garlic pasta with spinach, parmesan, and sun-dried tomatoes.",
+    image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&auto=format&fit=crop&q=80",
+    ingredients: ["2 tbsp olive oil", "3 cloves garlic", "2 cups spinach", "1 cup parmesan", "8 oz pasta"],
+    steps: ["Boil the pasta until al dente.", "Sauté garlic in olive oil.", "Add spinach and cream.", "Mix pasta with parmesan and serve."],
+    tags: ["quick", "family", "healthy"],
+    author: { name: "Cooking Buddy", bio: "Comfort food specialist" }
+  },
+  {
+    id: 2,
+    title: "Berry Pancakes",
+    category: "Breakfast",
+    time: 20,
+    servings: 3,
+    difficulty: "Easy",
+    rating: 4.7,
+    desc: "Fluffy pancakes topped with fresh berries and syrup.",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&auto=format&fit=crop&q=80",
+    ingredients: ["1 cup flour", "1 egg", "1 cup milk", "1 tsp baking powder", "1 cup berries"],
+    steps: ["Mix the dry ingredients.", "Whisk in milk and egg.", "Cook on a hot skillet.", "Top with berries and syrup."],
+    tags: ["family", "quick"],
+    author: { name: "Cooking Buddy", bio: "Breakfast favorites" }
+  },
+  {
+    id: 3,
+    title: "Chocolate Cake",
+    category: "Dessert",
+    time: 60,
+    servings: 8,
+    difficulty: "Medium",
+    rating: 4.9,
+    desc: "Soft chocolate cake with rich frosting and a smooth finish.",
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop&q=80",
+    ingredients: ["2 cups flour", "1 cup cocoa", "2 eggs", "1 cup sugar", "1 cup milk"],
+    steps: ["Preheat the oven.", "Mix wet and dry ingredients.", "Bake until set.", "Cool and frost the cake."],
+    tags: ["family"],
+    author: { name: "Cooking Buddy", bio: "Sweet treats" }
+  },
+  {
+    id: 4,
+    title: "Fresh Salad Bowl",
+    category: "Lunch",
+    time: 15,
+    servings: 2,
+    difficulty: "Easy",
+    rating: 4.6,
+    desc: "A colorful bowl with greens, veggies, and a light dressing.",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80",
+    ingredients: ["2 cups greens", "1 tomato", "1 cucumber", "1 carrot", "2 tbsp dressing"],
+    steps: ["Wash and chop the vegetables.", "Add greens to a bowl.", "Top with vegetables.", "Drizzle dressing and serve."],
+    tags: ["healthy", "quick", "vegetarian"],
+    author: { name: "Cooking Buddy", bio: "Fresh and healthy meals" }
+  }
+];
 
-    <hr>
+function showToast(message, type="info") {
+  const box = $("toast-container");
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  box.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
 
-    <p>
-        <strong>{{ review.user.username }}</strong>
-    </p>
+function safeArray(v) {
+  return Array.isArray(v) ? v : (typeof v === "string" && v.trim() ? v.split(",").map(s => s.trim()).filter(Boolean) : []);
+}
 
-    <p>
-        Rating:
-        {% for i in "12345" %}
-            {% if forloop.counter <= review.rating %}
-                ⭐
-            {% endif %}
-        {% endfor %}
-    </p>
+function getQueryId() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  return id ? String(id) : "";
+}
 
-    <p>
-        {{ review.comment }}
-    </p>
+function findRecipeById(id) {
+  return RECIPES.find(r => String(r.id) === String(id)) || null;
+}
 
-{% empty %}
+function renderRecipe(recipe) {
+  $("recipe-hero-img").src = recipe.image;
+  $("recipe-hero-img").alt = recipe.title;
+  $("recipe-title-main").textContent = recipe.title;
+  $("breadcrumb-title").textContent = recipe.title;
+  document.title = `${recipe.title} — Cooking Buddy`;
 
-    <p>No reviews yet.</p>
+  $("recipe-meta-bar").innerHTML = `
+    <span class="meta-pill"><i class="far fa-clock"></i> ${recipe.time} min</span>
+    <span class="meta-pill"><i class="fas fa-utensils"></i> ${recipe.category}</span>
+    <span class="meta-pill"><i class="fas fa-users"></i> ${recipe.servings} servings</span>
+    <span class="meta-pill"><i class="fas fa-signal"></i> ${recipe.difficulty}</span>
+  `;
 
-{% endfor %}
+  $("recipe-description").textContent = recipe.desc || "No description available.";
+  $("ingredient-list").innerHTML = safeArray(recipe.ingredients).map(item => `<li class="ingredient-item">${item}</li>`).join("");
+  $("instruction-list").innerHTML = safeArray(recipe.steps).map((step, idx) => `
+    <li class="instruction-item" data-step="${idx}">
+      <strong>Step ${idx + 1}.</strong> ${step}
+    </li>
+  `).join("");
+  $("recipe-tags").innerHTML = safeArray(recipe.tags).map(tag => `<span class="tag">#${tag}</span>`).join("");
 
-<hr>
+  const author = recipe.author || { name: "Cooking Buddy", bio: "Community recipe" };
+  $("recipe-author-card").innerHTML = `
+    <div style="display:flex;gap:14px;align-items:center">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--red-bg);display:grid;place-items:center;border:3px solid #fff;box-shadow:var(--shadow)">
+        <i class="fas fa-user" style="color:var(--red-primary)"></i>
+      </div>
+      <div>
+        <div style="font-weight:800">${author.name}</div>
+        <div style="font-size:.92rem;color:var(--text-light)">${author.bio || ""}</div>
+      </div>
+    </div>
+  `;
 
-    {% if user == recipe.author %}
+  $("sidebar-quick-info").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-clock" style="color:var(--orange);margin-right:6px"></i>Prep + Cook</span>
+      <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">{{ recipe.cooking_time }} min</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-users" style="color:var(--orange);margin-right:6px"></i>Servings</span>
+      <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">${recipe.servings}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-signal" style="color:var(--orange);margin-right:6px"></i>Difficulty</span>
+      <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">${recipe.difficulty}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+      <span style="font-size:.85rem;color:var(--text-light)"><i class="fas fa-star" style="color:var(--orange);margin-right:6px"></i>Rating</span>
+      <span style="font-size:.9rem;font-weight:600;color:var(--text-dark)">${recipe.rating}/5</span>
+    </div>
+  `;
 
-    <a href="{% url 'update_recipe' recipe.id %}">
-        Edit Recipe
-    </a>
+  const related = RECIPES.filter(r => r.category === recipe.category && String(r.id) !== String(recipe.id));
+  $("related-grid").innerHTML = related.length ? related.map(r => `
+    <article class="recipe-card">
+      <a href="recipe_detail.html?id=${r.id}">
+        <div class="recipe-thumb"><img src="${r.image}" alt="${r.title}"></div>
+        <div class="recipe-body-card">
+          <h3 class="recipe-title-card">${r.title}</h3>
+          <div class="recipe-meta-card">
+            <span><i class="far fa-clock"></i> ${r.time} min</span>
+            <span><i class="fas fa-utensils"></i> ${r.category}</span>
+          </div>
+        </div>
+      </a>
+    </article>
+  `).join("") : `<div class="recipe-description">No related recipes yet.</div>`;
 
-    <a href="{% url 'delete_recipe' recipe.id %}">
-        Delete Recipe
-    </a>
+  $("sidebar-fav-btn").onclick = () => {
+    let favorites = [];
+    try { favorites = JSON.parse(localStorage.getItem("favorites")) || []; } catch {}
+    if (!favorites.some(item => String(item.id) === String(recipe.id))) {
+      favorites.unshift(recipe);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      showToast("Saved to favorites!", "success");
+    } else {
+      showToast("Already in favorites.", "info");
+    }
+  };
 
-    {% endif %}
+  document.querySelectorAll(".instruction-item").forEach(item => {
+    item.addEventListener("click", () => {
+      document.querySelectorAll(".instruction-item").forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = $("hamburger");
+  const mobileNav = $("mobile-nav");
+  const navbar = document.querySelector(".navbar");
+  const backToTop = $("back-to-top");
+
+  if (hamburger && mobileNav && navbar) {
+    hamburger.addEventListener("click", () => {
+      const open = mobileNav.style.display !== "block";
+      mobileNav.style.display = open ? "block" : "none";
+      navbar.classList.toggle("open", open);
+    });
+  }
+
+  const searchInput = $("navbar-search-input");
+  const searchBtn = $("navbar-search-btn");
+  const search = (value) => {
+    const q = value.trim();
+    if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+  };
+  if (searchInput && searchBtn) {
+    searchBtn.addEventListener("click", () => search(searchInput.value));
+    searchInput.addEventListener("keydown", e => { if (e.key === "Enter") search(searchInput.value); });
+  }
+
+  if (backToTop) {
+    window.addEventListener("scroll", () => {
+      backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+    });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
+
+  const id = getQueryId();
+  const recipe = findRecipeById(id) || RECIPES[0];
+  renderRecipe(recipe);
+
+  $("share-btn").addEventListener("click", async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: document.title, url }); } catch {}
+    } else {
+      navigator.clipboard?.writeText(url);
+      showToast("Link copied!", "info");
+    }
+  });
+});
+</script>
 </body>
 </html>

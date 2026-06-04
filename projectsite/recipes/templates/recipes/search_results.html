@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Recipes — RecipeBook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --red-lighter: #ffb3b3;
+      --red-bg: #fff5f5;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: .9rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: var(--white); }
+    .btn-secondary { background: var(--white); color: var(--red-dark); border: 1px solid var(--border); }
+    .btn-sm { padding: .7rem 1rem; font-size: .92rem; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 16px 0;
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; color: var(--red-dark); font-size: 1.2rem;
+    }
+    .navbar-brand span { color: var(--red-primary); }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--red-bg); display: grid; place-items: center;
+      color: var(--red-primary);
+    }
+    .navbar-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-light); border-radius: var(--radius);
+      padding: 8px 14px; max-width: 380px; width: 100%;
+    }
+    .navbar-search input {
+      border: none; outline: none; background: transparent; flex: 1;
+    }
+    .navbar-search button {
+      border: none; background: var(--red-primary); color: var(--white);
+      border-radius: 10px; padding: 8px 12px; cursor: pointer;
+    }
+    .navbar-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-link { color: var(--text-light); font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--red-primary); }
+    .navbar-actions { display: flex; align-items: center; gap: 10px; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+    }
+    .hamburger span {
+      width: 24px; height: 3px; border-radius: 2px; background: var(--red-dark);
+    }
+    .mobile-nav {
+      display: none; padding: 16px 20px; border-top: 1px solid var(--border); background: #fff;
+    }
+    .mobile-nav .nav-link { display: block; padding: 8px 0; }
+
+    .search-header {
+      padding: 42px 0 28px;
+      background: linear-gradient(135deg, #fff, #fff7ef);
+      border-bottom: 1px solid #ffd9b8;
+    }
+    .search-header h1 {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .search-main-bar {
+      display: flex;
+      gap: 12px;
+      max-width: 760px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
+    .search-main-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font: inherit;
+      padding: 0 14px;
+    }
+
+    .section { padding: 40px 0 80px; }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a:hover { color: var(--red-primary); }
+    .separator { font-size: .8rem; }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 16px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .filter-label {
+      font-weight: 700;
+      color: var(--text-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-select {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: white;
+      font: inherit;
+      color: var(--text-dark);
+    }
+    .results-count {
+      margin-left: auto;
+      font-weight: 700;
+      color: var(--red-dark);
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .recipe-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: .25s ease;
+    }
+    .recipe-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .recipe-thumb { aspect-ratio: 16 / 11; overflow: hidden; }
+    .recipe-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .recipe-body { padding: 14px; }
+    .recipe-title { margin-bottom: 6px; font-size: 1.05rem; }
+    .recipe-meta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      color: var(--text-light); font-size: .92rem; margin-bottom: 12px;
+    }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 24px;
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+    .no-results-icon { font-size: 2rem; margin-bottom: 10px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+      padding: 20px;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      background: white;
+      border-radius: 18px;
+      padding: 28px;
+      width: 100%;
+      max-width: 760px;
+      box-shadow: var(--shadow-lg);
+      transform: scale(.96);
+      transition: transform .25s;
+      max-height: 90vh;
+      overflow: auto;
+    }
+    .modal-backdrop.open .modal { transform: scale(1); }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .detail-img {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+    .detail-box {
+      background: #fff5f5;
+      border: 1px solid #ffd1d1;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .detail-list {
+      padding-left: 18px;
+      margin-top: 10px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    footer {
+      background: #2b2d42;
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 40px;
+    }
+    .footer-brand { font-size: 1.35rem; font-weight: 800; margin-bottom: 10px; }
+    .footer-brand span { color: var(--red-primary); }
+    .footer-desc { color: rgba(255,255,255,.7); }
+    .footer-col-title { font-weight: 700; margin-bottom: 12px; }
+    .footer-links { list-style: none; display: grid; gap: 8px; }
+    .footer-links a { color: rgba(255,255,255,.7); }
+    .footer-links a:hover { color: var(--red-light); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+    }
+
+    #back-to-top {
+      position: fixed; bottom: 28px; right: 28px;
+      width: 48px; height: 48px; border: none; border-radius: 50%;
+      background: var(--red-primary); color: white; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-lg); z-index: 1100;
+    }
+
+    #toast-container {
+      position: fixed; top: 20px; right: 20px; z-index: 3000;
+      display: grid; gap: 10px;
+    }
+    .toast {
+      background: #fff;
+      border-left: 4px solid var(--red-primary);
+      color: var(--text-dark);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+    }
+    .toast.success { border-left-color: #16a34a; }
+    .toast.error { border-left-color: #dc2626; }
+
+    @media (max-width: 900px) {
+      .navbar-search, .navbar-nav, .navbar-actions { display: none; }
+      .hamburger { display: flex; }
+      .navbar-inner { flex-wrap: wrap; }
+      .search-main-bar { flex-direction: column; border-radius: 18px; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .results-count { margin-left: 0; }
+    }
+
+    .navbar.open .mobile-nav { display: block; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fas fa-utensils"></i></div>Recipe<span>Book</span>
+      </a>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
+      </div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="my-recipes.html" class="nav-link">My Recipes</a>
+      </nav>
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" style="display:flex;gap:8px">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none;position:relative;">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
+            <i class="fas fa-user"></i> <span class="user-name"></span>
+          </button>
+        </div>
+        <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <a href="my-recipes.html" class="nav-link">My Recipes</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="search-header">
+  <div class="container">
+    <h1>Find Your Perfect Recipe</h1>
+    <div class="search-main-bar">
+      <input type="text" id="search-input" placeholder="Search by name, ingredient, or cuisine…">
+      <button id="search-btn" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Search</button>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="separator"><i class="fas fa-chevron-right"></i></span>
+      <span class="current">Search Results</span>
+    </nav>
+
+    <div class="filter-bar">
+      <span class="filter-label"><i class="fas fa-sliders-h" style="color:var(--red-primary)"></i> Filter:</span>
+      <select class="filter-select" id="filter-category">
+        <option value="">All Categories</option>
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <option value="Dessert">Dessert</option>
+        <option value="Snacks">Snacks</option>
+        <option value="Drinks">Drinks</option>
+      </select>
+      <select class="filter-select" id="filter-time">
+        <option value="">Any Time</option>
+        <option value="15">Under 15 min</option>
+        <option value="30">Under 30 min</option>
+        <option value="60">Under 1 hour</option>
+        <option value="61">Over 1 hour</option>
+      </select>
+      <select class="filter-select" id="filter-sort">
+        <option value="relevant">Most Relevant</option>
+        <option value="rating">Highest Rated</option>
+        <option value="time">Quickest</option>
+      </select>
+      <span class="results-count" id="results-count">— results</span>
+    </div>
+
+    <div class="recipe-grid" id="search-grid"></div>
+
+    <div class="no-results" id="no-results">
+      <div class="no-results-icon">🔍</div>
+      <h3>No recipes found</h3>
+      <p>Try different keywords or clear your filters</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+        <button class="btn btn-secondary" id="clear-filters-btn" type="button">Clear Filters</button>
+        <a href="add-recipe.html" class="btn btn-primary">Add This Recipe</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="recipe-modal">
+  <div class="modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px">
+      <h3 id="modal-title" style="font-size:1.3rem">Recipe Details</h3>
+      <button id="close-modal" style="background:none;border:none;font-size:1.2rem;color:var(--text-light);cursor:pointer" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <img id="modal-image" class="detail-img" alt="Recipe image">
+        <div class="detail-box" style="margin-top:16px">
+          <div><strong>Time:</strong> <span id="modal-time"></span></div>
+          <div><strong>Category:</strong> <span id="modal-category"></span></div>
+          <div><strong>Servings:</strong> <span id="modal-servings"></span></div>
+        </div>
+      </div>
+      <div>
+        <div class="detail-box">
+          <h4 style="margin-bottom:10px">Description</h4>
+          <p id="modal-description"></p>
+        </div>
+        <div class="detail-box">
+          <h4 style="margin-bottom:10px">Ingredients</h4>
+          <ul id="modal-ingredients" class="detail-list"></ul>
+        </div>
+        <div class="detail-box">
+          <h4 style="margin-bottom:10px">Steps</h4>
+          <ol id="modal-steps" class="detail-list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">Recipe<span>Book</span></div><p class="footer-desc">Discover amazing recipes.</p></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="search-results.html">All Recipes</a></li><li><a href="category.html?cat=Dinner">Dinner</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">RecipeBook</a>. All rights reserved.</div></div>
+</footer>
+
+<button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+function showToast(message, type = 'info') {
+  const wrap = $('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  wrap.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
+
+function getAllRecipes() {
+  let data = [];
+  try {
+    const mine = JSON.parse(localStorage.getItem('myRecipes')) || [];
+    const favs = JSON.parse(localStorage.getItem('favorites')) || [];
+    data = [...mine, ...favs];
+  } catch {}
+  return data;
+}
+
+function normalizeList(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') return value.split('\n').map(s => s.trim()).filter(Boolean);
+  return [];
+}
+
+function openRecipeModal(recipe) {
+  $('modal-title').textContent = recipe.title || 'Untitled Recipe';
+  $('modal-image').src = recipe.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80';
+  $('modal-image').alt = recipe.title || 'Recipe';
+  $('modal-time').textContent = `${recipe.cookingTime || recipe.time || '30'} min`;
+  $('modal-category').textContent = recipe.category || 'Recipe';
+  $('modal-servings').textContent = recipe.servings || '4';
+  $('modal-description').textContent = recipe.description || 'No description available.';
+
+  const ingredients = normalizeList(recipe.ingredients);
+  const steps = normalizeList(recipe.steps);
+
+  $('modal-ingredients').innerHTML = ingredients.length
+    ? ingredients.map(i => `<li>${i}</li>`).join('')
+    : '<li>No ingredients listed.</li>';
+
+  $('modal-steps').innerHTML = steps.length
+    ? steps.map(s => `<li>${s}</li>`).join('')
+    : '<li>No steps listed.</li>';
+
+  $('recipe-modal').classList.add('open');
+}
+
+function closeRecipeModal() {
+  $('recipe-modal').classList.remove('open');
+}
+
+function matchesSearch(recipe, q) {
+  if (!q) return true;
+  const text = [
+    recipe.title,
+    recipe.category,
+    recipe.description,
+    ...(normalizeList(recipe.ingredients)),
+    ...(normalizeList(recipe.steps))
+  ].join(' ').toLowerCase();
+  return text.includes(q.toLowerCase());
+}
+
+function matchesCategory(recipe, cat) {
+  if (!cat) return true;
+  return String(recipe.category || '').toLowerCase() === cat.toLowerCase();
+}
+
+function recipeMinutes(recipe) {
+  const val = recipe.cookingTime || recipe.time || 0;
+  const n = parseInt(val, 10);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function matchesTime(recipe, timeFilter) {
+  if (!timeFilter) return true;
+  const mins = recipeMinutes(recipe);
+  if (timeFilter === '15') return mins > 0 && mins < 15;
+  if (timeFilter === '30') return mins > 0 && mins < 30;
+  if (timeFilter === '60') return mins > 0 && mins < 60;
+  if (timeFilter === '61') return mins >= 60;
+  return true;
+}
+
+function renderResults() {
+  const grid = $('search-grid');
+  const noResults = $('no-results');
+  const count = $('results-count');
+
+  const q = $('search-input').value.trim();
+  const cat = $('filter-category').value;
+  const time = $('filter-time').value;
+  const sort = $('filter-sort').value;
+
+  let results = getAllRecipes().filter(r =>
+    matchesSearch(r, q) &&
+    matchesCategory(r, cat) &&
+    matchesTime(r, time)
+  );
+
+  if (sort === 'time') {
+    results.sort((a, b) => recipeMinutes(a) - recipeMinutes(b));
+  } else if (sort === 'rating') {
+    results.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
+  }
+
+  count.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
+  grid.innerHTML = results.map(r => `
+    <article class="recipe-card">
+      <div class="recipe-thumb">
+        <img src="${r.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?w=900&auto=format&fit=crop&q=80'}" alt="${r.title || 'Recipe'}">
+      </div>
+      <div class="recipe-body">
+        <h3 class="recipe-title">${r.title || 'Untitled Recipe'}</h3>
+        <div class="recipe-meta">
+          <span><i class="fa-regular fa-clock"></i> ${r.cookingTime || r.time || '30'} min</span>
+          <span><i class="fa-solid fa-utensils"></i> ${r.category || 'Recipe'}</span>
+        </div>
+        <button class="btn btn-primary btn-sm view-recipe-btn" data-id="${r.id}" type="button">View</button>
+      </div>
+    </article>
+  `).join('');
+
+  noResults.style.display = results.length ? 'none' : 'block';
+}
+
+function initSearchPage() {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q') || '';
+  $('search-input').value = q;
+  $('navbar-search-input').value = q;
+  renderResults();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = $('hamburger');
+  const navbar = document.querySelector('.navbar');
+  const mobileNav = $('mobile-nav');
+  const backToTop = $('back-to-top');
+  const searchInput = $('search-input');
+  const searchBtn = $('search-btn');
+  const navbarSearchInput = $('navbar-search-input');
+  const navbarSearchBtn = $('navbar-search-btn');
+  const recipeModal = $('recipe-modal');
+  const closeModalBtn = $('close-modal');
+  const clearBtn = $('clear-filters-btn');
+
+  if (hamburger && navbar && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.style.display !== 'block';
+      mobileNav.style.display = open ? 'block' : 'none';
+      navbar.classList.toggle('open', open);
+    });
+  }
+
+  const search = (value) => {
+    const q = value.trim();
+    if (!q) return;
+    const params = new URLSearchParams(window.location.search);
+    params.set('q', q);
+    window.location.search = params.toString();
+  };
+
+  if (searchBtn && searchInput) {
+    searchBtn.addEventListener('click', () => search(searchInput.value));
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') search(searchInput.value); });
+  }
+  if (navbarSearchBtn && navbarSearchInput) {
+    navbarSearchBtn.addEventListener('click', () => search(navbarSearchInput.value));
+    navbarSearchInput.addEventListener('keydown', e => { if (e.key === 'Enter') search(navbarSearchInput.value); });
+  }
+
+  ['filter-category', 'filter-time', 'filter-sort'].forEach(id => {
+    $(id).addEventListener('change', renderResults);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    $('search-input').value = '';
+    $('filter-category').value = '';
+    $('filter-time').value = '';
+    $('filter-sort').value = 'relevant';
+    history.replaceState({}, '', 'search-results.html');
+    renderResults();
+    showToast('Filters cleared.', 'success');
+  });
+
+  if (recipeModal) {
+    recipeModal.addEventListener('click', (e) => {
+      if (e.target === recipeModal) closeRecipeModal();
+    });
+  }
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeRecipeModal);
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.view-recipe-btn');
+    if (!btn) return;
+    const recipe = getAllRecipes().find(r => String(r.id) === String(btn.dataset.id));
+    if (!recipe) {
+      showToast('Recipe not found.', 'error');
+      return;
+    }
+    openRecipeModal(recipe);
+  });
+
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      backToTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  initSearchPage();
+});
+
+function logout() {
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

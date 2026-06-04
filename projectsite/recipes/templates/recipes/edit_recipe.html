@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Recipe — RecipeBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand"><div class="brand-icon"><i class="fas fa-utensils"></i></div>Recipe<span>Book</span></a>
+      <div class="navbar-search">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
+        <button id="navbar-search-btn"><i class="fas fa-arrow-right"></i></button>
+      </div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <a href="my-recipes.html" class="nav-link active">My Recipes</a>
+      </nav>
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="user-avatar-btn" id="user-drop-btn"><div class="avatar"></div><span class="user-name"></span><i class="fas fa-chevron-down" style="font-size:.7rem;color:var(--text-light)"></i></button>
+          <div class="dropdown-menu" id="user-dropdown-menu">
+            <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+            <a href="my-recipes.html" class="dropdown-item"><i class="fas fa-book-open"></i> My Recipes</a>
+            <hr class="dropdown-divider">
+            <div class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+          </div>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="my-recipes.html" class="nav-link">My Recipes</a>
+    <div style="display:flex;gap:8px;padding:8px 0">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" style="margin-bottom:12px">
+      <a href="index.html">Home</a>
+      <span class="separator"><i class="fas fa-chevron-right"></i></span>
+      <a href="my-recipes.html">My Recipes</a>
+      <span class="separator"><i class="fas fa-chevron-right"></i></span>
+      <span class="current">Edit Recipe</span>
+    </nav>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 id="page-title">Edit Recipe</h1>
+        <p>Update your recipe details below</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a id="view-live-btn" href="recipe-detail.html" class="btn btn-secondary btn-sm" target="_blank">
+          <i class="fas fa-external-link-alt"></i> View Live
+        </a>
+        <button class="btn btn-danger btn-sm" onclick="confirmDeleteRecipe()">
+          <i class="fas fa-trash"></i> Delete Recipe
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Form -->
+<section style="padding:48px 0 80px">
+  <div class="container">
+    <!-- Unsaved changes banner -->
+    <div id="unsaved-banner" style="display:none;background:rgba(255,140,66,0.1);border:1px solid rgba(255,140,66,0.3);border-radius:var(--radius-sm);padding:12px 20px;margin-bottom:24px;display:flex;align-items:center;gap:10px">
+      <i class="fas fa-exclamation-circle" style="color:var(--orange)"></i>
+      <span style="font-size:.9rem;color:var(--text-sub)">You have unsaved changes</span>
+      <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="document.getElementById('add-recipe-form').dispatchEvent(new Event('submit'))">Save Now</button>
+    </div>
+
+    <form id="add-recipe-form" novalidate>
+      <div class="add-recipe-layout">
+
+        <!-- LEFT: Main form (same structure as add-recipe) -->
+        <div>
+          <!-- Basic Info -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-info-circle"></i> Basic Information</div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-title">Recipe Title <span style="color:var(--red)">*</span></label>
+              <input type="text" class="form-control" id="recipe-title" placeholder="e.g. Creamy Tuscan Garlic Pasta">
+              <span class="form-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-desc">Description <span style="color:var(--red)">*</span></label>
+              <textarea class="form-control" id="recipe-desc" rows="3" placeholder="A short, enticing description…"></textarea>
+              <span class="form-error"></span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="recipe-category">Category <span style="color:var(--red)">*</span></label>
+                <select class="form-control" id="recipe-category">
+                  <option value="">Select category…</option>
+                  <option value="Breakfast">🍳 Breakfast</option>
+                  <option value="Lunch">🥗 Lunch</option>
+                  <option value="Dinner">🍽️ Dinner</option>
+                  <option value="Dessert">🍰 Dessert</option>
+                  <option value="Snacks">🍿 Snacks</option>
+                  <option value="Drinks">🥤 Drinks</option>
+                </select>
+                <span class="form-error"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cuisine">Cuisine Type</label>
+                <input type="text" class="form-control" id="cuisine" placeholder="e.g. Italian, Thai">
+              </div>
+            </div>
+
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label" for="cooking-time">Cook Time (min) <span style="color:var(--red)">*</span></label>
+                <input type="number" class="form-control" id="cooking-time" placeholder="30" min="1">
+                <span class="form-error"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="servings">Servings <span style="color:var(--red)">*</span></label>
+                <input type="number" class="form-control" id="servings" placeholder="4" min="1">
+                <span class="form-error"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Difficulty</label>
+                <div class="difficulty-selector">
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Easy" checked>
+                    <span class="diff-label"><i class="fas fa-smile" style="color:#22c55e"></i> Easy</span>
+                  </label>
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Medium">
+                    <span class="diff-label"><i class="fas fa-meh" style="color:#f97316"></i> Med</span>
+                  </label>
+                  <label class="diff-option">
+                    <input type="radio" name="difficulty" value="Hard">
+                    <span class="diff-label"><i class="fas fa-fire" style="color:#DC143C"></i> Hard</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipe-tags">Tags</label>
+              <input type="text" class="form-control" id="recipe-tags" placeholder="vegetarian, quick, italian">
+              <span class="form-hint">Comma-separated tags</span>
+            </div>
+          </div>
+
+          <!-- Cover Image -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-image"></i> Cover Photo</div>
+            <p style="font-size:.85rem;color:var(--text-light);margin-bottom:16px">Upload a new image to replace the current one</p>
+            <div id="upload-zone" class="img-upload-zone">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p><strong>Drag & drop</strong> a new photo here</p>
+              <span>or click to browse — JPG, PNG, WebP up to 10MB</span>
+              <br>
+              <button type="button" class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="document.getElementById('recipe-image').click()">
+                <i class="fas fa-folder-open"></i> Browse Files
+              </button>
+              <input type="file" id="recipe-image" accept="image/*" style="display:none">
+            </div>
+            <div id="img-preview" class="img-preview" style="display:none"></div>
+          </div>
+
+          <!-- Ingredients -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
+            <div id="ingredients-list">
+              <!-- Pre-filled by JS -->
+              <div class="ingredient-input-row">
+                <input type="text" class="form-control" placeholder="Amount" style="max-width:140px">
+                <input type="text" class="form-control" placeholder="Ingredient name">
+                <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <button type="button" id="add-ingredient-btn" class="add-row-btn" style="margin-top:10px">
+              <i class="fas fa-plus"></i> Add Ingredient
+            </button>
+          </div>
+
+          <!-- Instructions -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-list-ol"></i> Instructions</div>
+            <div id="instructions-list">
+              <!-- Pre-filled by JS -->
+              <div class="instruction-step-row">
+                <div class="step-number-label">1</div>
+                <textarea class="form-control" rows="2" placeholder="Describe step 1…"></textarea>
+                <button type="button" class="remove-row-btn" style="margin-top:8px" onclick="removeInstructionRow(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <button type="button" id="add-instruction-btn" class="add-row-btn" style="margin-top:10px">
+              <i class="fas fa-plus"></i> Add Step
+            </button>
+          </div>
+
+          <!-- Nutrition (optional) -->
+          <div class="form-section">
+            <div class="form-section-title" style="cursor:pointer;user-select:none" onclick="toggleNutrition()">
+              <i class="fas fa-heartbeat"></i> Nutritional Info
+              <span style="margin-left:auto;font-size:.8rem;color:var(--text-light);font-family:var(--font-body);font-weight:400">(Optional)</span>
+              <i class="fas fa-chevron-down" id="nutrition-chevron" style="margin-left:8px;font-size:.8rem;color:var(--text-light);transition:transform .2s"></i>
+            </div>
+            <div id="nutrition-fields" style="display:none">
+              <div class="form-row form-row-3" style="margin-top:16px">
+                <div class="form-group"><label class="form-label">Calories</label><input type="number" class="form-control" placeholder="kcal"></div>
+                <div class="form-group"><label class="form-label">Protein (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Carbs (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Fat (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Fiber (g)</label><input type="number" class="form-control" placeholder="g"></div>
+                <div class="form-group"><label class="form-label">Sugar (g)</label><input type="number" class="form-control" placeholder="g"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Sidebar -->
+        <div>
+          <div class="add-recipe-sidebar-card" style="position:sticky;top:90px">
+            <h4>Update Recipe</h4>
+            <p style="color:var(--text-light)">Save your changes below</p>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-full" style="margin-bottom:10px">
+              <i class="fas fa-save"></i> Update Recipe
+            </button>
+            <a href="my-recipes.html" class="btn btn-secondary btn-full" style="margin-bottom:10px">
+              <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+            <button type="button" class="btn btn-danger btn-full" onclick="confirmDeleteRecipe()">
+              <i class="fas fa-trash"></i> Delete Recipe
+            </button>
+
+            <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+            <div style="font-size:.82rem;color:var(--text-light)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <i class="fas fa-history" style="color:var(--orange)"></i>
+                <span>Last updated: just now</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <i class="fas fa-eye" style="color:var(--orange)"></i>
+                <span id="view-live-sidebar">
+                  <a id="view-live-sidebar-link" href="recipe-detail.html" style="color:var(--orange);font-weight:600">View live recipe →</a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dietary Flags -->
+          <div class="add-recipe-sidebar-card">
+            <h4>Dietary Info</h4>
+            <p>Check all that apply</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <label class="checkbox-group"><input type="checkbox"> <span>🌱 Vegetarian</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🌿 Vegan</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🌾 Gluten-Free</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🥛 Dairy-Free</span></label>
+              <label class="checkbox-group"><input type="checkbox"> <span>🥜 Nut-Free</span></label>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="add-recipe-sidebar-card" style="border-color:rgba(220,20,60,0.25);background:rgba(220,20,60,0.03)">
+            <h4 style="color:var(--red)"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
+            <p style="font-size:.85rem;margin-bottom:14px">Deleting this recipe is permanent and cannot be undone.</p>
+            <button type="button" class="btn btn-danger btn-full btn-sm" onclick="confirmDeleteRecipe()">
+              <i class="fas fa-trash"></i> Delete This Recipe
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div class="confirm-modal-backdrop" id="delete-confirm-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s">
+  <div style="background:white;border-radius:var(--radius-xl);padding:36px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);text-align:center;transform:scale(.96);transition:transform .2s" id="delete-modal-inner">
+    <div style="font-size:3rem;margin-bottom:12px">⚠️</div>
+    <h3 style="margin-bottom:8px">Delete This Recipe?</h3>
+    <p style="color:var(--text-light);margin-bottom:28px">This action is permanent. All reviews and saves for this recipe will also be removed.</p>
+    <div style="display:flex;gap:12px;justify-content:center">
+      <button class="btn btn-secondary" onclick="closeDeleteModal()">Keep Recipe</button>
+      <button class="btn btn-danger" onclick="doDeleteAndRedirect()"><i class="fas fa-trash"></i> Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">Recipe<span>Book</span></div><p class="footer-desc">Share your recipes with the world.</p></div>
+      <div><div class="footer-col-title">Recipes</div><ul class="footer-links"><li><a href="my-recipes.html">My Recipes</a></li><li><a href="search-results.html">Explore</a></li></ul></div>
+      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">Profile</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">RecipeBook</a>. All rights reserved.</div></div>
+</footer>
+
+<button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+<script src="script.js"></script>
+<script>
+function toggleNutrition() {
+  const fields = document.getElementById('nutrition-fields');
+  const chevron = document.getElementById('nutrition-chevron');
+  const open = fields.style.display === 'none';
+  fields.style.display = open ? '' : 'none';
+  chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function confirmDeleteRecipe() {
+  const modal = document.getElementById('delete-confirm-modal');
+  modal.style.opacity = '1';
+  modal.style.pointerEvents = 'auto';
+  document.getElementById('delete-modal-inner').style.transform = 'scale(1)';
+}
+function closeDeleteModal() {
+  const modal = document.getElementById('delete-confirm-modal');
+  modal.style.opacity = '0';
+  modal.style.pointerEvents = 'none';
+  document.getElementById('delete-modal-inner').style.transform = 'scale(.96)';
+}
+function doDeleteAndRedirect() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id'));
+  if (id) {
+    const myRecipes = Storage.getMyRecipes().filter(r => r.id !== id);
+    Storage.setMyRecipes(myRecipes);
+  }
+  showToast('Recipe deleted', 'info');
+  setTimeout(() => window.location.href = 'my-recipes.html', 800);
+}
+
+// Mark unsaved on any input change
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const viewBtn = document.getElementById('view-live-btn');
+  const viewSidebar = document.getElementById('view-live-sidebar-link');
+  if (id) {
+    const url = `recipe-detail.html?id=${id}`;
+    if (viewBtn) viewBtn.href = url;
+    if (viewSidebar) viewSidebar.href = url;
+  }
+  document.querySelectorAll('#add-recipe-form input, #add-recipe-form textarea, #add-recipe-form select').forEach(el => {
+    el.addEventListener('input', () => {
+      const banner = document.getElementById('unsaved-banner');
+      if (banner) banner.style.display = 'flex';
+    });
+  });
+});
+</script>
+</body>
+</html>
