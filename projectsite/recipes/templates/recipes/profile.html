@@ -421,15 +421,18 @@
         <a href="{% url 'profile' %}" class="nav-link active">Profile</a>
       </nav>
 
-      <div class="navbar-actions">
-        <div style="display:flex;gap:8px">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="logout()">
+      <div style="display:flex;gap:8px">
+
+    <form action="{% url 'logout' %}" method="POST" style="margin:0;">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-secondary btn-sm">
             <i class="fas fa-sign-out-alt"></i> Logout
-          </button>
-        </div>
-        <button class="hamburger" id="hamburger" type="button"><span></span><span></span><span></span></button>
-      </div>
-    </div>
+        </button>
+
+    </form>
+
+</div>
   </div>
   <div class="mobile-nav" id="mobile-nav">
     <a href="{% url 'home' %}" class="nav-link">Home</a>
@@ -437,10 +440,9 @@
     <a href="favorites.html" class="nav-link">Favorites</a>
     <a href="{% url 'profile' %}" class="nav-link active">Profile</a>
     <div style="display:flex;gap:8px;padding:8px 0">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="logout()" style="flex:1">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
-    </div>
+    
+
+</div>
   </div>
 </nav>
 
