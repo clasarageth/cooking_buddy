@@ -233,24 +233,41 @@
             </div>
         {% endif %}
 
-       <div class="recipe-sidebar-card">
-            <button class="sidebar-action-btn" id="sidebar-fav-btn" type="button">
-            <i class="far fa-heart"></i>
-            <span>Save to Favorites</span>
-            </button>
-            <button class="sidebar-action-btn" type="button" onclick="window.print()">
-            <i class="fas fa-print"></i> Print Recipe
-            </button>
-            <button class="sidebar-action-btn" type="button" id="share-btn">
-            <i class="fas fa-share-alt"></i> Share Recipe
-            </button>
-            {% if user.is_authenticated and user == recipe.author %}
-              <a href="{% url 'update_recipe' recipe.id %}" class="sidebar-action-btn">
-                  <i class="fas fa-edit"></i>
-                  <span>Edit Recipe</span>
-              </a>
-            {% endif %}
-        </div>
+      <div class="recipe-sidebar-card">
+          <button class="sidebar-action-btn" id="sidebar-fav-btn" type="button">
+              <i class="far fa-heart"></i>
+              <span>Save to Favorites</span>
+          </button>
+
+          <button class="sidebar-action-btn" type="button" onclick="window.print()">
+              <i class="fas fa-print"></i> Print Recipe
+          </button>
+
+          <button class="sidebar-action-btn" type="button" id="share-btn">
+              <i class="fas fa-share-alt"></i> Share Recipe
+          </button>
+      </div>
+
+
+      {% if user.is_authenticated and user == recipe.author %}
+      <div class="recipe-sidebar-card">
+
+          <a href="{% url 'update_recipe' recipe.id %}" style="text-decoration:none;">
+              <button class="sidebar-action-btn" type="button">
+                  <i class="fas fa-edit"></i> Edit Recipe
+              </button>
+          </a>
+           <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="padding-top: 10px;"
+          onsubmit="return confirm('Are you sure you want to delete this recipe?');">
+        {% csrf_token %}
+
+        <button class="sidebar-action-btn" type="submit">
+            <i class="fas fa-trash"></i>
+            <span>Delete Recipe</span>
+        </button>
+    </form>
+      </div>
+      {% endif %}
     </aside>
   </div>
 </div>

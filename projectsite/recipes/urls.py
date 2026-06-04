@@ -8,5 +8,6 @@ urlpatterns = [
     path('update/<int:pk>/', views.update_recipe, name='update_recipe'),
     path('delete/<int:pk>/', views.delete_recipe, name='delete_recipe'),
     path('recipe/<int:pk>/review/', views.add_review, name='add_review'),
-     path('profile/', views.profile, name='profile'),
+    path('profile/', views.profile, name='profile'),
+    path('search/', views.search_results, name='search_results'),
 ]

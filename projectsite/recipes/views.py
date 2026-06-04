@@ -211,3 +211,20 @@ def profile(request):
     
     return render(request, 'recipes/profile.html', context)
 
+@login_required
+def search_results(request):
+    query = request.GET.get('q', '')
+
+    recipes = Recipe.objects.all()
+
+    if query:
+        recipes = recipes.filter(title__icontains=query)
+
+    recipes = recipes.annotate(
+        average_rating=Avg('reviews__rating')
+    )
+
+    return render(request, 'recipes/search_results.html', {
+        'recipes': recipes,
+        'query': query
+    })

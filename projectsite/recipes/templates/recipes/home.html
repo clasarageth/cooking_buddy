@@ -625,15 +625,23 @@
         Cooking <span>Buddy</span>
       </a>
 
-      <div class="navbar-search">
-        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
-        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
-        <button id="navbar-search-btn" aria-label="Search"><i class="fas fa-arrow-right"></i></button>
-      </div>
+      <form class="navbar-search" method="GET" action="{% url 'search_results' %}">
+          <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+
+          <input
+              type="text"
+              name="q"
+              id="navbar-search-input"
+              placeholder="Search recipes…"
+          >
+
+          <button type="submit" aria-label="Search">
+              <i class="fas fa-arrow-right"></i>
+          </button>
+      </form>
 
       <nav class="navbar-nav">
         <a href="{% url 'home' %}" class="nav-link active">Home</a>
-        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
         <a href="favorites.html" class="nav-link">Favorites</a>
         <a href="{% url 'profile' %}" class="nav-link">Profile</a>
       </nav>
