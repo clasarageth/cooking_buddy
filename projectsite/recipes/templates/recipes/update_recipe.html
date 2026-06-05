@@ -539,16 +539,17 @@
 <div class="page-header">
   <div class="container">
     <nav class="breadcrumb" style="margin-bottom:12px">
-      <a href="index.html">Home</a>
+      <a href="{% url 'home' %}">Home</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
-      <a href="profile.html">Profile</a>
+      <a href="{% url 'profile' %}">Profile</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
-      <span class="current" id="page-title-breadcrumb">Add New Recipe</span>
+      <span class="current" id="page-title-breadcrumb">Edit your Recipe</span>
     </nav>
-    
-    <h1 id="page-title">Update your Recipe</h1>
+    <h1 id="page-title">Add New Recipe</h1>
+    <p>Share your creation with the Cooking Buddy community</p>
   </div>
 </div>
+
 
 <section style="padding:48px 0 80px">
     <div class="container">
