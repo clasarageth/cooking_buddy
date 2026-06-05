@@ -1,6 +1,10 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <meta name="theme-color" content="#e63946">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cooking Buddy — Discover Delicious Recipes</title>
@@ -906,5 +910,6 @@
     window.location.href = "{% url 'home' %}";
   }
 </script>
+<script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>
