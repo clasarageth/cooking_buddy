@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooking Buddy — Discover Delicious Recipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #c1121f;
+      --red-light: #ff6b6b;
+      --white: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --gray-light: #f8f9fa;
+      --border: #ece6d8;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 18px;
+      --brown: #8a0012;
+      --brown-dark: #5e0010;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #91160b 50%,);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--red-primary);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--red-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline-white {
+      border: 1px solid rgba(255,255,255,.5);
+      color: #fff;
+      background: transparent;
+    }
+
+    .btn-lg {
+      padding: 1rem 1.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.75rem 1rem;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 1.2rem;
+    }
+
+    .navbar-brand span {
+      color: var(--red-primary);
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--red-primary);
+      background: var(--red-bg, #fff5f5);
+    }
+
+    .navbar-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      max-width: 380px;
+      width: 100%;
+    }
+
+    .navbar-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+    }
+
+    .navbar-search button {
+      border: none;
+      background: var(--red-primary);
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      color: var(--red-primary);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .gap-sm {
+      gap: 8px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--red-dark);
+    }
+
+    .mobile-nav {
+      display: none;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .mobile-nav .nav-link {
+      display: block;
+      padding: 8px 0;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 100px 0 60px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(230,57,70,.92), rgba(138,0,18,.82)),
+        url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+      transform: scale(1.03);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 38%);
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 760px;
+      color: #fff;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(8px);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin: 0 0 16px;
+    }
+
+    .hero .highlight {
+      color: #ffd6d6;
+    }
+
+    .hero p {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.88);
+      margin: 0 auto 26px;
+    }
+
+    .hero-search-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+      justify-content: center;
+    }
+
+    .hero-search-bar input {
+      flex: 1;
+      min-width: 240px;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 18px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-search-bar button {
+      border: none;
+      border-radius: 999px;
+      padding: 16px 22px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+      justify-content: center;
+    }
+
+    .cat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      cursor: pointer;
+      transition: .2s ease;
+      user-select: none;
+    }
+
+    .cat-chip:hover {
+      background: rgba(255,255,255,.24);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .hero-stat-label {
+      color: rgba(255,255,255,.75);
+      font-size: .92rem;
+    }
+
+    .hero-center-image {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .hero-center-link {
+      display: block;
+      max-width: 460px;
+      width: min(90vw, 460px);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 5px solid rgba(255, 255, 255, 0.18);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-center-link:hover {
+      transform: scale(1.02);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .hero-center-link img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 20px;
+    }
+
+    .hero-gallery-section {
+      background: #fff;
+      padding-top: 24px;
+    }
+
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .gallery-item {
+      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, var(--brown-dark), var(--brown));
+      text-align: center;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: #2b2d42;
+      color: #fff;
+      padding: 40px 0 20px;
+    }
+
+    .footer-brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand span {
+      color: var(--red-primary);
+    }
+
+    .footer-desc {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-col-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-links a:hover {
+      color: #ffb3b3;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+    }
+
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--red-primary);
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      z-index: 1100;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3000;
+      display: grid;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #fff;
+      border-left: 4px solid var(--red-primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 240px;
+      max-width: 320px;
+    }
+
+    @media (max-width: 900px) {
+      .navbar-search,
+      .navbar-nav,
+      .navbar-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+      }
+
+      .hero-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-item img {
+        height: 200px;
+      }
+
+      .hero-center-image {
+        margin-top: 28px;
+      }
+    }
+
+    .navbar.open .mobile-nav {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .hero-center-link {
+        width: 100%;
+      }
+
+      .hero-search-bar input {
+        min-width: 100%;
+      }
+    }
+
+    .recipe-body { padding: 16px; }
+
+    .recipe-title {
+      font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; color: var(--text-dark);
+    }
+    .recipe-details {
+      color: var(--text-light); font-size: .95rem; margin-bottom: 14px; line-height: 1.6;
+    }
+    .recipe-meta {
+      display: flex; gap: 12px; flex-wrap: wrap; color: var(--text-light); font-size: .88rem;
+      margin-bottom: 14px;
+    }
+    .recipe-actions {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+    .navbar-search,
+    .navbar-nav {
+        display: none;
+    }
+
+    .navbar-actions {
+        display: flex !important;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+    }
+
+    .hero-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+
+    .hero-center-image {
+        margin-top: 28px;
+    }
+
+    .navbar.open .mobile-nav {
+        display: block;
+    }
+    
+    .mobile-nav .navbar-search {
+        display: flex !important;
+        width: 100%;
+        max-width: 100%;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+
+      <a href="{% url 'home' %}" class="navbar-brand">
+        <div class="brand-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
+        Cooking <span>Buddy</span>
+      </a>
+
+      <form class="navbar-search" method="GET" action="{% url 'search_results' %}">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+
+        <input
+          type="text"
+          name="q"
+          id="navbar-search-input"
+          placeholder="Search recipes…"
+        >
+
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <nav class="navbar-nav">
+        <a href="{% url 'home' %}" class="nav-link active">Home</a>
+        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm"></div>
+
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
+            <div class="avatar" id="nav-user-avatar"></div>
+            <span class="user-name"></span>
+          </button>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" id="mobile-nav">
+
+    <form
+      class="navbar-search"
+      method="GET"
+      action="{% url 'search_results' %}"
+      style="max-width:100%;margin-bottom:12px"
+    >
+      <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+
+      <input
+        type="text"
+        name="q"
+        placeholder="Search recipes..."
+      >
+
+      <button type="submit">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <a href="{% url 'home' %}" class="nav-link">Home</a>
+    <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+
+  </div>
+</nav>
+
+
+
+    <section class="section hero-gallery-section" style="margin-bottom: 100px;">
+    <div class="container">
+
+        <div class="section-header" style="text-align:center;margin-bottom:24px">
+
+            <div class="section-title">
+                search results for "{{ query }}"
+            </div>
+
+            <p class="section-subtitle">
+                Recipes matching your search
+            </p>
+
+        </div>
+
+        <div class="hero-gallery">
+
+            {% if recipes %}
+
+                {% for recipe in recipes %}
+
+                <article class="recipe-card">
+
+                    <a href="{% url 'recipe_detail' recipe.id %}" class="gallery-item">
+
+                        {% if recipe.image %}
+                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/700x500?text=No+Image"
+                                 alt="{{ recipe.title }}">
+                        {% endif %}
+
+                        <div class="recipe-body">
+                            <h3 class="recipe-title">{{ recipe.title }}</h3>
+
+                            <p class="recipe-details">{{ recipe.description }}</p>
+
+                            <div class="recipe-meta">
+                                <span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    {{ recipe.cooking_time }} min
+                                </span>
+                            </div>
+
+                            {% if recipe.average_rating %}
+                                <p class="recipe-details">
+                                    ⭐ {{ recipe.average_rating|floatformat:1 }}/5
+                                </p>
+                            {% else %}
+                                <p class="recipe-details">No ratings yet</p>
+                            {% endif %}
+                        </div>
+
+                    </a>
+
+                </article>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div style="width:100%; text-align:center; padding:40px 0;">
+                    <p>No recipes found for "{{ query }}"</p>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+</section>
+
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
+        <p class="footer-desc">Your go-to destination for discovering, saving, and sharing amazing recipes from home cooks and chefs worldwide.</p>
+      </div>
+      
+      
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; 2026 <a href="{% url 'home' %}">Cooking Buddy</a>. Made with ❤️ for food lovers everywhere.
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="toast-container"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function showToast(message, type = "info") {
+    const wrap = $("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    wrap.appendChild(toast);
+    setTimeout(() => toast.remove(), 2600);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = $("hamburger");
+    const navbar = document.querySelector(".navbar");
+    const mobileNav = $("mobile-nav");
+    const backToTop = $("back-to-top");
+
+    if (hamburger && navbar && mobileNav) {
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.style.display !== "block";
+        mobileNav.style.display = open ? "block" : "none";
+        navbar.classList.toggle("open", open);
+      });
+    }
+
+    const search = (value) => {
+      const q = value.trim();
+      if (q) window.location.href = `search_results.html?q=${encodeURIComponent(q)}`;
+    };
+
+    const heroSearchInput = $("hero-search-input");
+    const heroSearchBtn = $("hero-search-btn");
+    if (heroSearchInput && heroSearchBtn) {
+      heroSearchBtn.addEventListener("click", () => search(heroSearchInput.value));
+      heroSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(heroSearchInput.value);
+      });
+    }
+
+    const navSearchInput = $("navbar-search-input");
+    const navSearchBtn = $("navbar-search-btn");
+    if (navSearchInput && navSearchBtn) {
+      navSearchBtn.addEventListener("click", () => search(navSearchInput.value));
+      navSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(navSearchInput.value);
+      });
+    }
+
+    const mobileSearchInput = $("mobile-search-input");
+    if (mobileSearchInput) {
+      mobileSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") search(mobileSearchInput.value);
+      });
+    }
+
+    if (backToTop) {
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "{% url 'home' %}";
+  }
+</script>
+</body>
+</html>

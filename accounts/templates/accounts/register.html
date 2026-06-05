@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CookingBuddy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+    :root {
+    --red-primary: #e63946;
+    --red-dark: #c1121f;
+    --red-light: #ff6b6b;
+    --red-bg: #fff5f5;
+    --white: #ffffff;
+    --text-dark: #2b2d42;
+    --text-light: #6c757d;
+    --text-sub: #8a8f98;
+    --border: #ece6d8;
+    --shadow: 0 4px 6px rgba(0,0,0,.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,.12);
+    --radius: 14px;
+    --radius-lg: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+    color: var(--text-dark);
+
+    /* IMPORTANT FIX: DO NOT force flex on whole page */
+    min-height: 100vh;
+}
+
+/* =========================
+   SPLIT LAYOUT (DESKTOP)
+========================= */
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.left {
+    flex: 1;
+    position: relative;
+}
+
+.left img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 50px;
+}
+
+.overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-icon {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    border-radius: 15px;
+    background: #fff0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--red-primary);
+    font-size: 1.5rem;
+}
+
+.logo h2 span {
+    color: var(--red-primary);
+}
+
+.logo p {
+    color: var(--text-light);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--red-primary);
+    box-shadow: 0 0 0 4px rgba(230,57,70,.12);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.register {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register a {
+    color: var(--red-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* =========================
+   MOBILE FIX (IMPORTANT)
+========================= */
+
+@media (max-width: 768px) {
+
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .left {
+        height: 180px;
+    }
+
+    .left img {
+        height: 100%;
+    }
+
+    .overlay {
+        padding: 15px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .overlay h1 {
+        font-size: 1.5rem;
+    }
+
+    .overlay p {
+        font-size: 0.85rem;
+    }
+
+    .right {
+        padding: 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+</style>
+    
+</head>
+<body>
+
+<div class="left">
+    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200" alt="Cooking">
+
+    <div class="overlay">
+        <h1>Join CookingBuddy</h1>
+        <p>Create an account and start sharing delicious recipes with the community.</p>
+    </div>
+</div>
+
+<div class="right">
+
+    <div class="card">
+
+        <div class="logo">
+
+            <div class="brand-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+
+            <h2>
+                Cooking<span>Buddy</span>
+            </h2>
+
+            <p>Create your account</p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="bbtn btn-login">
+                Register
+            </button>
+
+        </form>
+        <br>
+        <div class="login-link">
+            Already have an account?
+            <a href="{% url 'login' %}">
+                Login here
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

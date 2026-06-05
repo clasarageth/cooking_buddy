@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate Recipe</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red-primary: #e63946;
+  --red-dark: #c1121f;
+  --red-bg: #fff5f5;
+  --text-dark: #2b2d42;
+  --text-light: #6c757d;
+  --border: #eee;
+  --shadow: 0 10px 25px rgba(0,0,0,0.08);
+  --radius: 14px;
+  --white: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(180deg, #fffaf8, #fff1f2);
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+
+/* ⭐ STAR STYLE */
+.stars {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 6px;
+  margin: 20px 0;
+}
+
+.stars input {
+  display: none;
+}
+
+.stars label {
+  font-size: 42px;
+  cursor: pointer;
+  color: #ddd;
+  transition: 0.2s;
+}
+
+.stars label:hover,
+.stars label:hover ~ label {
+  color: #ffb703;
+}
+
+.stars input:checked ~ label {
+  color: #ffb703;
+}
+
+/* TEXTAREA */
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 0 4px rgba(230,57,70,0.1);
+}
+
+/* BUTTON */
+.btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--red-primary);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: var(--red-dark);
+}
+
+/* small helper */
+.center {
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <h1>Rate {{ recipe.title }}</h1>
+    <p class="subtitle">Share your experience with this recipe</p>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="stars">
+        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+      </div>
+
+      <textarea name="comment" placeholder="Write your review..."></textarea>
+
+      <button type="submit" class="btn">
+        Submit Review
+      </button>
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

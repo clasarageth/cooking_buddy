@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Recipe</title>
+</head>
+<body>
+
+    <h1>Delete Recipe</h1>
+
+    <p>
+        Are you sure you want to delete:
+    </p>
+
+    <h2>{{ recipe.title }}</h2>
+
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" width="300">
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete Recipe
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'recipe_detail' recipe.id %}">
+        Cancel
+    </a>
+
+</body>
+</html>
