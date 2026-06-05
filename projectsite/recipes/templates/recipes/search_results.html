@@ -613,6 +613,48 @@
     .recipe-actions {
       display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     }
+
+    @media (max-width: 900px) {
+    .navbar-search,
+    .navbar-nav {
+        display: none;
+    }
+
+    .navbar-actions {
+        display: flex !important;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+    }
+
+    .hero-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+
+    .hero-center-image {
+        margin-top: 28px;
+    }
+
+    .navbar.open .mobile-nav {
+        display: block;
+    }
+    
+    .mobile-nav .navbar-search {
+        display: flex !important;
+        width: 100%;
+        max-width: 100%;
+    }
+
   </style>
 </head>
 <body>
@@ -620,24 +662,27 @@
 <nav class="navbar">
   <div class="container">
     <div class="navbar-inner">
+
       <a href="{% url 'home' %}" class="navbar-brand">
-        <div class="brand-icon"><i class="fas fa-utensils"></i></div>
+        <div class="brand-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
         Cooking <span>Buddy</span>
       </a>
 
       <form class="navbar-search" method="GET" action="{% url 'search_results' %}">
-          <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
 
-          <input
-              type="text"
-              name="q"
-              id="navbar-search-input"
-              placeholder="Search recipes…"
-          >
+        <input
+          type="text"
+          name="q"
+          id="navbar-search-input"
+          placeholder="Search recipes…"
+        >
 
-          <button type="submit" aria-label="Search">
-              <i class="fas fa-arrow-right"></i>
-          </button>
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-arrow-right"></i>
+        </button>
       </form>
 
       <nav class="navbar-nav">
@@ -646,36 +691,50 @@
       </nav>
 
       <div class="navbar-actions">
-        <div id="nav-auth-buttons" class="flex gap-sm">
-         
-        </div>
+        <div id="nav-auth-buttons" class="flex gap-sm"></div>
+
         <div class="user-dropdown" id="user-dropdown" style="display:none">
           <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
             <div class="avatar" id="nav-user-avatar"></div>
             <span class="user-name"></span>
           </button>
         </div>
+
         <button class="hamburger" id="hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
+
     </div>
   </div>
 
+  <!-- Mobile Navigation -->
   <div class="mobile-nav" id="mobile-nav">
-    <div class="navbar-search" style="max-width:100%;margin-bottom:8px">
+
+    <form
+      class="navbar-search"
+      method="GET"
+      action="{% url 'search_results' %}"
+      style="max-width:100%;margin-bottom:12px"
+    >
       <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
-      <input type="text" placeholder="Search recipes…" id="mobile-search-input">
-    </div>
-    <a href="{% url 'home' %}" class="nav-link active">Home</a>
-    <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
-    <a href="favorites.html" class="nav-link">Favorites</a>
-    <a href="my_recipes.html" class="nav-link">My Recipes</a>
-    <a href="add_recipe.html" class="nav-link">Add Recipe</a>
-    <div style="display:flex;gap:8px;padding:8px 0">
-      <a href="login.html" class="btn btn-secondary btn-sm" style="flex:1">Login</a>
-      <a href="register.html" class="btn btn-primary btn-sm" style="flex:1">Sign Up</a>
-    </div>
+
+      <input
+        type="text"
+        name="q"
+        placeholder="Search recipes..."
+      >
+
+      <button type="submit">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <a href="{% url 'home' %}" class="nav-link">Home</a>
+    <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+
   </div>
 </nav>
 
