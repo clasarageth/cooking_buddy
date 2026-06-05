@@ -11,7 +11,7 @@
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
+    :root {
     --red-primary: #e63946;
     --red-dark: #c1121f;
     --red-light: #ff6b6b;
@@ -25,410 +25,209 @@
     --shadow-lg: 0 10px 25px rgba(0,0,0,.12);
     --radius: 14px;
     --radius-lg: 20px;
-    }
-
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
-
-    body{
-        font-family:'Inter',sans-serif;
-        background:linear-gradient(180deg,#fffaf8 0%,#fff1f2 100%);
-        color:var(--text-dark);
-        min-height:100vh;
-    }
-
-    /* NAVBAR */
-
-    .navbar{
-        background:white;
-        box-shadow:var(--shadow);
-        padding:16px 30px;
-    }
-
-    .navbar-brand{
-        display:flex;
-        align-items:center;
-        gap:10px;
-        font-weight:800;
-        font-size:1.3rem;
-        color:var(--red-dark);
-        text-decoration:none;
-    }
-
-    .navbar-brand span{
-        color:var(--red-primary);
-    }
-
-    .brand-icon{
-        width:42px;
-        height:42px;
-        border-radius:10px;
-        background:var(--red-bg);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        color:var(--red-primary);
-    }
-
-    /* AUTH LAYOUT */
-
-    .auth-container{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        min-height:calc(100vh - 80px);
-        padding:30px;
-    }
-
-    .auth-box{
-        width:100%;
-        max-width:500px;
-        background:white;
-        padding:35px;
-        border-radius:var(--radius-lg);
-        box-shadow:var(--shadow-lg);
-    }
-
-    .auth-header{
-        text-align:center;
-        margin-bottom:30px;
-    }
-
-    .auth-header h2{
-        margin-bottom:5px;
-    }
-
-    .auth-header p{
-        color:var(--text-light);
-    }
-
-    /* FORMS */
-
-    form p{
-        margin-bottom:15px;
-    }
-
-    label{
-        display:block;
-        margin-bottom:6px;
-        font-weight:600;
-    }
-
-    input,
-    select,
-    textarea{
-        width:100%;
-        padding:12px 15px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        font-size:15px;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus{
-        outline:none;
-        border-color:var(--red-primary);
-        box-shadow:0 0 0 4px rgba(230,57,70,.12);
-    }
-
-    /* BUTTONS */
-
-    .btn{
-        display:inline-flex;
-        justify-content:center;
-        align-items:center;
-        gap:8px;
-        border:none;
-        border-radius:999px;
-        cursor:pointer;
-        font-weight:600;
-        text-decoration:none;
-        transition:.2s;
-    }
-
-    .btn:hover{
-        transform:translateY(-2px);
-    }
-
-    .btn-primary{
-        background:linear-gradient(
-            135deg,
-            var(--red-primary),
-            var(--red-dark)
-        );
-        color:white;
-    }
-
-    .btn-secondary{
-        background:white;
-        border:1px solid var(--border);
-        color:var(--text-dark);
-    }
-
-    .btn-full{
-        width:100%;
-        padding:14px;
-    }
-
-    /* DIVIDER */
-
-    .divider{
-        display:flex;
-        align-items:center;
-        gap:10px;
-        margin:20px 0;
-        color:var(--text-sub);
-    }
-
-    .divider::before,
-    .divider::after{
-        content:"";
-        flex:1;
-        height:1px;
-        background:var(--border);
-    }
-
-    /* GOOGLE BUTTON */
-
-    .google-btn{
-        width:100%;
-        padding:14px;
-        border-radius:14px;
-        border:1px solid var(--border);
-        background:white;
-        text-decoration:none;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        gap:10px;
-        color:#db4437;
-        font-weight:600;
-        transition:.2s;
-    }
-
-    .google-btn:hover{
-        box-shadow:var(--shadow);
-    }
-
-    /* LINKS */
-
-    .auth-footer{
-        margin-top:25px;
-        text-align:center;
-        color:var(--text-light);
-    }
-
-    .auth-footer a{
-        color:var(--red-primary);
-        font-weight:700;
-        text-decoration:none;
-    }
-
-    /* GOOGLE CONFIRM PAGE */
-
-    .google-page{
-        min-height:calc(100vh - 80px);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        padding:20px;
-    }
-
-    .google-card{
-        width:100%;
-        max-width:500px;
-        background:white;
-        padding:40px;
-        border-radius:20px;
-        box-shadow:var(--shadow-lg);
-        text-align:center;
-    }
-
-    .google-card h2{
-        margin-bottom:15px;
-    }
-
-    .google-card p{
-        color:var(--text-light);
-        margin-bottom:25px;
-    }
-
-    /* ERRORS */
-
-    .errorlist{
-        list-style:none;
-        color:#dc2626;
-        margin-bottom:10px;
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width:600px){
-
-        .auth-box,
-        .google-card{
-            padding:25px;
-        }
-
-        .navbar{
-            padding:15px;
-        }
-
-        .navbar-brand{
-            font-size:1.1rem;
-        }
-    }
-    body{
-    margin:0;
-    font-family:'Inter',sans-serif;
-    display:flex;
-    min-height:100vh;
-    background:#fff5f5;
 }
 
-.left{
-    flex:1;
-    position:relative;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.left img{
-    width:100%;
-    height:100vh;
-    object-fit:cover;
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, #fffaf8 0%, #fff1f2 100%);
+    color: var(--text-dark);
+
+    /* IMPORTANT FIX: DO NOT force flex on whole page */
+    min-height: 100vh;
 }
 
-.overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.4);
-    color:white;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    padding:50px;
+/* =========================
+   SPLIT LAYOUT (DESKTOP)
+========================= */
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
 }
 
-.overlay h1{
-    font-size:3rem;
-    margin-bottom:10px;
+.left {
+    flex: 1;
+    position: relative;
 }
 
-.right{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:40px;
+.left img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
 }
 
-.card{
-    width:100%;
-    max-width:450px;
-    background:white;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 10px 25px rgba(0,0,0,.12);
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 50px;
 }
 
-.logo{
-    text-align:center;
-    margin-bottom:30px;
+.overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-.brand-icon{
-    width:60px;
-    height:60px;
-    margin:auto;
-    border-radius:15px;
-    background:#fff0f0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#e63946;
-    font-size:1.5rem;
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
 }
 
-.logo h2{
-    margin-top:15px;
+.card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
 }
 
-.logo span{
-    color:#e63946;
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.logo p{
-    color:#6c757d;
+.brand-icon {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    border-radius: 15px;
+    background: #fff0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--red-primary);
+    font-size: 1.5rem;
 }
 
-.form-group{
-    margin-bottom:15px;
+.logo h2 span {
+    color: var(--red-primary);
 }
 
-.form-group label{
-    display:block;
-    margin-bottom:5px;
-    font-weight:600;
+.logo p {
+    color: var(--text-light);
 }
 
-.form-group input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    box-sizing:border-box;
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+    margin-bottom: 15px;
 }
 
-.btn-login{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:999px;
-    background:linear-gradient(
-        135deg,
-        #e63946,
-        #c1121f
-    );
-    color:white;
-    font-weight:600;
-    cursor:pointer;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
-.divider{
-    text-align:center;
-    margin:20px 0;
-    color:#888;
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
 }
 
-.google-btn{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    text-decoration:none;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    color:#db4437;
-    font-weight:600;
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--red-primary);
+    box-shadow: 0 0 0 4px rgba(230,57,70,.12);
 }
 
-.register{
-    margin-top:20px;
-    text-align:center;
+/* =========================
+   BUTTON
+========================= */
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-.register a{
-    color:#e63946;
-    text-decoration:none;
-    font-weight:700;
-}
-    </style>
+/* =========================
+   LINKS
+========================= */
 
+.register {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register a {
+    color: var(--red-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* =========================
+   MOBILE FIX (IMPORTANT)
+========================= */
+
+@media (max-width: 768px) {
+
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .left {
+        height: 180px;
+    }
+
+    .left img {
+        height: 100%;
+    }
+
+    .overlay {
+        padding: 15px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .overlay h1 {
+        font-size: 1.5rem;
+    }
+
+    .overlay p {
+        font-size: 0.85rem;
+    }
+
+    .right {
+        padding: 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+</style>
     
 </head>
 <body>
