@@ -489,7 +489,7 @@
 <nav class="navbar">
   <div class="container">
     <div class="navbar-inner">
-      <a href="index.html" class="navbar-brand">
+      <a href="{% url 'home' %}" class="navbar-brand">
         <div class="brand-icon"><i class="fas fa-utensils"></i></div>
         Cooking<span>Buddy</span>
       </a>
@@ -525,15 +525,7 @@
     </div>
   </div>
 
-  <div class="mobile-nav" id="mobile-nav" style="display:none;padding:16px 20px;border-top:1px solid var(--border);background:#fff">
-    <a href="index.html" class="nav-link" style="padding:8px 0">Home</a>
-    <a href="category.html?cat=Dinner" class="nav-link" style="padding:8px 0">Categories</a>
-    <a href="favorites.html" class="nav-link" style="padding:8px 0">Favorites</a>
-    <a href="profile.html" class="nav-link" style="padding:8px 0">Profile</a>
-    <div style="display:flex;gap:8px;padding:12px 0 0">
-      
-    </div>
-  </div>
+  
 </nav>
 
 <div class="page-header">
