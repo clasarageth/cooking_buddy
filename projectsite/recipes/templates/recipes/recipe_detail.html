@@ -194,7 +194,7 @@
           <h2 style="font-size:1.5rem">Ingredients</h2>
           <span style="font-size:1.5rem">🧂</span>
         </div>
-        <ul class="ingredient-list recipe-description" > {{ recipe.ingredients }}</ul>
+        <ul class="ingredient-list recipe-description" > {{ recipe.ingredients|linebreaks }}</ul>
       </div>
 
       <div style="margin-bottom:48px">
@@ -202,7 +202,7 @@
           <h2 style="font-size:1.5rem">Instructions</h2>
           <span style="font-size:1.5rem">👨‍🍳</span>
         </div>
-        <ul class="instructions-list recipe-description" id="instruction-list"> {{ recipe.instructions }}</ul>
+        <ul class="instructions-list recipe-description" id="instruction-list"> {{ recipe.instructions|linebreaks }}</ul>
       </div>
 
       <div style="margin-bottom:48px">
