@@ -117,24 +117,45 @@
     <div class="navbar-inner">
       <a href="{% url 'home' %}" class="navbar-brand">
         <div class="brand-icon"><i class="fas fa-utensils"></i></div>
-        Cooking<span>Buddy</span>
+        Cooking <span>Buddy</span>
       </a>
 
-      <div class="navbar-search">
-        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
-        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
-        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
-      </div>
+      <form class="navbar-search" method="GET" action="{% url 'search_results' %}">
+          <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+
+          <input
+              type="text"
+              name="q"
+              id="navbar-search-input"
+              placeholder="Search recipes…"
+          >
+
+          <button type="submit" aria-label="Search">
+              <i class="fas fa-arrow-right"></i>
+          </button>
+      </form>
 
       <nav class="navbar-nav">
-        <a href="{% url 'home' %}" class="nav-link">Home</a>
-        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
-        <a href="favorites.html" class="nav-link">Favorites</a>
-        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="{% url 'home' %}" class="nav-link active">Home</a>
+        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
       </nav>
 
-      
+      <div class="navbar-actions">
+        <div id="nav-auth-buttons" class="flex gap-sm">
+         
+        </div>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <button class="btn btn-secondary btn-sm" id="user-drop-btn" type="button">
+            <div class="avatar" id="nav-user-avatar"></div>
+            <span class="user-name"></span>
+          </button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
+  </div>
   </div>
 
   <div class="mobile-nav" id="mobile-nav">
@@ -347,13 +368,16 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Cooking<span>Buddy</span></div>
-        <p class="footer-desc">Discover, save, and share amazing recipes.</p>
+        <p class="footer-desc">Your go-to destination for discovering, saving, and sharing amazing recipes from home cooks and chefs worldwide.</p>
       </div>
+      
       
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>. All rights reserved.</div>
+    <div class="container">
+      &copy; 2026 <a href="{% url 'home' %}">Cooking Buddy</a>. Made with ❤️ for food lovers everywhere.
+    </div>
   </div>
 </footer>
 

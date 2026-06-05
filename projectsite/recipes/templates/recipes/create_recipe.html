@@ -431,17 +431,24 @@
         Cooking<span>Buddy</span>
       </a>
 
-      <div class="navbar-search">
-        <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
-        <input type="text" id="navbar-search-input" placeholder="Search recipes…">
-        <button id="navbar-search-btn" type="button"><i class="fas fa-arrow-right"></i></button>
-      </div>
+      <form class="navbar-search" method="GET" action="{% url 'search_results' %}">
+          <i class="fas fa-search" style="color:var(--text-light);font-size:.85rem"></i>
+
+          <input
+              type="text"
+              name="q"
+              id="navbar-search-input"
+              placeholder="Search recipes…"
+          >
+
+          <button type="submit" aria-label="Search">
+              <i class="fas fa-arrow-right"></i>
+          </button>
+      </form>
 
       <nav class="navbar-nav">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="category.html?cat=Dinner" class="nav-link">Categories</a>
-        <a href="favorites.html" class="nav-link">Favorites</a>
-        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="{% url 'home' %}" class="nav-link active">Home</a>
+        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
       </nav>
 
       <div class="navbar-actions">
@@ -469,9 +476,9 @@
 <div class="page-header">
   <div class="container">
     <nav class="breadcrumb" style="margin-bottom:12px">
-      <a href="index.html">Home</a>
+      <a href="{% url 'home' %}">Home</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
-      <a href="profile.html">Profile</a>
+      <a href="{% url 'profile' %}">Profile</a>
       <span class="separator"><i class="fas fa-chevron-right"></i></span>
       <span class="current" id="page-title-breadcrumb">Add New Recipe</span>
     </nav>
@@ -552,38 +559,28 @@
                 </div>
             </div>
 
-         <div class="form-section">
-    <div class="form-section-title">
-        <i class="fas fa-image"></i> Cover Photo
-    </div>
+          <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-image"></i> Cover Photo
+                </div>
 
-    <div id="upload-zone" class="img-upload-zone">
+                <div id="upload-zone" class="img-upload-zone">
+                    <i class="fas fa-cloud-upload-alt"></i>
 
-        {% if form.instance.image %}
-            <div style="margin-bottom:12px;">
-                <img src="{{ form.instance.image.url }}"
-                     alt="Current Image"
-                     style="width:100%; max-height:250px; object-fit:cover; border-radius:12px;">
+                    <p><strong>Upload your photo</strong></p>
+                    <span>JPG, PNG, WebP up to 10MB</span>
+
+                    <br>
+
+                    {{ form.image }}
+
+                    <span class="form-error">
+                        {{ form.image.errors }}
+                    </span>
+                </div>
+
+                <div id="img-preview" class="img-preview" style="display:none"></div>
             </div>
-        {% else %}
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p><strong>No image uploaded yet</strong></p>
-        {% endif %}
-
-        <p><strong>Change your photo</strong></p>
-        <span>JPG, PNG, WebP up to 10MB</span>
-
-        <br>
-
-        {{ form.image }}
-
-        <span class="form-error">
-            {{ form.image.errors }}
-        </span>
-    </div>
-
-      <div id="img-preview" class="img-preview" style="display:none"></div>
-  </div>
 
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
@@ -621,15 +618,20 @@
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div><div class="footer-brand">Cooking<span>Buddy</span></div><p class="footer-desc">Share your recipes with the world.</p></div>
-      <div><div class="footer-col-title">Recipes</div><ul class="footer-links"><li><a href="my_recipes.html">My Recipes</a></li><li><a href="search_results.html">Explore</a></li></ul></div>
-      <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="profile.html">Profile</a></li><li><a href="favorites.html">Favorites</a></li></ul></div>
-      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div>
+        <div class="footer-brand">Cooking<span>Buddy</span></div>
+        <p class="footer-desc">Your go-to destination for discovering, saving, and sharing amazing recipes from home cooks and chefs worldwide.</p>
+      </div>
+      
+      
     </div>
   </div>
-  <div class="footer-bottom"><div class="container">&copy; 2026 <a href="index.html">Cooking Buddy</a>. All rights reserved.</div></div>
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; 2026 <a href="{% url 'home' %}">Cooking Buddy</a>. Made with ❤️ for food lovers everywhere.
+    </div>
+  </div>
 </footer>
-
 <button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 <div id="toast-container"></div>
 
