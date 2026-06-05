@@ -419,6 +419,69 @@
       .difficulty-selector { grid-template-columns: 1fr; }
       .img-upload-zone { padding: 22px 16px; }
     }
+
+    .form-control {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    }
+
+    /* layout containers */
+    .add-recipe-layout {
+        width: 100%;
+        max-width: 900px;   /* controls desktop size */
+        margin: 0 auto;     /* centers form */
+    }
+
+    /* input wrappers */
+    .ingredient-input-row,
+    .instruction-step-row {
+        width: 100%;
+    }
+
+    /* textarea improvements */
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* form rows */
+    .form-row {
+        display: flex;
+        gap: 16px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+
+        .container {
+            padding: 0 15px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .form-section {
+            padding: 16px;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+    }
+
+    .add-recipe-layout {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
   </style>
 </head>
 <body>
@@ -583,29 +646,41 @@
             </div>
 
           <div class="form-section">
-            <div class="form-section-title"><i class="fas fa-list-ul"></i> Ingredients</div>
-
-            <div id="ingredients-list">
-              <div class="ingredient-input-row">
-                <input type="text" name="ingredients" class="form-control ingredient-name" style="width: 670px;">
+              <div class="form-section-title">
+                  <i class="fas fa-list-ul"></i> Ingredients
               </div>
-            </div>
 
+              <div class="form-group">
+                  <label class="form-label" for="{{ form.ingredients.id_for_label }}">
+                      Ingredients <span style="color:var(--red-primary)">*</span>
+                  </label>
+
+                  {{ form.ingredients }}
+
+                  <span class="form-error">
+                      {{ form.ingredients.errors }}
+                  </span>
+              </div>
           </div>
+
 
           <div class="form-section">
-            <div class="form-section-title"><i class="fas fa-list-ol"></i> Instructions</div>
-
-            <div id="instructions-list">
-              <div class="instruction-step-row">
-                <textarea  name="instructions" class="form-control instruction-text" rows="2" placeholder="Describe steps" style="width: 670px;"></textarea>
+              <div class="form-section-title">
+                  <i class="fas fa-list-ol"></i> Instructions
               </div>
-            </div>
 
+              <div class="form-group">
+                  <label class="form-label" for="{{ form.instructions.id_for_label }}">
+                      Instructions <span style="color:var(--red-primary)">*</span>
+                  </label>
+
+                  {{ form.instructions }}
+
+                  <span class="form-error">
+                      {{ form.instructions.errors }}
+                  </span>
+              </div>
           </div>
-
-          
-        </div>
 
         <button type="submit" id="submit-btn" class="btn btn-primary btn-full" style="margin-bottom:10px">
               <i class="fas fa-paper-plane"></i> Publish Recipe
