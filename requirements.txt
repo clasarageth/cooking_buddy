@@ -5,6 +5,7 @@ charset-normalizer==3.4.7
 cryptography==48.0.0
 Django==5.2.14
 django-allauth==65.18.0
+django-pwa==2.0.1
 idna==3.18
 pillow==12.2.0
 pycparser==3.0
